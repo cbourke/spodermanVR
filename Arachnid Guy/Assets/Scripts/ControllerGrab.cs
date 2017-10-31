@@ -56,6 +56,18 @@ public class ControllerGrab : MonoBehaviour {
 
 	public void GrabPhysicsObject() {
 		objectInHand = collidingObject;
+		if (objectInHand == null)
+			throw new UnityException ("ObjectInHand is null you fucknut");
+		collidingObject = null;
+		var joint = AddFixedJoint ();
+		joint.connectedBody = objectInHand.GetComponent<Rigidbody> ();
+
+	}
+
+	public void GrabPhysicsObjectWithParam(GameObject obj) {
+		objectInHand = obj;
+		if (objectInHand == null)
+			throw new UnityException ("ObjectInHand is null you fucknut");
 		collidingObject = null;
 		var joint = AddFixedJoint ();
 		joint.connectedBody = objectInHand.GetComponent<Rigidbody> ();
@@ -100,9 +112,10 @@ public class ControllerGrab : MonoBehaviour {
 	}
 
 	public bool Grab() {
-
+		Debug.Log ("I'm trying to grab it!");
 		if (collidingObject && collidingObject.GetComponent<Rigidbody> () && !collidingObject.CompareTag ("Climbable")) {
 			GrabPhysicsObject ();
+			Debug.Log ("I'm grabbing it!");
             return false;
 		} 
 
