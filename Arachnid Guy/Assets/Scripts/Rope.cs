@@ -19,12 +19,11 @@ using UnityEngine;
 public class Rope : MonoBehaviour {
 
 	public SteamVR_TrackedObject trackedObj;
-	public GameObject previewNode;
+	private GameObject previewNode;
 	public GameObject worldNodeTracker;
 	public Material notValid;
 	public Material valid;
 	private int layerMask;
-
 
 
 	private SteamVR_Controller.Device Controller {
@@ -52,6 +51,7 @@ public class Rope : MonoBehaviour {
 		previewNode.transform.localScale = new Vector3 (0.1f,0.1f,0.1f);
 		previewNode.GetComponent<Renderer> ().material = notValid;
 		previewNode.layer = 8;
+		previewNode.AddComponent<IgnoreCollisions> ();
 	}
 
 	public Vector3 getValidNodePosition () {
@@ -106,11 +106,13 @@ public class Rope : MonoBehaviour {
 			} else {
 				DestroyImmediate (previewNode,true);
 
+
 			}
 
 
 		} else {
 			DestroyImmediate (previewNode,true);
+
 
 		}
 		

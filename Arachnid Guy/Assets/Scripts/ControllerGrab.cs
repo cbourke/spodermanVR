@@ -113,7 +113,7 @@ public class ControllerGrab : MonoBehaviour {
 	}
 
 	public bool Grab() {
-		if (collidingObject && collidingObject.GetComponent<Rigidbody> () && !collidingObject.CompareTag ("Climbable")) {
+		if (collidingObject && collidingObject.GetComponent<Rigidbody> () && collidingObject.GetComponent<Rigidbody> ().useGravity) {
 			GrabPhysicsObject ();
             return false;
 		} 

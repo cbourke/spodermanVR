@@ -12,8 +12,8 @@ public class Floater : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		startingPos = transform.position;
-		bottom = transform.position - new Vector3 (0f,0.05f,0f);
-		dec = new Vector3 (0f, 0.0003f, 0f);
+		bottom = transform.position - new Vector3 (0f,0.07f,0f);
+		dec = new Vector3 (0f, 0.0007f, 0f);
 		goingDown = true;
 		offset = Vector3.Distance(startingPos , bottom);
 	}

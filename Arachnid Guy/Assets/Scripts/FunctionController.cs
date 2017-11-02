@@ -65,9 +65,9 @@ public class FunctionController : MonoBehaviour {
 		//TODO: adjust rotation, position, and scale for suitable controller view
 		ind.transform.localPosition = new Vector3 (0f,0.1f,0.1f);
 		ind.transform.forward = -trackedObj.transform.forward;
-		//ind.transform.Rotate (90f,0f,0f);
+		ind.transform.Rotate (90f,0f,0f);
 		//ind.transform.localRotation = Quaternion.Euler(new Vector3(90f,0,0));
-		ind.transform.localEulerAngles = new Vector3(90f,0f,0f);
+		//ind.transform.localEulerAngles = new Vector3(90f,0f,0f);
 		ind.layer = 8;
 
 		switch (currMode) {
@@ -210,8 +210,6 @@ public class FunctionController : MonoBehaviour {
 				} else {
 					currentMode = Mode.Climb;
 				}
-			
-                Debug.Log(trackedObj.name + " TouchpadUp Up ");
 
 
             }
@@ -228,7 +226,6 @@ public class FunctionController : MonoBehaviour {
                 {
                     //handle any subsequent inputs beyond first input
                 }
-                Debug.Log(trackedObj.name + " TouchpadUp Down ");
             }
 
             //Handles TouchpadUp input Right: Retract
