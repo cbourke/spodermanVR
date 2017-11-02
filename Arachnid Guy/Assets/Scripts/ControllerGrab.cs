@@ -5,6 +5,8 @@
 	The public variable of otherController must be assigned to ensure climbing mutual exclusion.
 	To interact with an object and climb it, the object must be tagged as "Climbable".
 	Object must also have a Rigidbody, but must not use gravity, be kinematic, and also must have a Collider, but not be a trigger. 
+
+	This is also where we handle level switches, in the Grab method.
 */
 using System.Collections;
 using System.Collections.Generic;
@@ -25,7 +27,7 @@ public class ControllerGrab : MonoBehaviour {
 
 	void Awake() {
 		trackedObj = GetComponent<SteamVR_TrackedObject> ();
-
+		cameraRigTransform = GameObject.Find ("[CameraRig]").transform;
 	}
 
 	private void SetCollidingObject(Collider col)
@@ -91,7 +93,7 @@ public class ControllerGrab : MonoBehaviour {
 	}
 
 	public void GrabClimbableObject() {
-		if (!otherController.GetComponent<FunctionController>().isClimbing) {	//at this point, this check is redundant. remove if it doesn't break anything
+		if (!otherController.GetComponent<FunctionController>().isClimbing) {
 			startingControllerPosition = trackedObj.transform.position;
 			objectInHand = collidingObject;
 			collidingObject = null;
@@ -111,10 +113,8 @@ public class ControllerGrab : MonoBehaviour {
 	}
 
 	public bool Grab() {
-		Debug.Log ("I'm trying to grab it!");
 		if (collidingObject && collidingObject.GetComponent<Rigidbody> () && !collidingObject.CompareTag ("Climbable")) {
 			GrabPhysicsObject ();
-			Debug.Log ("I'm grabbing it!");
             return false;
 		} 
 
@@ -128,6 +128,10 @@ public class ControllerGrab : MonoBehaviour {
 				GrabClimbableObject ();
                 return true;
 			}
+		}
+		else if (collidingObject && collidingObject.GetComponent<LevelBridge>()) {
+			UnityEngine.SceneManagement.SceneManager.LoadScene (collidingObject.GetComponent<LevelBridge>().newLevel);
+			return false;
 		}
         else
         {
@@ -154,4 +158,5 @@ public class ControllerGrab : MonoBehaviour {
 
 		}
 	}
+		
 }

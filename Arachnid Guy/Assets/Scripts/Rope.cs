@@ -33,14 +33,15 @@ public class Rope : MonoBehaviour {
 
 	void Awake() {
 		trackedObj = GetComponent<SteamVR_TrackedObject> ();
-
+		valid = (Material)Resources.Load ("Materials/ValidPreviewNode");
+		notValid  = (Material)Resources.Load("Materials/NonValidPreviewNode");
+		worldNodeTracker = GameObject.Find("WorldNodeTracker");
+		layerMask = 1 << 8;
+		layerMask = ~layerMask;
 	}
 
 	// Use this for initialization
 	void Start () {
-		layerMask = 1 << 8;
-		layerMask = ~layerMask;
-
 	}
 
 
@@ -51,15 +52,12 @@ public class Rope : MonoBehaviour {
 		previewNode.transform.localScale = new Vector3 (0.1f,0.1f,0.1f);
 		previewNode.GetComponent<Renderer> ().material = notValid;
 		previewNode.layer = 8;
-		//TODO: figure out how to color the damn nodes...
-
-
 	}
 
 	public Vector3 getValidNodePosition () {
 
 		RaycastHit hit;
-		Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, 100, layerMask);
+		Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, 30, layerMask);
 		return hit.point;
 
 	}
@@ -67,7 +65,7 @@ public class Rope : MonoBehaviour {
 	public bool isValidNode () {
 
 		RaycastHit hit;
-		if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, 100, layerMask)) { //if raycast hits an object
+		if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, 30, layerMask)) { //if raycast hits an object
 			if (hit.collider.gameObject.CompareTag ("Climbable")) {
 				return true;
 			} else {
@@ -94,7 +92,7 @@ public class Rope : MonoBehaviour {
 
 			RaycastHit hit;
 
-			if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, 100 , layerMask)) { //if raycast hits an object
+			if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, 30  , layerMask)) { //if raycast hits an object
 
 				previewNode.transform.position = hit.point;
 

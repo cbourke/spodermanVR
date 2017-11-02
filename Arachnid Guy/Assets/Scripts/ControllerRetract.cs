@@ -10,12 +10,12 @@ public class ControllerRetract : MonoBehaviour {
     private SteamVR_TrackedObject trackedObj; 
 	private Vector3 retractobj;	
 	public GameObject objectInHand;
-	public bool grabable;
 	private int layerMask;
 
 	public void Awake()
     {
 		trackedObj = GetComponent<SteamVR_TrackedObject>();
+		laserPrefab = (GameObject)Resources.Load ("Prefabs/Laser");
     }
 	private SteamVR_Controller.Device Controller
 	{

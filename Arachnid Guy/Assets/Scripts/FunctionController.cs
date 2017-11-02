@@ -59,47 +59,54 @@ public class FunctionController : MonoBehaviour {
 		ind = GameObject.CreatePrimitive (PrimitiveType.Plane);
 		Texture tex;
 		Vector3 indScale;
-		ind.GetComponent<Renderer> ().material = (Material)Resources.Load ("ImgTest");
+		ind.GetComponent<Renderer> ().material = (Material)Resources.Load ("Materials/indMaterial");
 		ind.GetComponent<Renderer> ().material.shader = Shader.Find ("Unlit/Transparent Cutout");
 		ind.transform.parent = trackedObj.transform;
 		//TODO: adjust rotation, position, and scale for suitable controller view
 		ind.transform.localPosition = new Vector3 (0f,0.1f,0.1f);
 		ind.transform.forward = -trackedObj.transform.forward;
-		ind.transform.Rotate (90f,0f,0f);
+		//ind.transform.Rotate (90f,0f,0f);
 		//ind.transform.localRotation = Quaternion.Euler(new Vector3(90f,0,0));
+		ind.transform.localEulerAngles = new Vector3(90f,0f,0f);
 		ind.layer = 8;
 
 		switch (currMode) {
 		case Mode.WebShot:
-			tex = (Texture)Resources.Load ("webShot");
+			tex = (Texture)Resources.Load ("Textures/webShot");
 			indScale = new Vector3 (0.02f,1.0f,0.02f);
 			break;
 		case Mode.RetractShot:
-			tex = (Texture)Resources.Load ("retractShot");
+			tex = (Texture)Resources.Load ("Textures/retractShot");
 			indScale = new Vector3 (0.02f,1.0f,0.02f);
 			break;
 		case Mode.Rope:
-			tex = (Texture)Resources.Load ("rope");
+			tex = (Texture)Resources.Load ("Textures/rope");
 			indScale = new Vector3 (0.02f,1.0f,0.02f);
 			break;
 		case Mode.Fist:
-			tex = (Texture)Resources.Load ("fist");
+			tex = (Texture)Resources.Load ("Textures/fist");
 			indScale = new Vector3 (0.02f,1.0f,0.02f);
 			break;
-		default:
-			tex = (Texture)Resources.Load ("climb");
-			indScale = new Vector3 (0.02f,1.0f,0.02f);
+		default:	//TODO: find a more succinct way to differentiate left vs right controller
+			if (this.name == "Controller (left)") {
+				tex = (Texture)Resources.Load ("Textures/climbMirror");
+				indScale = new Vector3 (0.02f, 1.0f, 0.02f);
+			} else {
+				tex = (Texture)Resources.Load ("Textures/climb");
+				indScale = new Vector3 (0.02f, 1.0f, 0.02f);
+			} 
 			break;
 		}
 		ind.GetComponent<Renderer> ().material.mainTexture = tex;
 		ind.transform.localScale = indScale;
-
 		StartCoroutine (destroyPrimitive(ind));
 	}
 
 	private IEnumerator destroyPrimitive(GameObject prim) {
 		yield return new WaitForSeconds (2);
-		Destroy (prim);
+		if (prim) {
+			Destroy (prim);
+		}
 	}
 
 
@@ -138,7 +145,6 @@ public class FunctionController : MonoBehaviour {
 					changeIndicator (currentMode);
 				}
 				currentMode = Mode.Rope;
-                Debug.Log(trackedObj.name + " TouchpadDown Up");
 
 				//This block doesn't have any relevant calls because Rope only needs the currentMode to be Rope in order to function in 
 				//preview mode. Preview mode operates in the update method of the Rope script, so as long as it is in Rope mode, it is 
@@ -156,7 +162,6 @@ public class FunctionController : MonoBehaviour {
 				else if (currentMode == Mode.WebShot) {
 					//handle any subsequent inputs beyond first input
 				}
-                Debug.Log(trackedObj.name + " TouchpadDown Down");
             }
 
 			//Handles Touchpad input Right: Retract
@@ -169,7 +174,6 @@ public class FunctionController : MonoBehaviour {
 				else if (currentMode == Mode.RetractShot) {
 					//handle any subsequent inputs beyond first input
 				}
-                Debug.Log(trackedObj.name + " TouchpadDown Right ");
             }
 
 			//Handles Touchpad input Left: Fist
@@ -182,7 +186,6 @@ public class FunctionController : MonoBehaviour {
 				else if (currentMode == Mode.Fist) {
 					//handle any subsequent inputs beyond first input
 				}
-                Debug.Log(trackedObj.name + " TouchpadDown Left ");
             }
 
 		}
@@ -218,7 +221,7 @@ public class FunctionController : MonoBehaviour {
             {
                 if (currentMode != Mode.WebShot)
                 {
-                    currentMode = Mode.WebShot;
+                    currentMode = Mode.Climb;
                     //handle first Up input while controller is in different mode
                 }
                 else if (currentMode == Mode.WebShot)
@@ -244,7 +247,6 @@ public class FunctionController : MonoBehaviour {
 					}
 
                 }
-                Debug.Log(trackedObj.name + " TouchpadUp Right ");
             }
 
             //Handles TouchpadUp input Left: Fist
@@ -252,14 +254,13 @@ public class FunctionController : MonoBehaviour {
             {
                 if (currentMode != Mode.Fist)
                 {
-                    currentMode = Mode.Fist;
+                    currentMode = Mode.Climb;
                     //handle first Up input while controller is in different mode
                 }
                 else if (currentMode == Mode.Fist)
                 {
                     //handle any subsequent inputs beyond first input
                 }
-                Debug.Log(trackedObj.name + " TouchpadUp Left ");
             }
 
         }

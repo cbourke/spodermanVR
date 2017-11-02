@@ -28,6 +28,7 @@ public class WorldRopeNodeTracker : MonoBehaviour {
 			node1 = GameObject.CreatePrimitive (PrimitiveType.Sphere);
 			node1.transform.position = spawnPoint;
 			node1.transform.localScale = new Vector3 (0.1f,0.1f,0.1f);
+			node1.GetComponent<Renderer> ().material = (Material)Resources.Load ("Materials/ValidPreviewNode");
 			nodeKeeper.Add (spawnPoint);
 		} else {
 
