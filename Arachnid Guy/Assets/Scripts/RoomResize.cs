@@ -10,6 +10,7 @@ public class RoomResize : MonoBehaviour {
 	private GameObject southWall;
 	private GameObject westWall;
 	private GameObject floor;
+	private GameObject ceiling;
 
 	void Awake () {
 		northWall = GameObject.Find ("NorthWall");
@@ -17,6 +18,7 @@ public class RoomResize : MonoBehaviour {
 		southWall = GameObject.Find ("SouthWall");
 		westWall = GameObject.Find ("WestWall");
 		floor = GameObject.Find ("Floor");
+		ceiling = GameObject.Find ("Ceiling");
 	}
 	// Use this for initialization
 	void Start () {
@@ -30,11 +32,12 @@ public class RoomResize : MonoBehaviour {
 			return;
 		}
 
-		northWall.transform.position = new Vector3 (size.x/2,0,0);
-		southWall.transform.position = new Vector3 (-size.x/2,0,0);
-		eastWall.transform.position = new Vector3 (0,0,-size.z/2);
-		westWall.transform.position = new Vector3 (0,0,size.z/2);
-		floor.transform.localScale = new Vector3 (size.x/2,0,size.z/2);
+		northWall.transform.position = new Vector3 (size.x/2,1,0);
+		southWall.transform.position = new Vector3 (-size.x/2,1,0);
+		eastWall.transform.position = new Vector3 (0,1,-size.z/2);
+		westWall.transform.position = new Vector3 (0,1,size.z/2);
+		floor.transform.localScale = new Vector3 (size.x/8,1,size.z/8);
+		ceiling.transform.localScale = new Vector3 (size.x,0.2f,size.z);
 
 	}
 

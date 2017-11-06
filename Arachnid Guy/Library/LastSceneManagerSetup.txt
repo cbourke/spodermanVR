@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/hub1.0.unity
+- path: Assets/level0.2.unity
   isLoaded: 1
   isActive: 1

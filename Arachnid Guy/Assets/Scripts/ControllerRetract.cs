@@ -40,10 +40,16 @@ public class ControllerRetract : MonoBehaviour {
 	}
 
 	public GameObject retract(){
+
+		if (this.GetComponent<ControllerGrab> ().objectInHand) {
+			laser.SetActive (false);
+			return null;
+		}
+
 		if (this.GetComponent<FunctionController> ().currentMode.ToString () == "RetractShot") {
 			RaycastHit hit;	
 			if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, 100,layerMask)) {
-				if (!hit.collider.gameObject.GetComponent<Rigidbody> ().isKinematic && hit.collider.gameObject.GetComponent<Rigidbody> ().useGravity) {
+				if (hit.collider.gameObject.GetComponent<Rigidbody>() && !hit.collider.gameObject.GetComponent<Rigidbody> ().isKinematic && hit.collider.gameObject.GetComponent<Rigidbody> ().useGravity) {
 					hit.collider.gameObject.transform.position = trackedObj.transform.position;
 					return hit.collider.gameObject;
 				}
@@ -56,16 +62,26 @@ public class ControllerRetract : MonoBehaviour {
 	public void Update() {
 
 		if (this.GetComponent<FunctionController> ().currentMode.ToString () == "RetractShot") {
+
+			if (this.GetComponent<ControllerGrab> ().objectInHand) {
+				laser.SetActive (false);
+				return;
+			}
+
 			RaycastHit hit;	
-			if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, 100,layerMask)) {
+			if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, 100, layerMask)) {
 				hitPoint = hit.point;
 				ShowLaser (hit);
 
 			} else {
 				laser.SetActive (false);
 			}
-		} else
+		} else {
 			laser.SetActive (false);
+			if (this.GetComponent<ControllerGrab>().objectInHand && !(this.GetComponent<FunctionController>().currentMode.ToString() == "Climb")) {
+				this.GetComponent<ControllerGrab> ().UnGrab ();
+			}
+		}
 
 	}
 

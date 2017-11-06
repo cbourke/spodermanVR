@@ -157,10 +157,12 @@ public class FunctionController : MonoBehaviour {
 				if (currentMode != Mode.WebShot) {
 					currentMode = Mode.WebShot;
 					changeIndicator (currentMode);
+					this.GetComponent<WebShot> ().Shoot ();
 					//handle first input while controller is in different mode
 				}
 				else if (currentMode == Mode.WebShot) {
 					//handle any subsequent inputs beyond first input
+					this.GetComponent<WebShot> ().Shoot ();
 				}
             }
 

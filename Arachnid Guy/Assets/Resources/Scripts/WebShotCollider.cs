@@ -11,7 +11,11 @@ public class WebShotCollider : MonoBehaviour {
 
 	public void OnCollisionEnter(Collision other) {
 		if (other.gameObject.GetComponent<Rigidbody>() && !other.gameObject.GetComponent<Rigidbody>().isKinematic) {
-			other.rigidbody.AddForceAtPosition (this.GetComponent<Rigidbody>().velocity , other.contacts[0].point);
+			//this block of code is redundant, collisions between two rigidbodies already apply a physics force.
+//			Vector3 direction = this.GetComponent<Rigidbody> ().velocity / 10;
+//			Debug.Log (direction);
+//			other.rigidbody.AddForceAtPosition ( direction , other.contacts[0].point);
+
 		}
 		//TODO: Decal system?
 //		RaycastHit hit;
