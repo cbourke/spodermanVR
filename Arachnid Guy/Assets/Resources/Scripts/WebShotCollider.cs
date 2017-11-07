@@ -10,13 +10,14 @@ public class WebShotCollider : MonoBehaviour {
 	}
 
 	public void OnCollisionEnter(Collision other) {
-		if (other.gameObject.GetComponent<Rigidbody>() && !other.gameObject.GetComponent<Rigidbody>().isKinematic) {
-			//this block of code is redundant, collisions between two rigidbodies already apply a physics force.
-//			Vector3 direction = this.GetComponent<Rigidbody> ().velocity / 10;
-//			Debug.Log (direction);
-//			other.rigidbody.AddForceAtPosition ( direction , other.contacts[0].point);
+//		if (other.gameObject.GetComponent<Rigidbody>() && !other.gameObject.GetComponent<Rigidbody>().isKinematic) {
+//			//this block of code is redundant, collisions between two rigidbodies already apply a physics force.
+////			Vector3 direction = this.GetComponent<Rigidbody> ().velocity / 10;
+////			Debug.Log (direction);
+////			other.rigidbody.AddForceAtPosition ( direction , other.contacts[0].point);
+//
+//		}
 
-		}
 		//TODO: Decal system?
 //		RaycastHit hit;
 //		if (Physics.Raycast(this.transform.position,this.GetComponent<Rigidbody>().velocity,out hit)) {
@@ -30,5 +31,6 @@ public class WebShotCollider : MonoBehaviour {
 		yield return new WaitForSecondsRealtime(5.0f);
 		Destroy (this.gameObject);
 	}
+		
 
 }
