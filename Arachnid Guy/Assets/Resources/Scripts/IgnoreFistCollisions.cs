@@ -17,6 +17,23 @@ public class IgnoreFistCollisions : MonoBehaviour {
 			other.rigidbody.AddForceAtPosition (direction , other.contacts[0].point);
 			Debug.Log (direction);
 		}
+		if (other.gameObject.tag == "BadGuy") {
+			StartCoroutine (Blink(other.gameObject));
+		}
+	}
+
+	private IEnumerator Blink(GameObject obj) {
+		int intervalCount = 10;
+		float blinkInterval = 0.05f;
+		while (intervalCount >= 0) {
+			obj.GetComponent<Renderer> ().enabled = false;
+			intervalCount--;
+			yield return new WaitForSeconds (blinkInterval);
+			obj.GetComponent<Renderer> ().enabled = true;
+			yield return new WaitForSeconds (blinkInterval);
+		}
+		obj.SetActive (false);
+
 	}
 
 }

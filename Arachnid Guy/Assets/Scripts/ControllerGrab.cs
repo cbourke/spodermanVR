@@ -129,7 +129,7 @@ public class ControllerGrab : MonoBehaviour {
                 return true;
 			}
 		}
-		else if (collidingObject && collidingObject.GetComponent<LevelBridge>()) {
+		else if (collidingObject && collidingObject.GetComponent<LevelBridge>() && collidingObject.GetComponent<LevelBridge>().open) {
 			UnityEngine.SceneManagement.SceneManager.LoadScene (collidingObject.GetComponent<LevelBridge>().newLevel);
 			return false;
 		}

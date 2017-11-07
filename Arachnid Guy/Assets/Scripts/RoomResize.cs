@@ -32,11 +32,11 @@ public class RoomResize : MonoBehaviour {
 			return;
 		}
 
-		northWall.transform.position = new Vector3 (size.x/2,1,0);
-		southWall.transform.position = new Vector3 (-size.x/2,1,0);
-		eastWall.transform.position = new Vector3 (0,1,-size.z/2);
-		westWall.transform.position = new Vector3 (0,1,size.z/2);
-		floor.transform.localScale = new Vector3 (size.x/8,1,size.z/8);
+		northWall.transform.position = new Vector3 (size.x/2,1.5f,0);
+		southWall.transform.position = new Vector3 (-size.x/2,1.5f,0);
+		eastWall.transform.position = new Vector3 (0,1.5f,-size.z/2);
+		westWall.transform.position = new Vector3 (0,1.5f,size.z/2);
+		floor.transform.localScale = new Vector3 (size.x/8,1.5f,size.z/8);
 		ceiling.transform.localScale = new Vector3 (size.x,0.2f,size.z);
 
 	}

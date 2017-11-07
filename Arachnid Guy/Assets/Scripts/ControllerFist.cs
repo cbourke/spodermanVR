@@ -18,11 +18,11 @@ public class ControllerFist : MonoBehaviour
 	{
 		Fist = GameObject.CreatePrimitive (PrimitiveType.Sphere);
 		Fist.transform.SetParent (this.transform);
-		Fist.transform.localScale = new Vector3 (0.5f, 0.5f, 0.5f);
+		Fist.transform.localScale = new Vector3 (0.2f, 0.2f, 0.2f);
 		Fist.AddComponent (typeof(Rigidbody));
 		Fist.GetComponent<Rigidbody> ().useGravity = false;
 		Fist.GetComponent<Rigidbody> ().isKinematic = true;
-		Fist.transform.localPosition = new Vector3 (0.0f,0.0f,0.1f);
+		Fist.transform.localPosition = new Vector3 (0.0f,0.0f,0.05f);
 		Fist.AddComponent <IgnoreFistCollisions>();
 		Fist.GetComponent<Renderer> ().material = valid;
 		//Fist.AddComponent (typeof(SphereCollider));
