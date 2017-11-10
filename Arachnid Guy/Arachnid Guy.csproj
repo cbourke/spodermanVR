@@ -80,9 +80,12 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\ControllerGrab.cs" />
+    <Compile Include="Assets\Scripts\ControllerRetract.cs" />
     <Compile Include="Assets\Scripts\FunctionController.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\Rope.cs" />
     <Compile Include="Assets\Scripts\Rotater.cs" />
+    <Compile Include="Assets\Scripts\WorldRopeNodeTracker.cs" />
     <Compile Include="Assets\SteamVR\Extras\SteamVR_GazeTracker.cs" />
     <Compile Include="Assets\SteamVR\Extras\SteamVR_LaserPointer.cs" />
     <Compile Include="Assets\SteamVR\Extras\SteamVR_Teleporter.cs" />

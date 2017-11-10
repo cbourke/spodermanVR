@@ -5,6 +5,8 @@
 	The public variable of otherController must be assigned to ensure climbing mutual exclusion.
 	To interact with an object and climb it, the object must be tagged as "Climbable".
 	Object must also have a Rigidbody, but must not use gravity, be kinematic, and also must have a Collider, but not be a trigger. 
+
+	This is also where we handle level switches, in the Grab method.
 */
 using System.Collections;
 using System.Collections.Generic;
@@ -25,7 +27,7 @@ public class ControllerGrab : MonoBehaviour {
 
 	void Awake() {
 		trackedObj = GetComponent<SteamVR_TrackedObject> ();
-
+		cameraRigTransform = GameObject.Find ("[CameraRig]").transform;
 	}
 
 	private void SetCollidingObject(Collider col)
@@ -62,10 +64,21 @@ public class ControllerGrab : MonoBehaviour {
 
 	}
 
+	public void GrabPhysicsObjectWithParam(GameObject obj) {
+		if (obj == null) {
+			return;
+		}
+		objectInHand = obj;
+		collidingObject = null;
+		var joint = AddFixedJoint ();
+		joint.connectedBody = objectInHand.GetComponent<Rigidbody> ();
+
+	}
+
 	private FixedJoint AddFixedJoint() {
 		FixedJoint fx = gameObject.AddComponent<FixedJoint> ();
-		fx.breakForce = 20000;
-		fx.breakTorque = 20000;
+		fx.breakForce = 200000000;
+		fx.breakTorque = 20000000;
 		return fx;
 	}
 
@@ -80,7 +93,7 @@ public class ControllerGrab : MonoBehaviour {
 	}
 
 	public void GrabClimbableObject() {
-		if (!otherController.GetComponent<FunctionController>().isClimbing) {	//at this point, this check is redundant. remove if it doesn't break anything
+		if (!otherController.GetComponent<FunctionController>().isClimbing) {
 			startingControllerPosition = trackedObj.transform.position;
 			objectInHand = collidingObject;
 			collidingObject = null;
@@ -100,8 +113,7 @@ public class ControllerGrab : MonoBehaviour {
 	}
 
 	public bool Grab() {
-
-		if (collidingObject && collidingObject.GetComponent<Rigidbody> () && !collidingObject.CompareTag ("Climbable")) {
+		if (collidingObject && collidingObject.GetComponent<Rigidbody> () && collidingObject.GetComponent<Rigidbody> ().useGravity) {
 			GrabPhysicsObject ();
             return false;
 		} 
@@ -117,6 +129,10 @@ public class ControllerGrab : MonoBehaviour {
                 return true;
 			}
 		}
+		else if (collidingObject && collidingObject.GetComponent<LevelBridge>() && collidingObject.GetComponent<LevelBridge>().open) {
+			UnityEngine.SceneManagement.SceneManager.LoadScene (collidingObject.GetComponent<LevelBridge>().newLevel);
+			return false;
+		}
         else
         {
             return false;
@@ -128,6 +144,10 @@ public class ControllerGrab : MonoBehaviour {
 		if (objectInHand && objectInHand.GetComponent<Rigidbody> () && !objectInHand.CompareTag ("Climbable")) {
 			ReleasePhysicsObject ();
 		} 
+		if (GetComponent<FixedJoint>()) {
+			GetComponent<FixedJoint> ().connectedBody = null;
+			Destroy (GetComponent<FixedJoint> ());
+		}
 
 		else if (objectInHand && objectInHand.CompareTag ("Climbable")) {
 			if (this.GetComponent<FunctionController>().isClimbing) {
@@ -138,4 +158,5 @@ public class ControllerGrab : MonoBehaviour {
 
 		}
 	}
+		
 }

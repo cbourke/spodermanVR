@@ -28,6 +28,7 @@ public class FunctionController : MonoBehaviour {
     public SteamVR_TrackedObject trackedObj;
 	public bool isClimbing;
 	public Mode currentMode = Mode.Climb;	//TODO: Check if this is proper Enum usage.
+	private GameObject ind;
     private Vector2 touchPadAxis;
 
 
@@ -44,16 +45,84 @@ public class FunctionController : MonoBehaviour {
     private void Start()
     {
         isClimbing = false;
+		changeIndicator (currentMode);
     }
+
+	/*
+	 * Indicator should only be visibly changed when switching to an input for the first time, not on subsequent switches!
+	 * This method may become obsolete after application of hand models down the road. This is good for early releases however. 
+	*/
+	private void changeIndicator (Mode currMode) { 
+		if (ind) {
+			Destroy (ind);
+		}
+		ind = GameObject.CreatePrimitive (PrimitiveType.Plane);
+		Texture tex;
+		Vector3 indScale;
+		ind.GetComponent<Renderer> ().material = (Material)Resources.Load ("Materials/indMaterial");
+		ind.GetComponent<Renderer> ().material.shader = Shader.Find ("Unlit/Transparent Cutout");
+		ind.transform.parent = trackedObj.transform;
+		//TODO: adjust rotation, position, and scale for suitable controller view
+		ind.transform.localPosition = new Vector3 (0f,0.1f,0.1f);
+		ind.transform.forward = -trackedObj.transform.forward;
+		ind.transform.Rotate (90f,0f,0f);
+		//ind.transform.localRotation = Quaternion.Euler(new Vector3(90f,0,0));
+		//ind.transform.localEulerAngles = new Vector3(90f,0f,0f);
+		ind.layer = 8;
+
+		switch (currMode) {
+		case Mode.WebShot:
+			tex = (Texture)Resources.Load ("Textures/webShot");
+			indScale = new Vector3 (0.02f,1.0f,0.02f);
+			break;
+		case Mode.RetractShot:
+			tex = (Texture)Resources.Load ("Textures/retractShot");
+			indScale = new Vector3 (0.02f,1.0f,0.02f);
+			break;
+		case Mode.Rope:
+			tex = (Texture)Resources.Load ("Textures/rope");
+			indScale = new Vector3 (0.02f,1.0f,0.02f);
+			break;
+		case Mode.Fist:
+			tex = (Texture)Resources.Load ("Textures/fist");
+			indScale = new Vector3 (0.02f,1.0f,0.02f);
+			break;
+		default:	//TODO: find a more succinct way to differentiate left vs right controller
+			if (this.name == "Controller (left)") {
+				tex = (Texture)Resources.Load ("Textures/climbMirror");
+				indScale = new Vector3 (0.02f, 1.0f, 0.02f);
+			} else {
+				tex = (Texture)Resources.Load ("Textures/climb");
+				indScale = new Vector3 (0.02f, 1.0f, 0.02f);
+			} 
+			break;
+		}
+		ind.GetComponent<Renderer> ().material.mainTexture = tex;
+		ind.transform.localScale = indScale;
+		StartCoroutine (destroyPrimitive(ind));
+	}
+
+	private IEnumerator destroyPrimitive(GameObject prim) {
+		yield return new WaitForSeconds (2);
+		if (prim) {
+			Destroy (prim);
+		}
+	}
 
 
     void Update()
     {
-        
+
 		//This block controls Trigger Down input: Grabbing an object.
 		if (Controller.GetHairTriggerDown ()) {
-			currentMode = Mode.Climb;
-			isClimbing = this.GetComponent<ControllerGrab> ().Grab ();
+			if (currentMode != Mode.Climb) {
+				currentMode = Mode.Climb;
+				changeIndicator (currentMode);
+				isClimbing = this.GetComponent<ControllerGrab> ().Grab ();
+			} else {
+				isClimbing = this.GetComponent<ControllerGrab> ().Grab ();
+			}
+
 		}
 
 		//This block controls Trigger Up input: Releasing an object. 
@@ -73,48 +142,52 @@ public class FunctionController : MonoBehaviour {
 			if (touchPadAxis.y > 0.7f) {
 				if (currentMode != Mode.Rope) {
 					currentMode = Mode.Rope;
-					//handle first input while controller is in different mode
+					changeIndicator (currentMode);
 				}
-				else if (currentMode == Mode.Rope) {
-					//handle any subsequent inputs beyond first input
-				}
-                Debug.Log(trackedObj.name + " TouchpadDown Up");
+				currentMode = Mode.Rope;
+
+				//This block doesn't have any relevant calls because Rope only needs the currentMode to be Rope in order to function in 
+				//preview mode. Preview mode operates in the update method of the Rope script, so as long as it is in Rope mode, it is 
+				//running. 
+
             }
 
 			//Handles Touchpad input Down: WebShot
 			else if (touchPadAxis.y < -0.7f) {
 				if (currentMode != Mode.WebShot) {
 					currentMode = Mode.WebShot;
+					changeIndicator (currentMode);
+					this.GetComponent<WebShot> ().Shoot ();
 					//handle first input while controller is in different mode
 				}
 				else if (currentMode == Mode.WebShot) {
 					//handle any subsequent inputs beyond first input
+					this.GetComponent<WebShot> ().Shoot ();
 				}
-                Debug.Log(trackedObj.name + " TouchpadDown Down");
             }
 
 			//Handles Touchpad input Right: Retract
 			if (touchPadAxis.x > 0.7f) {
 				if (currentMode != Mode.RetractShot) {
 					currentMode = Mode.RetractShot;
+					changeIndicator (currentMode);
 					//handle first input while controller is in different mode
 				}
 				else if (currentMode == Mode.RetractShot) {
 					//handle any subsequent inputs beyond first input
 				}
-                Debug.Log(trackedObj.name + " TouchpadDown Right ");
             }
 
 			//Handles Touchpad input Left: Fist
 			else if (touchPadAxis.x < -0.7f) {
 				if (currentMode != Mode.Fist) {
 					currentMode = Mode.Fist;
+					changeIndicator (currentMode);
 					//handle first input while controller is in different mode
 				}
 				else if (currentMode == Mode.Fist) {
 					//handle any subsequent inputs beyond first input
 				}
-                Debug.Log(trackedObj.name + " TouchpadDown Left ");
             }
 
 		}
@@ -127,18 +200,20 @@ public class FunctionController : MonoBehaviour {
             touchPadAxis = Controller.GetAxis(Valve.VR.EVRButtonId.k_EButton_Axis0);
 
             //Handles TouchpadUp input Up: Rope Spawning
-            if (touchPadAxis.y > 0.7f)
-            {
-                if (currentMode != Mode.Rope)
-                {
-                    currentMode = Mode.Rope;
-                    //handle first input while controller is in different mode
-                }
-                else if (currentMode == Mode.Rope)
-                {
-                    //handle any subsequent inputs beyond first input
-                }
-                Debug.Log(trackedObj.name + " TouchpadUp Up ");
+			//so the trick is to only take the up input if you're already in the mode for the respective mode
+			//if you aren't in the respective mode and you get called as a touchpadUp input, just go back to default climbing mode!
+			//Note that we don't need to tell this method to exit Rope mode because you automatically switch when using another function. 
+			if (touchPadAxis.y > 0.7f) {
+				if (currentMode == Mode.Rope) {
+					if (this.GetComponent<Rope> ().isValidNode ()) {
+						Vector3 validSpot = this.GetComponent<Rope> ().getValidNodePosition ();
+						this.GetComponent<Rope> ().spawnNodeBridge (validSpot); //this method call makes it so we don't have to reference WorldNodeTracker in this script
+					}
+				} else {
+					currentMode = Mode.Climb;
+				}
+
+
             }
 
             //Handles TouchpadUp input Down: WebShot
@@ -146,14 +221,13 @@ public class FunctionController : MonoBehaviour {
             {
                 if (currentMode != Mode.WebShot)
                 {
-                    currentMode = Mode.WebShot;
+                    currentMode = Mode.Climb;
                     //handle first Up input while controller is in different mode
                 }
                 else if (currentMode == Mode.WebShot)
                 {
                     //handle any subsequent inputs beyond first input
                 }
-                Debug.Log(trackedObj.name + " TouchpadUp Down ");
             }
 
             //Handles TouchpadUp input Right: Retract
@@ -161,14 +235,17 @@ public class FunctionController : MonoBehaviour {
             {
                 if (currentMode != Mode.RetractShot)
                 {
-                    currentMode = Mode.RetractShot;
+                    currentMode = Mode.Climb;
                     //handle first Up input while controller is in different mode
                 }
                 else if (currentMode == Mode.RetractShot)
                 {
                     //handle any subsequent inputs beyond first input
+					if (!this.GetComponent<ControllerGrab>().objectInHand) {
+						this.GetComponent<ControllerGrab> ().GrabPhysicsObjectWithParam (this.GetComponent<ControllerRetract>().retract());
+					}
+
                 }
-                Debug.Log(trackedObj.name + " TouchpadUp Right ");
             }
 
             //Handles TouchpadUp input Left: Fist
@@ -176,14 +253,13 @@ public class FunctionController : MonoBehaviour {
             {
                 if (currentMode != Mode.Fist)
                 {
-                    currentMode = Mode.Fist;
+                    currentMode = Mode.Climb;
                     //handle first Up input while controller is in different mode
                 }
                 else if (currentMode == Mode.Fist)
                 {
                     //handle any subsequent inputs beyond first input
                 }
-                Debug.Log(trackedObj.name + " TouchpadUp Left ");
             }
 
         }
