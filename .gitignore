@@ -86,3 +86,6 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+Assets/AssetPacks.meta
+Assets/AssetPacks/
