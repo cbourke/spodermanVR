@@ -14,6 +14,7 @@ public class ControllerRetract : MonoBehaviour {
 	private int layerMask;
 	private Vector3 hitPoint; 
 	private SteamVR_TrackedObject trackedObj;
+	private GameObject worldTracker;
 //	private GameObject ropePreview;
 
 
@@ -22,6 +23,7 @@ public class ControllerRetract : MonoBehaviour {
 		trackedObj = GetComponent<SteamVR_TrackedObject>();
 		laserPrefab = (GameObject)Resources.Load ("Prefabs/Laser");
 		retracting = false;
+		worldTracker = GameObject.Find ("WorldNodeTracker");
     }
 	private SteamVR_Controller.Device Controller
 	{
@@ -99,7 +101,7 @@ public class ControllerRetract : MonoBehaviour {
 
 	public void Update() {
 
-		if (this.GetComponent<FunctionController> ().currentMode.ToString () == "RetractShot" && !retracting) {
+		if (this.GetComponent<FunctionController> ().currentMode.ToString () == "RetractShot" && !retracting && !worldTracker.GetComponent<PauseMenuWorld>().paused) {
 
 			if (this.GetComponent<ControllerGrab> ().objectInHand) {
 				laser.SetActive (false);

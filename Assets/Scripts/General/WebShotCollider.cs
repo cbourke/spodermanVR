@@ -11,7 +11,7 @@ public class WebShotCollider : MonoBehaviour {
 
 	public void OnTriggerEnter(Collider other) {
 		//add sticky element here. Implement as needed
-		Debug.Log("SPLAT");
+
 		Destroy (this.gameObject);
 	}
 

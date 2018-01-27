@@ -1,6 +1,8 @@
 using UnityEngine;
 using Valve.VR;
 using UnityEngine.SceneManagement;
+using System.Collections;
+using System.Collections.Generic;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -13,10 +15,11 @@ public class PauseMenu : MonoBehaviour
 	public GameObject head;
 	public float headOffset;
 	public GameObject worldTracker;
+	public LayerMask defaultLayer;
 	private Vector3 hitPoint; 
     private SteamVR_TrackedObject trackedObj; 
 	private GameObject cameraRig;
-	private int layerMask;
+	//private int layerMask;
 	private bool climbTemp;
 	private bool ropeTemp;
 	private bool retractTemp;
@@ -59,8 +62,8 @@ public class PauseMenu : MonoBehaviour
 		if (!head)
 			Debug.Log ("Head object not found!");
 		
-		layerMask = 1 << 8;
-		layerMask = ~layerMask;
+//		layerMask = 1 << 8;
+//		layerMask = ~layerMask;
 	}
 
 	
@@ -108,7 +111,7 @@ public class PauseMenu : MonoBehaviour
 		if (pause) {
 			RaycastHit hit;	
 
-			if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, 100, layerMask)) {
+			if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, 100, defaultLayer)) {
 				hitPoint = hit.point;
 				ShowLaser (hit);
 			} else {
@@ -150,14 +153,14 @@ public class PauseMenu : MonoBehaviour
 				}
 			}
 			 else {
-				Debug.Log ("poopybutts");
-				//if (GameObject.Find ("Continue").GetComponent<Renderer> ().material.mainTexture != texture [0]) 
-					GameObject.Find ("Continue").GetComponent<Renderer> ().material.mainTexture = texture [0];
-
-				//if (GameObject.Find ("Restart").GetComponent<Renderer> ().material.mainTexture != texture[2])
-					GameObject.Find ("Restart").GetComponent<Renderer> ().material.mainTexture = texture[2];
-				//if (GameObject.Find ("Quit").GetComponent<Renderer> ().material.mainTexture != texture[4])
-					GameObject.Find ("Quit").GetComponent<Renderer> ().material.mainTexture = texture[4];
+				worldTracker.GetComponent<PauseMenuWorld> ().revertButtons(texture);
+//				//if (GameObject.Find ("Continue").GetComponent<Renderer> ().material.mainTexture != texture [0]) 
+//					GameObject.Find ("Continue").GetComponent<Renderer> ().material.mainTexture = texture [0];
+//
+//				//if (GameObject.Find ("Restart").GetComponent<Renderer> ().material.mainTexture != texture[2])
+//					GameObject.Find ("Restart").GetComponent<Renderer> ().material.mainTexture = texture[2];
+//				//if (GameObject.Find ("Quit").GetComponent<Renderer> ().material.mainTexture != texture[4])
+//					GameObject.Find ("Quit").GetComponent<Renderer> ().material.mainTexture = texture[4];
 			}
 		}
 
@@ -176,7 +179,8 @@ public class PauseMenu : MonoBehaviour
 		otherController.GetComponent<FunctionController>().fistEnabled = fistTemp;
 		otherController.GetComponent<FunctionController>().shotEnabled = shotTemp;
 		worldTracker.GetComponent<PauseMenuWorld> ().HideMenu ();
-		pause = false;
+		StartCoroutine (setPauseFalse());
+
 	}
 
 	public bool hitCheck(string name , RaycastHit hit) {
@@ -185,5 +189,10 @@ public class PauseMenu : MonoBehaviour
 		}
 		else return false;
 
+	}
+
+	private IEnumerator setPauseFalse() {
+		yield return new WaitForSecondsRealtime(0.201f);
+		pause = false;
 	}
 }

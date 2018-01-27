@@ -870,6 +870,10 @@ MonoBehaviour:
   head: {fileID: 0}
   headOffset: 2.25
   worldTracker: {fileID: 0}
+  defaultLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  pause: 0
 --- !u!114 &114325295706193524
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1116,6 +1120,10 @@ MonoBehaviour:
   head: {fileID: 0}
   headOffset: 2.25
   worldTracker: {fileID: 0}
+  defaultLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  pause: 0
 --- !u!114 &114848243857724524
 MonoBehaviour:
   m_ObjectHideFlags: 1
