@@ -29,13 +29,13 @@ public class WebShot : MonoBehaviour {
 	public void Shoot () {
 		shot = GameObject.CreatePrimitive (PrimitiveType.Sphere);
 		shot.name = "WebShot";
-		Vector3 forOffset = this.transform.forward * 1.1f;
+		Vector3 forOffset = this.transform.position + this.transform.forward * 0.15f;
 		//shot.transform.position = this.transform.position + new Vector3(0.5f,0,0);
 		shot.transform.position = forOffset;
 		shot.AddComponent<Rigidbody> ();
 		shot.transform.localScale = new Vector3 (0.07f,0.07f,0.07f);
 		shot.GetComponent<Rigidbody> ().collisionDetectionMode = CollisionDetectionMode.Continuous;
-		//shot.GetComponent<Collider> ().isTrigger = true;
+		shot.GetComponent<Collider> ().isTrigger = true;
 		shot.AddComponent<WebShotCollider> ();
 		shot.GetComponent<Rigidbody> ().AddForce (this.transform.forward * shotForce);
 	}

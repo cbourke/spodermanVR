@@ -84,7 +84,7 @@ public class Rope : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if (this.GetComponent<FunctionController> ().currentMode.ToString () == "Rope") {
+		if (this.GetComponent<FunctionController> ().currentMode.ToString () == "Rope" && !worldNodeTracker.GetComponent<PauseMenuWorld>().paused) {
 			if (!previewNode) {
 				createPreviewNode ();
 

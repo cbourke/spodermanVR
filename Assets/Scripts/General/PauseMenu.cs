@@ -22,7 +22,7 @@ public class PauseMenu : MonoBehaviour
 	private bool retractTemp;
 	private bool fistTemp;
 	private bool shotTemp;
-	private bool pause = false;
+	public bool pause = false;
 
 
 	

@@ -7,6 +7,7 @@ public class PauseMenuWorld : MonoBehaviour {
 	public GameObject PMenu;
 	public GameObject head;
 	public float headOffset;
+	public bool paused;
 	private List<GameObject> list = new List<GameObject> ();
 //	public GameObject leftController;
 //	public GameObject rightController;
@@ -18,6 +19,7 @@ public class PauseMenuWorld : MonoBehaviour {
 
 	void Start() {
 		head = GameObject.Find ("Camera (eye)");
+		paused = false;
 //		leftController = GameObject.Find ("Controller(left)");
 //		rightController = GameObject.Find ("Controller(right)");
 	}
@@ -42,7 +44,7 @@ public class PauseMenuWorld : MonoBehaviour {
 		otherController.GetComponent<FunctionController>().retractEnabled = false;
 		otherController.GetComponent<FunctionController>().fistEnabled = false;
 		otherController.GetComponent<FunctionController>().shotEnabled = false;
-
+		paused = true;
 		list.Add (Instantiate(PMenu));
 		list[0].transform.position = head.transform.position;
 		list[0].transform.position += head.transform.forward * headOffset;
@@ -79,6 +81,7 @@ public class PauseMenuWorld : MonoBehaviour {
 		//GameObject.Find ("Panel").SetActive (false);
 		//PMenu = GameObject.Find ("PauseMenu");
 		//PMenu
+		paused = false;
 		DestroyImmediate(list[0],false);
 		list.Clear ();
 

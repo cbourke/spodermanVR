@@ -222,7 +222,7 @@ public class LevelEvents1_2 : MonoBehaviour {
 		feedBtext1.SetActive (true);
 		feedBtext2.SetActive (false);
 		util.playClip (feedB , textChange);
-        yield return new WaitForSeconds(feedDelay);
+        //yield return new WaitForSeconds(feedDelay);
 		currStage = 3;
 		actionReady = true;
 	}
@@ -244,7 +244,7 @@ public class LevelEvents1_2 : MonoBehaviour {
 		feedBtext2.SetActive (false);
 		feedB.GetComponent<AudioSource> ().clip = textChange;
 		feedB.GetComponent<AudioSource> ().Play ();
-		yield return new WaitForSeconds (feedDelay);
+		//yield return new WaitForSeconds (feedDelay);
 		leftFunc.shotEnabled = true;
 		rightFunc.shotEnabled = true;
 		currStage = 4;
@@ -266,7 +266,7 @@ public class LevelEvents1_2 : MonoBehaviour {
 		feedBtext3.SetActive (true);
 		feedBtext2.SetActive (false);
 		util.playClip (feedB , textChange);
-		yield return new WaitForSeconds (feedDelay);
+		//yield return new WaitForSeconds (feedDelay);
 		currStage = 5;
 		actionReady = true;
 	}
@@ -291,7 +291,7 @@ public class LevelEvents1_2 : MonoBehaviour {
 		util.playClip (feedB , textChange);
 		leftFunc.retractEnabled = true;
 		rightFunc.retractEnabled = true;
-		yield return new WaitForSeconds (feedDelay);
+		//yield return new WaitForSeconds (feedDelay);
 		currStage = 6;
 		actionReady = true;
 	}
@@ -314,7 +314,7 @@ public class LevelEvents1_2 : MonoBehaviour {
 		feedBtext2.SetActive (false);
 		feedBtext4.SetActive (true);
 		util.playClip (feedB , textChange);
-		yield return new WaitForSeconds (feedDelay);
+		//yield return new WaitForSeconds (feedDelay);
 		currStage = 7;
 		actionReady = true;
 	}
@@ -325,7 +325,7 @@ public class LevelEvents1_2 : MonoBehaviour {
 		util.playClip (feedB , correct);
 		yield return new WaitForSeconds (feedDelay);
 		util.changeTex (feedA , feedAText , (Texture)Resources.Load("Textures/level1.2/lvl1_2feedA10"));
-		yield return new WaitForSeconds (feedDelay);
+		//yield return new WaitForSeconds (feedDelay);
 		currStage = 8;
 		actionReady = true;
 	}
@@ -340,7 +340,7 @@ public class LevelEvents1_2 : MonoBehaviour {
 		feedBtext2.SetActive (false);
 		feedBtext5.SetActive (true);
 		util.playClip (feedB , textChange);
-		yield return new WaitForSeconds (feedDelay);
+		//yield return new WaitForSeconds (feedDelay);
 		leftFunc.fistEnabled = true;
 		rightFunc.fistEnabled = true;
 		currStage = 9;
@@ -364,7 +364,7 @@ public class LevelEvents1_2 : MonoBehaviour {
 		yield return new WaitUntil(() => GetComponent<EventUtil>().lookingBool == true);
 		yield return new WaitForSeconds (1);
 		StartCoroutine(util.faceTalk (enemyFace , enemySpeechBubble , (Texture)Resources.Load("Textures/level1.2/normalFace_talk") , (Texture)Resources.Load("Textures/level1.2/borisSpeech1") , "Low"));
-		yield return new WaitForSeconds (1);
+		//yield return new WaitForSeconds (1);
 		while (Vector3.Distance(util.headset.transform.position , enemySetup.transform.position) >= 1f) {
 			enemySetup.transform.position = Vector3.MoveTowards (enemySetup.transform.position , util.headset.transform.position , 1.1f*Time.deltaTime);
 			yield return null;
