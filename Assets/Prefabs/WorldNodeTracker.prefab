@@ -222,6 +222,8 @@ MonoBehaviour:
   PMenu: {fileID: 0}
   head: {fileID: 0}
   headOffset: 1.5
+  paused: 0
+  list: []
 --- !u!114 &114562320289311290
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -236,5 +238,5 @@ MonoBehaviour:
   headset: {fileID: 0}
   visibleObj: {fileID: 0}
   lookingBool: 0
-  lookRecognitionTime: 0
+  lookRecognitionTime: 0.5
   talking: 0

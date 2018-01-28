@@ -48,10 +48,8 @@ public class EventUtil : MonoBehaviour {
 		while (timer <= lookRecognitionTime /*&& !this.GetComponent<EventUtil>().lookingAtObj (feedAText)*/) {
 			if (lookingAtObj (obj)) {
 				timer += 0.25f;
-				Debug.Log ("Still in loop...." + obj.name);
 				yield return new WaitForSeconds(0.25f);
 				if (timer >= lookRecognitionTime) {
-					Debug.Log ("I saw it");
 					lookingBool = true;
 					yield return new WaitForSeconds(0.25f);
 					lookingBool = false;
