@@ -7,6 +7,7 @@ public class LevelEvents3 : MonoBehaviour {
 
 	public GameObject window1;
 	public GameObject window1text;
+	public GameObject greenLight;
 	public float feedDelay;
 
 	private GameObject playerHead;
@@ -40,6 +41,9 @@ public class LevelEvents3 : MonoBehaviour {
 	}
 
 	public void triggerZone1 () {
+		greenLight = GameObject.Find ("GreenLight1");
+		greenLight.GetComponent<Light> ().color = Color.white;
+		util.playClip (greenLight , (AudioClip)Resources.Load("Audio/General/softCorrectSound"));
 
 	}
 }
