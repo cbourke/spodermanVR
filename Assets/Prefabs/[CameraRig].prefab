@@ -789,6 +789,9 @@ MonoBehaviour:
   worldNodeTracker: {fileID: 0}
   notValid: {fileID: 0}
   valid: {fileID: 0}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &114107654382248250
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -833,6 +836,9 @@ MonoBehaviour:
   worldNodeTracker: {fileID: 0}
   notValid: {fileID: 0}
   valid: {fileID: 0}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &114293598439703130
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -868,9 +874,8 @@ MonoBehaviour:
   laserPrefab: {fileID: 0}
   laserTransform: {fileID: 0}
   head: {fileID: 0}
-  headOffset: 2.25
   worldTracker: {fileID: 0}
-  defaultLayer:
+  pauseLayer:
     serializedVersion: 2
     m_Bits: 512
   pause: 0
@@ -1045,6 +1050,9 @@ MonoBehaviour:
   objectInHand: {fileID: 0}
   retractSpeed: 5
   retracting: 0
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1280
 --- !u!114 &114699597287884202
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1063,6 +1071,9 @@ MonoBehaviour:
   objectInHand: {fileID: 0}
   retractSpeed: 5
   retracting: 0
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1280
 --- !u!114 &114791253401547228
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1118,9 +1129,8 @@ MonoBehaviour:
   laserPrefab: {fileID: 0}
   laserTransform: {fileID: 0}
   head: {fileID: 0}
-  headOffset: 2.25
   worldTracker: {fileID: 0}
-  defaultLayer:
+  pauseLayer:
     serializedVersion: 2
     m_Bits: 512
   pause: 0

@@ -20,6 +20,8 @@ public class LevelEvents3 : MonoBehaviour {
 	}
 
 	void Start () {
+		greenLight = GameObject.Find ("GreenLight1");
+		greenLight.SetActive (false);
 		StartCoroutine (sceneStart());
 	}
 	
@@ -31,8 +33,8 @@ public class LevelEvents3 : MonoBehaviour {
 	private IEnumerator sceneStart() {
 		yield return new WaitForSeconds (2.0f);
 		window1.SetActive (true);
-//		StartCoroutine(gameObject.GetComponent<EventUtil> ().lookingAtCounter(window1text));
-//		yield return new WaitUntil(() => GetComponent<EventUtil>().lookingBool == true);
+		StartCoroutine(gameObject.GetComponent<EventUtil> ().lookingAtCounter(window1text));
+		yield return new WaitUntil(() => GetComponent<EventUtil>().lookingBool == true);
 		yield return new WaitForSeconds (feedDelay);
 		util.changeTex (window1 , window1text , (Texture)Resources.Load("Textures/level3/signA_2"));
 
@@ -41,7 +43,6 @@ public class LevelEvents3 : MonoBehaviour {
 	}
 
 	public void triggerZone1 () {
-		greenLight = GameObject.Find ("GreenLight1");
 		greenLight.GetComponent<Light> ().color = Color.white;
 		util.playClip (greenLight , (AudioClip)Resources.Load("Audio/General/softCorrectSound"));
 

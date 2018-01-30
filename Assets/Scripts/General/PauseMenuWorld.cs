@@ -55,6 +55,7 @@ public class PauseMenuWorld : MonoBehaviour {
 		list.Add (Instantiate(PMenu));
 		list[0].transform.position = head.transform.position;
 		list[0].transform.position += head.transform.forward * headOffset;
+		list [0].transform.position -= new Vector3 (0,0.3f,0);
 		list[0].transform.rotation = Quaternion.identity;
 		list[0].transform.Rotate (90f,head.transform.rotation.eulerAngles.y - 180f,0f);
 
@@ -117,6 +118,8 @@ public class PauseMenuWorld : MonoBehaviour {
 
 
 	}
+
+
 
 	private IEnumerator Destroy() {
 		yield return new WaitForSecondsRealtime(.201f);

@@ -13,9 +13,8 @@ public class PauseMenu : MonoBehaviour
 	public GameObject laserPrefab;
 	public Transform laserTransform;
 	public GameObject head;
-	public float headOffset;
 	public GameObject worldTracker;
-	public LayerMask defaultLayer;
+	public LayerMask pauseLayer;
 	private Vector3 hitPoint; 
     private SteamVR_TrackedObject trackedObj; 
 	private GameObject cameraRig;
@@ -86,7 +85,7 @@ public class PauseMenu : MonoBehaviour
 	void Update()
 	{			
 		if ((Controller.GetPressDown (3) || Controller.GetPressDown (1)) && !otherController.GetComponent<PauseMenu>().pause) {
-			if (!pause) {	
+			if (!pause && validDistanceChecker()) {	
 				pause = true;	
 				climbTemp = this.GetComponent<FunctionController> ().climbEnabled;
 				ropeTemp = this.GetComponent<FunctionController> ().ropeEnabled;
@@ -103,6 +102,7 @@ public class PauseMenu : MonoBehaviour
 			{
 				pause = false;
 				hideMenuLocal();
+				laser.SetActive (false);
 				Time.timeScale = 1F;
 				Time.fixedDeltaTime = 1f;
 			}
@@ -111,7 +111,7 @@ public class PauseMenu : MonoBehaviour
 		if (pause) {
 			RaycastHit hit;	
 
-			if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, 100, defaultLayer)) {
+			if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, 100, pauseLayer)) {
 				hitPoint = hit.point;
 				ShowLaser (hit);
 			} else {
@@ -167,7 +167,7 @@ public class PauseMenu : MonoBehaviour
 	}	
 
 	public void hideMenuLocal() {
-		laser.SetActive (false);
+		
 		this.GetComponent<FunctionController>().climbEnabled = climbTemp;
 		this.GetComponent<FunctionController>().ropeEnabled = ropeTemp;
 		this.GetComponent<FunctionController>().retractEnabled = retractTemp;
@@ -191,8 +191,22 @@ public class PauseMenu : MonoBehaviour
 
 	}
 
+	public bool validDistanceChecker () {
+		RaycastHit hit;
+
+		if (Physics.Raycast (head.transform.position, head.transform.forward, out hit, worldTracker.GetComponent<PauseMenuWorld> ().headOffset)) { //if raycast hits an object
+			GetComponent<AudioSource>().clip = (AudioClip)Resources.Load("Audio/windowAudio/error");
+			GetComponent<AudioSource> ().Play();
+			return false;
+		} else {
+			return true;
+		}
+	}
+
 	private IEnumerator setPauseFalse() {
 		yield return new WaitForSecondsRealtime(0.201f);
+		laser.SetActive (false);
 		pause = false;
+
 	}
 }

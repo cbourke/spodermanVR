@@ -11,7 +11,7 @@ public class ControllerRetract : MonoBehaviour {
 	public float retractSpeed;
 	public bool retracting;
 
-	private int layerMask;
+	public LayerMask layerMask;
 	private Vector3 hitPoint; 
 	private SteamVR_TrackedObject trackedObj;
 	private GameObject worldTracker;
@@ -33,8 +33,9 @@ public class ControllerRetract : MonoBehaviour {
 	public void Start() {
 		laser = Instantiate (laserPrefab);
 		laserTransform = laser.transform;
-		layerMask = 1 << 8;
-		layerMask = ~layerMask;
+//		layerMask = 1 << 8;
+//		layerMask = ~layerMask;
+
 	}
 	
 	private void ShowLaser(RaycastHit hit)
@@ -55,7 +56,7 @@ public class ControllerRetract : MonoBehaviour {
 
 		if (this.GetComponent<FunctionController> ().currentMode.ToString () == "RetractShot") {
 			RaycastHit hit;	
-			if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, 100,layerMask)) {
+			if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, 100, ~layerMask.value)) {
 				if (hit.collider.gameObject.GetComponent<Rigidbody>() && !hit.collider.gameObject.GetComponent<Rigidbody> ().isKinematic && hit.collider.gameObject.GetComponent<Rigidbody> ().useGravity) {
 					hit.collider.gameObject.transform.position = trackedObj.transform.position;
 					return hit.collider.gameObject;
@@ -73,7 +74,7 @@ public class ControllerRetract : MonoBehaviour {
 		}
 		if (this.GetComponent<FunctionController> ().currentMode.ToString () == "RetractShot" && !retracting) {
 			RaycastHit hit;	
-			if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, 100,layerMask)) {
+			if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, 100, ~layerMask.value)) {
 				if (hit.collider.gameObject.GetComponent<Rigidbody>() && !hit.collider.gameObject.GetComponent<Rigidbody> ().isKinematic && hit.collider.gameObject.GetComponent<Rigidbody> ().useGravity) {
                     //hit.collider.gameObject.transform.position = trackedObj.transform.position;
                     //return hit.collider.gameObject;
@@ -109,7 +110,7 @@ public class ControllerRetract : MonoBehaviour {
 			}
 
 			RaycastHit hit;	
-			if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, 100, layerMask)) {
+			if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, 100, ~layerMask.value)) {
 				hitPoint = hit.point;
 				ShowLaser (hit);
 
