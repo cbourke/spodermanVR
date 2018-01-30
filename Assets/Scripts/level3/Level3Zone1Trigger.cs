@@ -18,7 +18,7 @@ public class Level3Zone1Trigger : MonoBehaviour {
 	public void OnTriggerEnter (Collider coll) {
 		if (coll.gameObject.GetInstanceID() == playerHead.GetInstanceID() && !triggered) {
 			triggered = true;
-			events.GetComponent<LevelEvents3> ().triggerZone1 ();
+			StartCoroutine(events.GetComponent<LevelEvents3> ().triggerZone1 ());
 		}
 	}
 }

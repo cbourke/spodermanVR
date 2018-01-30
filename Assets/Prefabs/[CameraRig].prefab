@@ -791,7 +791,8 @@ MonoBehaviour:
   valid: {fileID: 0}
   layerMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 1280
+  shotDistance: 0
 --- !u!114 &114107654382248250
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -838,7 +839,8 @@ MonoBehaviour:
   valid: {fileID: 0}
   layerMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 1280
+  shotDistance: 0
 --- !u!114 &114293598439703130
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1050,6 +1052,7 @@ MonoBehaviour:
   objectInHand: {fileID: 0}
   retractSpeed: 5
   retracting: 0
+  shotDistance: 25
   layerMask:
     serializedVersion: 2
     m_Bits: 1280
@@ -1071,6 +1074,7 @@ MonoBehaviour:
   objectInHand: {fileID: 0}
   retractSpeed: 5
   retracting: 0
+  shotDistance: 25
   layerMask:
     serializedVersion: 2
     m_Bits: 1280

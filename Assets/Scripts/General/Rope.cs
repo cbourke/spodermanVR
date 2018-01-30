@@ -24,7 +24,7 @@ public class Rope : MonoBehaviour {
 	public Material notValid;
 	public Material valid;
 	public LayerMask layerMask;
-
+	public float shotDistance;
 	private int layerMaskInt;
 
 
@@ -68,7 +68,7 @@ public class Rope : MonoBehaviour {
 	public bool isValidNode () {
 
 		RaycastHit hit;
-		if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, 30, layerMaskInt)) { //if raycast hits an object
+		if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, shotDistance, layerMaskInt)) { //if raycast hits an object
 			if (hit.collider.gameObject.CompareTag ("Climbable") || hit.collider.gameObject.CompareTag ("Rope")) {
 				return true;
 			} else {
@@ -95,7 +95,7 @@ public class Rope : MonoBehaviour {
 
 			RaycastHit hit;
 
-			if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, 30  , layerMaskInt)) { //if raycast hits an object
+			if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, shotDistance  , layerMaskInt)) { //if raycast hits an object
 
 				previewNode.transform.position = hit.point;
 

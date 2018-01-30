@@ -10,7 +10,7 @@ public class ControllerRetract : MonoBehaviour {
 	public GameObject objectInHand;
 	public float retractSpeed;
 	public bool retracting;
-
+	public float shotDistance;
 	public LayerMask layerMask;
 	private Vector3 hitPoint; 
 	private SteamVR_TrackedObject trackedObj;
@@ -56,7 +56,7 @@ public class ControllerRetract : MonoBehaviour {
 
 		if (this.GetComponent<FunctionController> ().currentMode.ToString () == "RetractShot") {
 			RaycastHit hit;	
-			if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, 100, ~layerMask.value)) {
+			if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, shotDistance, ~layerMask.value)) {
 				if (hit.collider.gameObject.GetComponent<Rigidbody>() && !hit.collider.gameObject.GetComponent<Rigidbody> ().isKinematic && hit.collider.gameObject.GetComponent<Rigidbody> ().useGravity) {
 					hit.collider.gameObject.transform.position = trackedObj.transform.position;
 					return hit.collider.gameObject;
@@ -74,7 +74,7 @@ public class ControllerRetract : MonoBehaviour {
 		}
 		if (this.GetComponent<FunctionController> ().currentMode.ToString () == "RetractShot" && !retracting) {
 			RaycastHit hit;	
-			if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, 100, ~layerMask.value)) {
+			if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, shotDistance, ~layerMask.value)) {
 				if (hit.collider.gameObject.GetComponent<Rigidbody>() && !hit.collider.gameObject.GetComponent<Rigidbody> ().isKinematic && hit.collider.gameObject.GetComponent<Rigidbody> ().useGravity) {
                     //hit.collider.gameObject.transform.position = trackedObj.transform.position;
                     //return hit.collider.gameObject;
@@ -110,7 +110,7 @@ public class ControllerRetract : MonoBehaviour {
 			}
 
 			RaycastHit hit;	
-			if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, 100, ~layerMask.value)) {
+			if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, shotDistance, ~layerMask.value)) {
 				hitPoint = hit.point;
 				ShowLaser (hit);
 

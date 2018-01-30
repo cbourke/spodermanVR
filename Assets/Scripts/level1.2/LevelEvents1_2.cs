@@ -49,7 +49,7 @@ public class LevelEvents1_2 : MonoBehaviour {
 		rightFunc = rightController.GetComponent<FunctionController> ();
 		feedAtext2 = (Texture)Resources.Load ("Textures/level1.2/lvl1_2feedA2");
 		textChange = (AudioClip)Resources.Load ("Audio/windowAudio/textChange");
-		correct = (AudioClip)Resources.Load ("Audio/General/correct!");
+		correct = (AudioClip)Resources.Load ("Audio/General/softCorrectSound");
 		feedBtext2.SetActive(false);
 		feedA.SetActive (false);
 		feedB.SetActive (false);
