@@ -36,6 +36,8 @@ public class RoomResize : MonoBehaviour {
 		southWall.transform.position = new Vector3 (-size.x/2,1.5f,0);
 		eastWall.transform.position = new Vector3 (0,1.5f,-size.z/2);
 		westWall.transform.position = new Vector3 (0,1.5f,size.z/2);
+//		northWall.transform.localScale = new Vector3 (northWall.transform.localScale.x, northWall.transform.localScale.y * (size.z / 8), northWall.transform.localScale.z * (size.z / 8));
+
 		floor.transform.localScale = new Vector3 (size.x/8,1.5f,size.z/8);
 		ceiling.transform.localScale = new Vector3 (size.x,0.2f,size.z);
 

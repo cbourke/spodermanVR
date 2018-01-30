@@ -36,12 +36,12 @@ public class LevelEvents3 : MonoBehaviour {
 	}
 
 	private IEnumerator sceneStart() {
-		yield return new WaitForSeconds (2.0f);
+		
+		yield return new WaitForSeconds (feedDelay);
 		window1.SetActive (true);
-		yield return new WaitForSeconds (2.0f);
-//		StartCoroutine(gameObject.GetComponent<EventUtil> ().lookingAtCounter(window1text));
-//		yield return new WaitUntil(() => GetComponent<EventUtil>().lookingBool == true);
-//		yield return new WaitForSeconds (feedDelay);
+		StartCoroutine(gameObject.GetComponent<EventUtil> ().lookingAtCounter(window1text));
+		yield return new WaitUntil(() => GetComponent<EventUtil>().lookingBool == true);
+		yield return new WaitForSeconds (feedDelay * 1.25f);
 		util.changeTex (window1 , window1text , (Texture)Resources.Load("Textures/level3/signA_2"));
 		yield return new WaitForSeconds (feedDelay);
 		greenLight.GetComponent<Light>().color = Color.green;
@@ -51,25 +51,44 @@ public class LevelEvents3 : MonoBehaviour {
 	}
 
 	public IEnumerator triggerZone1 () {
+		StopCoroutine (sceneStart());
 		window1.GetComponent<Animator> ().SetTrigger ("TurnOff");
 		greenLight.GetComponent<Light> ().color = Color.white;
 		util.playClip (greenLight , (AudioClip)Resources.Load("Audio/General/softCorrectSound"));
 		greenLight.GetComponent<Light> ().range = lightIntensity;
-		yield return new WaitForSeconds (2.0f);
+		yield return new WaitForSeconds (feedDelay);
 		window2.SetActive (true);
-//		StartCoroutine(gameObject.GetComponent<EventUtil> ().lookingAtCounter(window2text));
-//		yield return new WaitUntil(() => GetComponent<EventUtil>().lookingBool == true);
-//		yield return new WaitForSeconds (feedDelay);
+		StartCoroutine(gameObject.GetComponent<EventUtil> ().lookingAtCounter(window2text));
+		yield return new WaitUntil(() => GetComponent<EventUtil>().lookingBool == true);
+		yield return new WaitForSeconds (feedDelay * 1.25f);
 		util.changeTex(window2 , window2text , (Texture)Resources.Load("Textures/level3/signB_2"));
 		yield return new WaitForSeconds (feedDelay);
 		util.changeTex(window2 , window2text , (Texture)Resources.Load("Textures/level3/signB_3"));
 		yield return new WaitForSeconds (feedDelay);
 		greenLight = GameObject.Find ("GreenLight2");
+		greenLight.GetComponent<Light> ().color = Color.green;
+		StartCoroutine(greenLightFlicker(greenLight.GetComponent<Light>()));
+	}
+
+	public void triggerZone2 () {
+		StopCoroutine (triggerZone1());
+		greenLight = GameObject.Find ("GreenLight2");
+		window2.GetComponent<Animator> ().SetTrigger ("TurnOff");
+		greenLight.GetComponent<Light> ().color = Color.white;
+		util.playClip (greenLight , (AudioClip)Resources.Load("Audio/General/softCorrectSound"));
+
+	}
+
+	public void triggerZone3 () {
+		greenLight = GameObject.Find ("GreenLight3");
+		util.playClip (greenLight , (AudioClip)Resources.Load("Audio/General/softCorrectSound"));
+		greenLight.GetComponent<Light> ().color = Color.green;
+		StartCoroutine(greenLightFlicker(greenLight.GetComponent<Light>()));
 	}
 
 	private IEnumerator greenLightFlicker(Light lightSrc) {
 		float top = lightSrc.range;
-		while (lightSrc.color != Color.white) {
+		while (lightSrc.color.r >= 0) {
 			lightSrc.range = Mathf.Sin (Time.time) * (lightSrc.range/2) + top;
 			yield return new WaitForEndOfFrame ();
 		}

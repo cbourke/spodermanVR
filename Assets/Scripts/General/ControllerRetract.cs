@@ -88,7 +88,7 @@ public class ControllerRetract : MonoBehaviour {
 	public IEnumerator pull(GameObject pullObj) {   //from here, the OnTriggerEnter in ControllerGrab handles when the object contacts the controller. This coroutine just keeps running until then.
 		pullObj.GetComponent<Rigidbody>().useGravity = false;
 		pullObj.GetComponent<Rigidbody> ().angularVelocity = Vector3.zero;
-		pullObj.GetComponent<Rigidbody>().isKinematic = true;
+//		pullObj.GetComponent<Rigidbody>().isKinematic = true;
 
 		retracting = true;
 		retractobj = pullObj;

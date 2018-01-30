@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DestroyOnShot : MonoBehaviour {
 
-	public void OnCollisionEnter(Collision other) {
+	public void OnTriggerEnter(Collider other) {
 		StartCoroutine (rotateDie());
 		Invoke ("destroyMe",2);
 	}

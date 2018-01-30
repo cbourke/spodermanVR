@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpeakerCollision : MonoBehaviour {
 
-	public void OnCollisionEnter(Collision other) {
+	public void OnTriggerEnter(Collider other) {
 
 		Destroy (this.gameObject);
 	}

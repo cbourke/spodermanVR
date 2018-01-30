@@ -49,7 +49,7 @@ public class LevelEvents1_2 : MonoBehaviour {
 		rightFunc = rightController.GetComponent<FunctionController> ();
 		feedAtext2 = (Texture)Resources.Load ("Textures/level1.2/lvl1_2feedA2");
 		textChange = (AudioClip)Resources.Load ("Audio/windowAudio/textChange");
-		correct = (AudioClip)Resources.Load ("Audio/General/softCorrectSound");
+		correct = (AudioClip)Resources.Load ("Audio/General/correct!");
 		feedBtext2.SetActive(false);
 		feedA.SetActive (false);
 		feedB.SetActive (false);
@@ -197,12 +197,12 @@ public class LevelEvents1_2 : MonoBehaviour {
 		yield return new WaitForSeconds (1.1f);
 		feedA.GetComponent<Animator> ().SetTrigger ("FloatRightHalf");
 		feedB.GetComponent<Animator> ().SetTrigger ("FloatRightHalf");
-		yield return new WaitForSeconds (feedDelay);
+//		yield return new WaitForSeconds (feedDelay);
 		leftFunc.ropeEnabled = true;
 		rightFunc.ropeEnabled = true;
 		currStage = 2;
 		actionReady = true;
-		enemySetup.SetActive (false);
+		//enemySetup.SetActive (false);
 	}
 
 
@@ -359,6 +359,7 @@ public class LevelEvents1_2 : MonoBehaviour {
 		retractSetup.SetActive (false);
 		yield return new WaitForSeconds (feedDelay);
 		enemySetup.SetActive (true);
+//		enemy.SetActive(true);
 		enemySpeechBubble.SetActive (false);
 		StartCoroutine(gameObject.GetComponent<EventUtil> ().lookingAtCounter(enemy));
 		yield return new WaitUntil(() => GetComponent<EventUtil>().lookingBool == true);
