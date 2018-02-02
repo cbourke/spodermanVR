@@ -41,6 +41,7 @@ public class PauseMenu : MonoBehaviour
 		cameraRig = GameObject.Find ("[CameraRig]");
 		worldTracker = GameObject.Find ("WorldNodeTracker");
 
+
 	}
 
 	void Start()
@@ -84,31 +85,22 @@ public class PauseMenu : MonoBehaviour
 
 	void Update()
 	{			
-		if ((Controller.GetPressDown (3) || Controller.GetPressDown (1)) && !otherController.GetComponent<PauseMenu>().pause) {
-			if (!pause && validDistanceChecker()) {	
-				pause = true;	
-				climbTemp = this.GetComponent<FunctionController> ().climbEnabled;
-				ropeTemp = this.GetComponent<FunctionController> ().ropeEnabled;
-				retractTemp = this.GetComponent<FunctionController> ().retractEnabled;
-				fistTemp = this.GetComponent<FunctionController> ().fistEnabled;
-				shotTemp = this.GetComponent<FunctionController> ().shotEnabled;
-				worldTracker.GetComponent<PauseMenuWorld>().ShowMenu (this.gameObject, otherController);
-				Time.timeScale = 0.00000001F;
-				Time.fixedDeltaTime = 0.00000001F;
-
+		if ((Controller.GetPressDown(3) || Controller.GetPressDown (1)) && !otherController.GetComponent<PauseMenu>().pause) {
+			if (!pause && validDistanceChecker()) {
+				Debug.Log ("I initiated menu");
+				worldTracker.GetComponent<PauseMenuWorld>().ShowMenu (this.gameObject);
 			}
-		
-			else
-			{
-				pause = false;
-				hideMenuLocal();
+			else {
+
+				Debug.Log ("I'M EXITING HERE");
+				worldTracker.GetComponent<PauseMenuWorld> ().HideMenu (this.gameObject);
 				laser.SetActive (false);
-				Time.timeScale = 1F;
-				Time.fixedDeltaTime = 1f;
 			}
 		}
 
+
 		if (pause) {
+			Debug.Log ("I'm paused");
 			RaycastHit hit;	
 
 			if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, 100, pauseLayer)) {
@@ -124,9 +116,7 @@ public class PauseMenu : MonoBehaviour
 						hit.collider.gameObject.GetComponent<Renderer> ().material.mainTexture = texture[1];
 
 					if (Controller.GetHairTriggerDown ()) {
-						hideMenuLocal ();
-						Time.timeScale = 1F;
-						Time.fixedDeltaTime = 1f;
+						worldTracker.GetComponent<PauseMenuWorld> ().HideMenu (this.gameObject);
 					}
 					
 				} else if (hitCheck("Restart",hit)) {
@@ -135,9 +125,7 @@ public class PauseMenu : MonoBehaviour
 					}
 								
 					if (Controller.GetHairTriggerDown ()) {
-						hideMenuLocal ();
-						Time.timeScale = 1F;
-						Time.fixedDeltaTime = 1f;
+						worldTracker.GetComponent<PauseMenuWorld> ().HideMenu (this.gameObject);
 						Scene loadedLevel = SceneManager.GetActiveScene ();
 						SceneManager.LoadScene (loadedLevel.buildIndex);
 					}
@@ -153,35 +141,29 @@ public class PauseMenu : MonoBehaviour
 				}
 			}
 			 else {
+				Debug.Log ("reverting buttons...");
 				worldTracker.GetComponent<PauseMenuWorld> ().revertButtons(texture);
-//				//if (GameObject.Find ("Continue").GetComponent<Renderer> ().material.mainTexture != texture [0]) 
-//					GameObject.Find ("Continue").GetComponent<Renderer> ().material.mainTexture = texture [0];
-//
-//				//if (GameObject.Find ("Restart").GetComponent<Renderer> ().material.mainTexture != texture[2])
-//					GameObject.Find ("Restart").GetComponent<Renderer> ().material.mainTexture = texture[2];
-//				//if (GameObject.Find ("Quit").GetComponent<Renderer> ().material.mainTexture != texture[4])
-//					GameObject.Find ("Quit").GetComponent<Renderer> ().material.mainTexture = texture[4];
 			}
 		}
 
 	}	
 
-	public void hideMenuLocal() {
-		
-		this.GetComponent<FunctionController>().climbEnabled = climbTemp;
-		this.GetComponent<FunctionController>().ropeEnabled = ropeTemp;
-		this.GetComponent<FunctionController>().retractEnabled = retractTemp;
-		this.GetComponent<FunctionController>().fistEnabled = fistTemp;
-		this.GetComponent<FunctionController>().shotEnabled = shotTemp;
-		otherController.GetComponent<FunctionController>().climbEnabled = climbTemp;
-		otherController.GetComponent<FunctionController>().ropeEnabled = ropeTemp;
-		otherController.GetComponent<FunctionController>().retractEnabled = retractTemp;
-		otherController.GetComponent<FunctionController>().fistEnabled = fistTemp;
-		otherController.GetComponent<FunctionController>().shotEnabled = shotTemp;
-		worldTracker.GetComponent<PauseMenuWorld> ().HideMenu ();
-		StartCoroutine (setPauseFalse());
-
-	}
+//	public void hideMenuLocal() {
+//		
+//		this.GetComponent<FunctionController>().climbEnabled = climbTemp;
+//		this.GetComponent<FunctionController>().ropeEnabled = ropeTemp;
+//		this.GetComponent<FunctionController>().retractEnabled = retractTemp;
+//		this.GetComponent<FunctionController>().fistEnabled = fistTemp;
+//		this.GetComponent<FunctionController>().shotEnabled = shotTemp;
+//		otherController.GetComponent<FunctionController>().climbEnabled = climbTemp;
+//		otherController.GetComponent<FunctionController>().ropeEnabled = ropeTemp;
+//		otherController.GetComponent<FunctionController>().retractEnabled = retractTemp;
+//		otherController.GetComponent<FunctionController>().fistEnabled = fistTemp;
+//		otherController.GetComponent<FunctionController>().shotEnabled = shotTemp;
+//		worldTracker.GetComponent<PauseMenuWorld> ().HideMenu ();
+//		//StartCoroutine (setPauseFalse());
+//
+//	}
 
 	public bool hitCheck(string name , RaycastHit hit) {
 		if (hit.collider.gameObject.name == name) {
@@ -201,12 +183,5 @@ public class PauseMenu : MonoBehaviour
 		} else {
 			return true;
 		}
-	}
-
-	private IEnumerator setPauseFalse() {
-		yield return new WaitForSecondsRealtime(0.201f);
-		laser.SetActive (false);
-		pause = false;
-
 	}
 }

@@ -47,25 +47,6 @@ public class ControllerRetract : MonoBehaviour {
 
 	}
 
-	public GameObject retract(){
-
-		if (this.GetComponent<ControllerGrab> ().objectInHand) {
-			laser.SetActive (false);
-			return null;
-		}
-
-		if (this.GetComponent<FunctionController> ().currentMode.ToString () == "RetractShot") {
-			RaycastHit hit;	
-			if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, shotDistance, ~layerMask.value)) {
-				if (hit.collider.gameObject.GetComponent<Rigidbody>() && !hit.collider.gameObject.GetComponent<Rigidbody> ().isKinematic && hit.collider.gameObject.GetComponent<Rigidbody> ().useGravity) {
-					hit.collider.gameObject.transform.position = trackedObj.transform.position;
-					return hit.collider.gameObject;
-				}
-			}
-		}
-		return null;
-	}
-
 	public void retractNew() {
 		
 		if (this.GetComponent<ControllerGrab> ().objectInHand) {
@@ -88,7 +69,7 @@ public class ControllerRetract : MonoBehaviour {
 	public IEnumerator pull(GameObject pullObj) {   //from here, the OnTriggerEnter in ControllerGrab handles when the object contacts the controller. This coroutine just keeps running until then.
 		pullObj.GetComponent<Rigidbody>().useGravity = false;
 		pullObj.GetComponent<Rigidbody> ().angularVelocity = Vector3.zero;
-//		pullObj.GetComponent<Rigidbody>().isKinematic = true;
+		pullObj.GetComponent<Rigidbody>().isKinematic = true;
 
 		retracting = true;
 		retractobj = pullObj;

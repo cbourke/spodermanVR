@@ -101,6 +101,7 @@ public class ControllerGrab : MonoBehaviour {
 	public void GrabClimbableObject() {
 		if (!otherController.GetComponent<FunctionController>().isClimbing) {
 			startingControllerPosition = trackedObj.transform.position;
+
 			objectInHand = collidingObject;
 			collidingObject = null;
 		}
@@ -115,6 +116,8 @@ public class ControllerGrab : MonoBehaviour {
 
 	public void MoveCameraRig() {
 		Vector3 difference = startingControllerPosition - trackedObj.transform.position;
+
+
 		cameraRigTransform.position += difference;
 	}
 
@@ -163,6 +166,26 @@ public class ControllerGrab : MonoBehaviour {
 			}
 
 		}
+	}
+
+	public void RopeSlide () {
+		
+		if (objectInHand.CompareTag("Rope") && collidingObject.CompareTag("Rope")) {
+			Vector3 ropeUp = objectInHand.transform.up;
+			Vector3 controllerUp = trackedObj.gameObject.transform.forward;
+			if (Vector3.Dot(ropeUp , controllerUp) >= 0) {
+				
+				cameraRigTransform.Translate (ropeUp * Time.deltaTime);
+				startingControllerPosition += ropeUp * Time.deltaTime;
+			} 
+			else {
+				cameraRigTransform.Translate (-ropeUp * Time.deltaTime);
+				startingControllerPosition += -ropeUp * Time.deltaTime;
+			}
+
+		}
+
+
 	}
 		
 }

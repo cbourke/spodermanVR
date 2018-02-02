@@ -154,7 +154,15 @@ public class FunctionController : MonoBehaviour {
 
 		//This block moves the CameraRig, solely based on the isClimbing value. Executes every frame regardless of mode.
 		if (isClimbing) {
+			//Debug.Log ("I'm holding...");
+			if (Controller.GetPress(SteamVR_Controller.ButtonMask.Grip)) {
+				//Debug.Log ("I'm sliding!");
+				this.GetComponent<ControllerGrab> ().RopeSlide ();
+				this.GetComponent<ControllerGrab> ().MoveCameraRig ();
+			}
+			else 
 			this.GetComponent<ControllerGrab> ().MoveCameraRig ();
+
 		} else {
 			//This block begins handling all TouchpadDown inputs. Inputs are initiated when the pad is pressed, and each if block checks
 			//	where the user's finger is on the touchpad, checked via the 2d axis of the touchpad.
