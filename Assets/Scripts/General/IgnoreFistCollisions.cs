@@ -4,12 +4,10 @@ using UnityEngine;
 
 public class IgnoreFistCollisions : MonoBehaviour {
 
-	private GameObject world;
 	// Use this for initialization
 	void Awake () {
 		Collider coll = this.transform.parent.GetComponent<Collider> ();
 		Physics.IgnoreCollision (coll , this.GetComponent<Collider>());
-		world = GameObject.Find ("WorldNodeTracker");
 	}
 
 	public void OnCollisionEnter(Collision other) {

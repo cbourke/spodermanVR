@@ -17,7 +17,6 @@ public class PauseMenu : MonoBehaviour
 	public LayerMask pauseLayer;
 	private Vector3 hitPoint; 
     private SteamVR_TrackedObject trackedObj; 
-	private GameObject cameraRig;
 	//private int layerMask;
 	private bool climbTemp;
 	private bool ropeTemp;
@@ -38,7 +37,6 @@ public class PauseMenu : MonoBehaviour
 //		laser = GameObject.Find ("Laser");
 		laserPrefab = (GameObject)Resources.Load("Prefabs/pauseLaser");
 		head = GameObject.Find ("Camera (eye)");
-		cameraRig = GameObject.Find ("[CameraRig]");
 		worldTracker = GameObject.Find ("WorldNodeTracker");
 
 
@@ -87,12 +85,12 @@ public class PauseMenu : MonoBehaviour
 	{			
 		if ((Controller.GetPressDown(3) || Controller.GetPressDown (1)) && !otherController.GetComponent<PauseMenu>().pause) {
 			if (!pause && validDistanceChecker()) {
-				Debug.Log ("I initiated menu");
+//				Debug.Log ("I initiated menu");
 				worldTracker.GetComponent<PauseMenuWorld>().ShowMenu (this.gameObject);
 			}
 			else {
 
-				Debug.Log ("I'M EXITING HERE");
+//				Debug.Log ("I'M EXITING HERE");
 				worldTracker.GetComponent<PauseMenuWorld> ().HideMenu (this.gameObject);
 				laser.SetActive (false);
 			}
@@ -100,7 +98,7 @@ public class PauseMenu : MonoBehaviour
 
 
 		if (pause) {
-			Debug.Log ("I'm paused");
+//			Debug.Log ("I'm paused");
 			RaycastHit hit;	
 
 			if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, 100, pauseLayer)) {

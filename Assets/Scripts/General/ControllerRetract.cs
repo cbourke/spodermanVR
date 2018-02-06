@@ -56,7 +56,7 @@ public class ControllerRetract : MonoBehaviour {
 		if (this.GetComponent<FunctionController> ().currentMode.ToString () == "RetractShot" && !retracting) {
 			RaycastHit hit;	
 			if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, shotDistance, ~layerMask.value)) {
-				if (hit.collider.gameObject.GetComponent<Rigidbody>() && !hit.collider.gameObject.GetComponent<Rigidbody> ().isKinematic && hit.collider.gameObject.GetComponent<Rigidbody> ().useGravity) {
+				if (hit.collider.gameObject.GetComponent<Rigidbody>() && ((!hit.collider.gameObject.GetComponent<Rigidbody> ().isKinematic && hit.collider.gameObject.GetComponent<Rigidbody> ().useGravity) || hit.collider.gameObject.CompareTag("Retractable"))) {
                     //hit.collider.gameObject.transform.position = trackedObj.transform.position;
                     //return hit.collider.gameObject;
                     StartCoroutine(pull(hit.collider.gameObject));
