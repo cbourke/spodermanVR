@@ -10,13 +10,13 @@ public class Level3HandEvents : MonoBehaviour {
 	private EventUtil util;
 	// Use this for initialization
 	void Awake () {
-		world = GameObject.Find ("WorldNodeTracker").GetComponent<Level3Events>();
+		world = GameObject.Find ("Events").GetComponent<Level3Events>();
 		util = GameObject.Find ("Events").GetComponent<EventUtil> ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (world.GetComponent<Level3Events> ().keyObtained && this.GetComponent<ControllerGrab>().objectInHand.GetInstanceID() == carButton.GetInstanceID()) {
+		if (world.keyObtained && this.GetComponent<ControllerGrab>().objectInHand.GetInstanceID() == carButton.GetInstanceID()) {
 
 		}
 	}

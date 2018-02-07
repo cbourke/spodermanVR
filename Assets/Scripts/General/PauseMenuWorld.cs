@@ -28,8 +28,8 @@ public class PauseMenuWorld : MonoBehaviour {
 	void Start() {
 		head = GameObject.Find ("Camera (eye)");
 		paused = false;
-//		leftController = GameObject.Find ("Controller (left)");
-//		rightController = GameObject.Find ("Controller (right)");
+		leftController = GameObject.Find ("[CameraRig]").transform.Find("Controller (left)").gameObject;
+		rightController = GameObject.Find ("[CameraRig]").transform.Find("Controller (right)").gameObject;
 	}
 
 	public void ShowMenu(GameObject sendingController)
