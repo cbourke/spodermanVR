@@ -27,6 +27,9 @@ public class HeadColliderHandler : MonoBehaviour {
 	}
 
 	public void OnTriggerEnter (Collider coll) {
+		if (!coll.attachedRigidbody) {
+			return;
+		}
 		SetCollidingObject (coll.attachedRigidbody.gameObject);
 	}
 
@@ -64,16 +67,16 @@ public class HeadColliderHandler : MonoBehaviour {
 		}
 		else  {
 			//incomplete
-//			blur.GetComponent<Renderer> ().material.color = startingBlurCol;
-//			blur.SetActive (false);
-			if (blur.activeSelf) {
-				Color tempCol = blur.GetComponent<Renderer> ().material.color;
-				tempCol.a -= blurSpeed * Time.deltaTime;
-				blur.GetComponent<Renderer> ().material.color = tempCol;
-				if (tempCol.a <= 1) {
-					blur.SetActive (false);
-				}
-			}
+			blur.GetComponent<Renderer> ().material.color = startingBlurCol;
+			blur.SetActive (false);
+//			if (blur.activeSelf) {
+//				Color tempCol = blur.GetComponent<Renderer> ().material.color;
+//				tempCol.a -= blurSpeed * Time.deltaTime;
+//				blur.GetComponent<Renderer> ().material.color = tempCol;
+//				if (tempCol.a <= 1) {
+//					blur.SetActive (false);
+//				}
+//			}
 
 		}
 	}

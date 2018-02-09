@@ -5,8 +5,10 @@ using UnityEngine;
 public class WindowTextController : MonoBehaviour {
 
 	public Texture[] textures;
-	public SteamVR_TrackedObject leftController;
-	public SteamVR_TrackedObject rightController;
+	private SteamVR_TrackedObject leftControllerSteam;
+	private SteamVR_TrackedObject rightControllerSteam;
+	public GameObject leftCont;
+	public GameObject rightCont;
 	public int msgLock;
 	public int currIndex;
 
@@ -15,18 +17,20 @@ public class WindowTextController : MonoBehaviour {
 	private AudioClip wrong;
 
 	private SteamVR_Controller.Device LeftController {
-		get { return SteamVR_Controller.Input ((int)leftController.index); }
+		get { return SteamVR_Controller.Input ((int)leftControllerSteam.index); }
 	}
 
 	private SteamVR_Controller.Device RightController {
-		get { return SteamVR_Controller.Input ((int)rightController.index); }
+		get { return SteamVR_Controller.Input ((int)rightControllerSteam.index); }
 	}
 
 	void Awake () {
 		util = GameObject.Find ("WorldNodeTracker").transform.Find("Events").GetComponent<EventUtil>();
 		outline = transform.parent.transform.parent.transform.Find("Outline").gameObject;
-		leftController = GameObject.Find ("[CameraRig]").transform.Find ("Controller (left)").GetComponent<SteamVR_TrackedObject>();
-		rightController = GameObject.Find ("[CameraRig]").transform.Find ("Controller (right)").GetComponent<SteamVR_TrackedObject>();
+		leftCont = GameObject.Find ("[CameraRig]").transform.Find ("Controller (left)").gameObject;
+		rightCont = GameObject.Find ("[CameraRig]").transform.Find ("Controller (right)").gameObject;
+		leftControllerSteam = leftCont.GetComponent<SteamVR_TrackedObject>();
+		rightControllerSteam = rightCont.GetComponent<SteamVR_TrackedObject>();
 		msgLock = int.MaxValue;
 		wrong = (AudioClip)Resources.Load ("Audio/windowAudio/error");
 	}

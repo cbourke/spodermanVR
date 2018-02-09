@@ -26,6 +26,7 @@ public class Rope : MonoBehaviour {
 	public LayerMask layerMask;
 	public float shotDistance;
 	private int layerMaskInt;
+	private GameObject laser;
 
 
 	private SteamVR_Controller.Device Controller {
@@ -38,12 +39,14 @@ public class Rope : MonoBehaviour {
 		notValid  = (Material)Resources.Load("Materials/General/NonValidPreviewNode");
 		worldNodeTracker = GameObject.Find("WorldNodeTracker");
 		layerMaskInt = ~layerMask.value;
+		laser = Instantiate ((GameObject)Resources.Load("Prefabs/TrailingLaser"));
 //		layerMask = 1 << 8;
 //		layerMask = ~layerMask;
 	}
 
 	// Use this for initialization
 	void Start () {
+		laser.GetComponent<DottedLineRenderer> ().outward = true;
 	}
 
 
@@ -53,8 +56,9 @@ public class Rope : MonoBehaviour {
 		previewNode = GameObject.CreatePrimitive (PrimitiveType.Sphere);
 		previewNode.transform.localScale = new Vector3 (0.1f,0.1f,0.1f);
 		previewNode.GetComponent<Renderer> ().material = notValid;
-		previewNode.layer = 8;
-		previewNode.AddComponent<IgnoreCollisions> ();
+		Destroy (previewNode.GetComponent<SphereCollider>());
+//		previewNode.layer = 8;
+//		previewNode.AddComponent<IgnoreCollisions> ();
 	}
 
 	public Vector3 getValidNodePosition () {
@@ -98,26 +102,45 @@ public class Rope : MonoBehaviour {
 			if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, shotDistance  , layerMaskInt)) { //if raycast hits an object
 
 				previewNode.transform.position = hit.point;
+				ShowLaser (hit);
 
 				if (hit.collider.gameObject.CompareTag ("Climbable") || hit.collider.gameObject.CompareTag ("Rope")) {
 					previewNode.GetComponent<Renderer> ().material = valid;
+					worldNodeTracker.GetComponent<WorldRopeNodeTracker> ().ropePreview (hit.point);
+					laser.GetComponent<DottedLineRenderer> ().valid = true;
 
 				} else {
 					previewNode.GetComponent<Renderer> ().material = notValid;
+					worldNodeTracker.GetComponent<WorldRopeNodeTracker> ().destroyPreviewRope();
+					laser.GetComponent<DottedLineRenderer> ().valid = false;
 				}
 					
 			} else {
 				DestroyImmediate (previewNode,false);
-
+				worldNodeTracker.GetComponent<WorldRopeNodeTracker> ().destroyPreviewRope();
+				laser.SetActive (false);
 
 			}
 
 
 		} else {
 			DestroyImmediate (previewNode,false);
-
+			laser.SetActive (false);
+//			worldNodeTracker.GetComponent<WorldRopeNodeTracker> ().destroyPreviewRope();
 
 		}
 		
+	}
+
+	private void ShowLaser(RaycastHit hit)
+	{
+		laser.SetActive(true);
+		//		laserTransform.position = Vector3.Lerp(trackedObj.transform.position, hitPoint, .5f);
+		//		laserTransform.LookAt(hitPoint); 
+		//		laserTransform.localScale = new Vector3(laserTransform.localScale.x, laserTransform.localScale.y, hit.distance);
+		laser.transform.position = trackedObj.transform.position;
+		laser.GetComponent<LineRenderer> ().SetPosition (0 , trackedObj.transform.position);
+		laser.GetComponent<LineRenderer> ().SetPosition (1 , hit.point);
+
 	}
 }

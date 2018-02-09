@@ -21,7 +21,7 @@ public class ControllerRetract : MonoBehaviour {
 	public void Awake()
     {
 		trackedObj = GetComponent<SteamVR_TrackedObject>();
-		laserPrefab = (GameObject)Resources.Load ("Prefabs/Laser");
+		laserPrefab = (GameObject)Resources.Load ("Prefabs/TrailingLaser");
 		retracting = false;
 		worldTracker = GameObject.Find ("WorldNodeTracker");
     }
@@ -33,6 +33,7 @@ public class ControllerRetract : MonoBehaviour {
 	public void Start() {
 		laser = Instantiate (laserPrefab);
 		laserTransform = laser.transform;
+		laser.GetComponent<DottedLineRenderer> ().outward = false;
 //		layerMask = 1 << 8;
 //		layerMask = ~layerMask;
 
@@ -41,9 +42,12 @@ public class ControllerRetract : MonoBehaviour {
 	private void ShowLaser(RaycastHit hit)
 	{
 		laser.SetActive(true);
-		laserTransform.position = Vector3.Lerp(trackedObj.transform.position, hitPoint, .5f);
-		laserTransform.LookAt(hitPoint); 
-		laserTransform.localScale = new Vector3(laserTransform.localScale.x, laserTransform.localScale.y, hit.distance);
+//		laserTransform.position = Vector3.Lerp(trackedObj.transform.position, hitPoint, .5f);
+//		laserTransform.LookAt(hitPoint); 
+//		laserTransform.localScale = new Vector3(laserTransform.localScale.x, laserTransform.localScale.y, hit.distance);
+		laserTransform.position = trackedObj.transform.position;
+		laser.GetComponent<LineRenderer> ().SetPosition (0 , trackedObj.transform.position);
+		laser.GetComponent<LineRenderer> ().SetPosition (1 , hit.point);
 
 	}
 

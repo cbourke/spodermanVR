@@ -169,8 +169,10 @@ public class ControllerGrab : MonoBehaviour {
 	}
 
 	public void RopeSlide () {
-		
-		if (objectInHand.CompareTag("Rope") && collidingObject.CompareTag("Rope")) {
+		if (objectInHand == null || collidingObject == null) {
+			return;
+		}
+		if (objectInHand.CompareTag("Rope") && collidingObject.GetInstanceID() == objectInHand.GetInstanceID()) {
 			Vector3 ropeUp = objectInHand.transform.up;
 			Vector3 controllerUp = trackedObj.gameObject.transform.forward;
 			if (Vector3.Dot(ropeUp , controllerUp) >= 0) {
