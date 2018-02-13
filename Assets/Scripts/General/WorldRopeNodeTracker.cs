@@ -108,6 +108,7 @@ public class WorldRopeNodeTracker : MonoBehaviour {
 			rope.GetComponent<Rigidbody> ().useGravity = false;
 			rope.GetComponent<Rigidbody> ().isKinematic = true;
 			speaker.Play ();
+			StartCoroutine (RopeExpire(rope));	//have rope dissapear after 2 minutes
 
 
 			//delete the two points from the list and nodes
@@ -162,6 +163,11 @@ public class WorldRopeNodeTracker : MonoBehaviour {
 			previewRopeObj.SetActive (false);
 		}
 
+	}
+
+	private IEnumerator RopeExpire(GameObject ropeTarg) {
+		yield return new WaitForSeconds (120f);
+		Destroy (ropeTarg);
 	}
 		
 }
