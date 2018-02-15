@@ -60,7 +60,7 @@ public class HeadColliderHandler : MonoBehaviour {
 			Color tempCol = blur.GetComponent<Renderer> ().material.color;
 			tempCol.a += blurSpeed * Time.deltaTime;
 			blur.GetComponent<Renderer> ().material.color = tempCol;
-			if (tempCol.a >= 255) {
+			if (blur.GetComponent<Renderer> ().material.color.a >= 1) {
 				Scene loadedLevel = SceneManager.GetActiveScene ();
 				SceneManager.LoadScene (loadedLevel.buildIndex);
 			}
