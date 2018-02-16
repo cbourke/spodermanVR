@@ -8,6 +8,8 @@ public class IgnoreFistCollisions : MonoBehaviour {
 	void Awake () {
 		Collider coll = this.transform.parent.GetComponent<Collider> ();
 		Physics.IgnoreCollision (coll , this.GetComponent<Collider>());
+		this.GetComponent<Rigidbody> ().useGravity = false;
+		this.GetComponent<Rigidbody> ().isKinematic = true;
 	}
 
 	public void OnCollisionEnter(Collision other) {

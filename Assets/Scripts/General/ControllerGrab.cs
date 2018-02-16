@@ -28,6 +28,10 @@ public class ControllerGrab : MonoBehaviour {
 	void Awake() {
 		trackedObj = GetComponent<SteamVR_TrackedObject> ();
 		cameraRigTransform = GameObject.Find ("[CameraRig]").transform;
+		if (this.name.Equals("Controller (left)")) 
+			otherController = GameObject.Find ("[CameraRig]").transform.Find ("Controller (right)").gameObject;
+		else 
+			otherController = GameObject.Find ("[CameraRig]").transform.Find ("Controller (left)").gameObject;
 	}
 
 	private void SetCollidingObject(Collider col)
@@ -43,7 +47,7 @@ public class ControllerGrab : MonoBehaviour {
 
 	public void OnTriggerEnter(Collider other) {	//prone to errors
 		SetCollidingObject (other);
-		if (this.GetComponent<ControllerRetract>().retracting && this.GetComponent<ControllerRetract>().retractobj.GetInstanceID() == other.attachedRigidbody.gameObject.GetInstanceID()) {//gameobject.GetInstanceID()) {
+		if (this.GetComponent<ControllerRetract>().retracting && this.GetComponent<ControllerRetract>().retractobj && this.GetComponent<ControllerRetract>().retractobj.GetInstanceID() == other.attachedRigidbody.gameObject.GetInstanceID()) {//gameobject.GetInstanceID()) {
 			this.GetComponent<ControllerRetract> ().retracting = false;
 			this.GetComponent<ControllerRetract> ().retractobj = null;
 			other.attachedRigidbody.isKinematic = false;

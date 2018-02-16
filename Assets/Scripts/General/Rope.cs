@@ -25,7 +25,6 @@ public class Rope : MonoBehaviour {
 	public Material valid;
 	public LayerMask layerMask;
 	public float shotDistance;
-	private int layerMaskInt;
 	private GameObject laser;
 
 
@@ -38,7 +37,7 @@ public class Rope : MonoBehaviour {
 		valid = (Material)Resources.Load ("Materials/General/ValidPreviewNode");
 		notValid  = (Material)Resources.Load("Materials/General/NonValidPreviewNode");
 		worldNodeTracker = GameObject.Find("WorldNodeTracker");
-		layerMaskInt = ~layerMask.value;
+		layerMask = LayerMask.GetMask ("RopeIgnore" , "CameraZoneCollisions");
 		laser = Instantiate ((GameObject)Resources.Load("Prefabs/TrailingLaser"));
 //		layerMask = 1 << 8;
 //		layerMask = ~layerMask;
@@ -64,7 +63,7 @@ public class Rope : MonoBehaviour {
 	public Vector3 getValidNodePosition () {
 
 		RaycastHit hit;
-		Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, 30, layerMaskInt);
+		Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, 30, ~layerMask);
 		return hit.point;
 
 	}
@@ -72,7 +71,7 @@ public class Rope : MonoBehaviour {
 	public bool isValidNode () {
 
 		RaycastHit hit;
-		if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, shotDistance, layerMaskInt)) { //if raycast hits an object
+		if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, shotDistance, ~layerMask)) { //if raycast hits an object
 			if (hit.collider.gameObject.CompareTag ("Climbable") || hit.collider.gameObject.CompareTag ("Rope")) {
 				return true;
 			} else {
@@ -99,25 +98,25 @@ public class Rope : MonoBehaviour {
 
 			RaycastHit hit;
 
-			if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, shotDistance  , layerMaskInt)) { //if raycast hits an object
+			if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, shotDistance  , ~layerMask)) { //if raycast hits an object
 
 				previewNode.transform.position = hit.point;
 				ShowLaser (hit);
 
 				if (hit.collider.gameObject.CompareTag ("Climbable") || hit.collider.gameObject.CompareTag ("Rope")) {
 					previewNode.GetComponent<Renderer> ().material = valid;
-					worldNodeTracker.GetComponent<WorldRopeNodeTracker> ().ropePreview (hit.point);
+					worldNodeTracker.GetComponent<WorldRopeNodeTracker> ().ropePreview (this.gameObject , hit.point);
 					laser.GetComponent<DottedLineRenderer> ().valid = true;
 
 				} else {
 					previewNode.GetComponent<Renderer> ().material = notValid;
-					worldNodeTracker.GetComponent<WorldRopeNodeTracker> ().destroyPreviewRope();
+					worldNodeTracker.GetComponent<WorldRopeNodeTracker> ().destroyPreviewRope(this.gameObject);
 					laser.GetComponent<DottedLineRenderer> ().valid = false;
 				}
 					
 			} else {
 				DestroyImmediate (previewNode,false);
-				worldNodeTracker.GetComponent<WorldRopeNodeTracker> ().destroyPreviewRope();
+				worldNodeTracker.GetComponent<WorldRopeNodeTracker> ().destroyPreviewRope(this.gameObject);
 				laser.SetActive (false);
 
 			}
@@ -126,7 +125,7 @@ public class Rope : MonoBehaviour {
 		} else {
 			DestroyImmediate (previewNode,false);
 			laser.SetActive (false);
-//			worldNodeTracker.GetComponent<WorldRopeNodeTracker> ().destroyPreviewRope();
+			worldNodeTracker.GetComponent<WorldRopeNodeTracker> ().destroyPreviewRope(this.gameObject);
 
 		}
 		

@@ -88,7 +88,7 @@ public class FunctionController : MonoBehaviour {
 		//ind.transform.Rotate (90f,trackedObj.transform.rotation.eulerAngles.y - 180f,0f);
 		//ind.transform.localRotation = Quaternion.EulerAngles(new Vector3(90f,0,0));
 		//ind.transform.localEulerAngles = new Vector3(90f,0f,0f);
-		ind.layer = 8;
+		ind.layer = LayerMask.NameToLayer("RopeIgnore");
 
 		switch (currMode) {
 		case Mode.WebShot:
@@ -125,7 +125,7 @@ public class FunctionController : MonoBehaviour {
 	}
 
 	private IEnumerator destroyPrimitive(GameObject prim) {
-		yield return new WaitForSeconds (2);
+		yield return new WaitForSeconds (2f);
 		if (prim) {
 			Destroy (prim);
 		}

@@ -5,11 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Climbable
-  - Pickup
-  - Target
-  - BadGuy
-  - Rope
   - Retractable
+  - Rope
   layers:
   - Default
   - TransparentFX

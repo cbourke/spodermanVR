@@ -34,6 +34,7 @@ public class ControllerRetract : MonoBehaviour {
 		laser = Instantiate (laserPrefab);
 		laserTransform = laser.transform;
 		laser.GetComponent<DottedLineRenderer> ().outward = false;
+		layerMask = LayerMask.GetMask ("RopeIgnore" , "CameraZoneCollisions");
 //		layerMask = 1 << 8;
 //		layerMask = ~layerMask;
 
@@ -59,8 +60,9 @@ public class ControllerRetract : MonoBehaviour {
 		}
 		if (this.GetComponent<FunctionController> ().currentMode.ToString () == "RetractShot" && !retracting) {
 			RaycastHit hit;	
-			if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, shotDistance, ~layerMask.value)) {
-				if (hit.collider.gameObject.GetComponent<Rigidbody>() && ((!hit.collider.gameObject.GetComponent<Rigidbody> ().isKinematic && hit.collider.gameObject.GetComponent<Rigidbody> ().useGravity) || hit.collider.gameObject.CompareTag("Retractable"))) {
+			if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, shotDistance, ~layerMask)) {
+				if (hit.collider.gameObject.GetComponent<Rigidbody>() 
+					&& ((!hit.collider.gameObject.GetComponent<Rigidbody> ().isKinematic && hit.collider.gameObject.GetComponent<Rigidbody> ().useGravity) || hit.collider.gameObject.CompareTag("Retractable"))) {
                     //hit.collider.gameObject.transform.position = trackedObj.transform.position;
                     //return hit.collider.gameObject;
                     StartCoroutine(pull(hit.collider.gameObject));
@@ -73,9 +75,14 @@ public class ControllerRetract : MonoBehaviour {
 	public IEnumerator pull(GameObject pullObj) {   //from here, the OnTriggerEnter in ControllerGrab handles when the object contacts the controller. This coroutine just keeps running until then.
 		pullObj.GetComponent<Rigidbody>().useGravity = false;
 		pullObj.GetComponent<Rigidbody> ().angularVelocity = Vector3.zero;
-		pullObj.GetComponent<Rigidbody>().isKinematic = true;
-
 		retracting = true;
+//		if (pullObj.CompareTag("Retractable")) 
+//			pullObj.GetComponent<Rigidbody>().isKinematic = false;
+//		else 
+//			pullObj.GetComponent<Rigidbody>().isKinematic = true;
+//
+		pullObj.GetComponent<Rigidbody> ().isKinematic = !pullObj.CompareTag ("Retractable");
+
 		retractobj = pullObj;
 		//float step = retractSpeed * Time.deltaTime;
 		while (retracting) {
@@ -95,9 +102,14 @@ public class ControllerRetract : MonoBehaviour {
 			}
 
 			RaycastHit hit;	
-			if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, shotDistance, ~layerMask.value)) {
+			if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, shotDistance, ~layerMask)) {
 				hitPoint = hit.point;
 				ShowLaser (hit);
+				if (hit.collider.gameObject.GetComponent<Rigidbody> () && ((!hit.collider.gameObject.GetComponent<Rigidbody> ().isKinematic && hit.collider.gameObject.GetComponent<Rigidbody> ().useGravity) || hit.collider.gameObject.CompareTag ("Retractable"))) {
+					laser.GetComponent<DottedLineRenderer> ().valid = true;
+				} else {
+					laser.GetComponent<DottedLineRenderer> ().valid = false;
+				}
 
 			} else {
 				laser.SetActive (false);

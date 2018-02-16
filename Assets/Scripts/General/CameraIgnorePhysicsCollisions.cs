@@ -6,6 +6,6 @@ public class CameraIgnorePhysicsCollisions : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake() {
-		Physics.IgnoreLayerCollision (10 , 0 , true);
+		Physics.IgnoreLayerCollision (LayerMask.NameToLayer("CameraZoneCollisions") , 0 , true);
 	}
 }

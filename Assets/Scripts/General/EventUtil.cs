@@ -9,16 +9,17 @@ public class EventUtil : MonoBehaviour {
 	public bool lookingBool;
 	public float lookRecognitionTime;
 	public bool talking;
-
+	public GameObject leftController;
+	public GameObject rightController;
 	private AudioClip sound;
 	private AudioClip speechSound;
-
-	private int layerMask;
+	private LayerMask layerMask;
 
 	void Awake() {
 		headset = GameObject.Find ("Camera (eye)");
-		layerMask = 1 << 8;
-		layerMask = ~layerMask;
+		layerMask = ~LayerMask.GetMask ("RopeIgnore" , "CameraZoneCollisions");
+		leftController = GameObject.Find ("[CameraRig]").transform.Find("Controller (left)").gameObject;
+		rightController = GameObject.Find ("[CameraRig]").transform.Find("Controller (right)").gameObject;
 	}
 
 
@@ -92,6 +93,21 @@ public class EventUtil : MonoBehaviour {
 	public void playClip(GameObject obj , AudioClip clip) {
 		obj.GetComponent<AudioSource> ().clip = clip;
 		obj.GetComponent<AudioSource> ().Play ();
+	}
+
+	public void cancelRetract() {
+		leftController.GetComponent<ControllerRetract> ().retracting = false;
+		rightController.GetComponent<ControllerRetract> ().retracting = false;
+		if (leftController.GetComponent<ControllerRetract> ().retractobj) {
+			leftController.GetComponent<ControllerRetract> ().retractobj.GetComponent<Rigidbody> ().isKinematic = false;
+			leftController.GetComponent<ControllerRetract> ().retractobj.GetComponent<Rigidbody> ().useGravity = true;
+			leftController.GetComponent<ControllerRetract> ().retractobj = null;
+		}
+		if (leftController.GetComponent<ControllerRetract> ().retractobj) {
+			leftController.GetComponent<ControllerRetract> ().retractobj.GetComponent<Rigidbody> ().isKinematic = false;
+			leftController.GetComponent<ControllerRetract> ().retractobj.GetComponent<Rigidbody> ().useGravity = true;
+			leftController.GetComponent<ControllerRetract> ().retractobj = null;
+		}
 	}
 
 

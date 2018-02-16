@@ -17,13 +17,12 @@ public class PauseMenu : MonoBehaviour
 	public LayerMask pauseLayer;
 	private Vector3 hitPoint; 
     private SteamVR_TrackedObject trackedObj; 
-	//private int layerMask;
 	private bool climbTemp;
 	private bool ropeTemp;
 	private bool retractTemp;
 	private bool fistTemp;
 	private bool shotTemp;
-	public bool pause = false;
+	public bool pause;
 
 
 	
@@ -38,30 +37,24 @@ public class PauseMenu : MonoBehaviour
 		laserPrefab = (GameObject)Resources.Load("Prefabs/pauseLaser");
 		head = GameObject.Find ("Camera (eye)");
 		worldTracker = GameObject.Find ("WorldNodeTracker");
-
+		if (this.name.Equals("Controller (left)")) 
+			otherController = GameObject.Find ("[CameraRig]").transform.Find ("Controller (right)").gameObject;
+		else 
+			otherController = GameObject.Find ("[CameraRig]").transform.Find ("Controller (left)").gameObject;
+		
+	
 
 	}
 
 	void Start()
 	{
-//		if (!PMenu)
-//			Debug.Log ("Pause Menu object not found!");
-//		else
-//			PMenu.SetActive (false);
-
-//		if (!laser)
-//			Debug.Log ("Laser object not found!");
-//		else {
-//			laserTransform = laser.transform;
-//			laser.SetActive (false);
-//		}
 		laser = Instantiate(laserPrefab);
 		laserTransform = laser.transform;
 		if (!head)
 			Debug.Log ("Head object not found!");
-		
-//		layerMask = 1 << 8;
-//		layerMask = ~layerMask;
+		pauseLayer = LayerMask.GetMask ("PauseMenu");
+
+
 	}
 
 	
@@ -85,12 +78,9 @@ public class PauseMenu : MonoBehaviour
 	{			
 		if ((Controller.GetPressDown(3) || Controller.GetPressDown (1)) && !otherController.GetComponent<PauseMenu>().pause) {
 			if (!pause && validDistanceChecker()) {
-//				Debug.Log ("I initiated menu");
 				worldTracker.GetComponent<PauseMenuWorld>().ShowMenu (this.gameObject);
 			}
 			else {
-
-//				Debug.Log ("I'M EXITING HERE");
 				worldTracker.GetComponent<PauseMenuWorld> ().HideMenu (this.gameObject);
 				laser.SetActive (false);
 			}
@@ -98,9 +88,7 @@ public class PauseMenu : MonoBehaviour
 
 
 		if (pause) {
-//			Debug.Log ("I'm paused");
 			RaycastHit hit;	
-
 			if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, 100, pauseLayer)) {
 				hitPoint = hit.point;
 				ShowLaser (hit);
@@ -139,7 +127,6 @@ public class PauseMenu : MonoBehaviour
 				}
 			}
 			 else {
-				Debug.Log ("reverting buttons...");
 				worldTracker.GetComponent<PauseMenuWorld> ().revertButtons(texture);
 			}
 		}
@@ -173,7 +160,6 @@ public class PauseMenu : MonoBehaviour
 
 	public bool validDistanceChecker () {
 		RaycastHit hit;
-
 		if (Physics.Raycast (head.transform.position, head.transform.forward, out hit, worldTracker.GetComponent<PauseMenuWorld> ().headOffset)) { //if raycast hits an object
 			GetComponent<AudioSource>().clip = (AudioClip)Resources.Load("Audio/windowAudio/error");
 			GetComponent<AudioSource> ().Play();

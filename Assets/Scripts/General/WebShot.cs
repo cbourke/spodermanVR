@@ -15,7 +15,7 @@ public class WebShot : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		shotForce = 2000.0f;
+//		shotForce = 2000.0f;
 
 	}
 
@@ -34,8 +34,6 @@ public class WebShot : MonoBehaviour {
 		shot.transform.position = forOffset;
 		shot.AddComponent<Rigidbody> ();
 		shot.transform.localScale = new Vector3 (0.07f,0.07f,0.07f);
-		shot.GetComponent<Rigidbody> ().collisionDetectionMode = CollisionDetectionMode.Continuous;
-		shot.GetComponent<Collider> ().isTrigger = true;
 		shot.AddComponent<WebShotCollider> ();
 		shot.GetComponent<Rigidbody> ().AddForce (this.transform.forward * shotForce);
 	}

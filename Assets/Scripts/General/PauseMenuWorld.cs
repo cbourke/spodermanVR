@@ -15,7 +15,7 @@ public class PauseMenuWorld : MonoBehaviour {
 	private AudioClip closeNoise;
 	public GameObject leftController;
 	public GameObject rightController;
-	private bool hideLock = false;
+	private bool hideLock;
 	private bool[] rightStatus = new bool[5];		//[climbEnabled , ropeEnabled , retractEnabled , fistEnabled , shotEnabled]
 	private bool[] leftStatus = new bool[5];
 
@@ -28,27 +28,19 @@ public class PauseMenuWorld : MonoBehaviour {
 	void Start() {
 		head = GameObject.Find ("Camera (eye)");
 		paused = false;
+		hideLock = false;
 		leftController = GameObject.Find ("[CameraRig]").transform.Find("Controller (left)").gameObject;
 		rightController = GameObject.Find ("[CameraRig]").transform.Find("Controller (right)").gameObject;
 	}
 
 	public void ShowMenu(GameObject sendingController)
 	{
-		Debug.Log ("I'm trying to create the menu");
 		if (pMenuInst == null) {
 			pMenuInst = Instantiate (PMenu);
 			paused = true;
 			sendingController.GetComponent<PauseMenu> ().pause = true;
 			StoreFunctions ();
 			DisableFunctions ();
-//			list.Add (Instantiate(PMenu));
-//			list[0].transform.position = head.transform.position;
-//			list[0].transform.position += head.transform.forward * headOffset;
-//			list [0].transform.position -= new Vector3 (0,0.3f,0);
-//			list[0].transform.rotation = Quaternion.identity;
-//			list[0].transform.Rotate (90f,head.transform.rotation.eulerAngles.y - 180f,0f);
-//			list [0].GetComponent<AudioSource> ().clip = openNoise;
-//			list [0].GetComponent<AudioSource> ().Play ();
 			pMenuInst.transform.position = head.transform.position;
 			pMenuInst.transform.position += head.transform.forward * headOffset;
 			pMenuInst.transform.position -= new Vector3 (0,0.3f,0);
@@ -58,21 +50,12 @@ public class PauseMenuWorld : MonoBehaviour {
 			pMenuInst.GetComponent<AudioSource> ().Play ();
 			Time.timeScale = 0.00000001F;
 			Time.fixedDeltaTime = 0.00000001F;
-
-			//sendingController.GetComponent<PauseMenu> ().pause = true;
 		}
-
-
-
-		//PMenu.transform.rotation = Quaternion.FromToRotation (PMenu.transform.forward,head.transform.forward);
-		//PMenu.transform.LookAt(head.transform);
-		//GameObject.Find ("Panel").SetActive (true);
-		//PMenuTransform.position = Vector3.Lerp(trackedObj.transform.position, hitPoint, .5f);
+			
 
 	}
 
 	public void revertButtons (Texture[] textures) {
-		//List<GameObject> children;
 		if (pMenuInst != null) {
 			foreach (Transform child in pMenuInst.transform) {
 				if (child.name.Equals("Continue"))  
@@ -85,20 +68,7 @@ public class PauseMenuWorld : MonoBehaviour {
 		}
 	}
 
-//	public void cancelRetract() {
-//		leftController.GetComponent<ControllerRetract> ().retracting = false;
-//		rightController.GetComponent<ControllerRetract> ().retracting = false;
-//		if (leftController.GetComponent<ControllerRetract> ().retractobj) {
-//			leftController.GetComponent<ControllerRetract> ().retractobj.GetComponent<Rigidbody> ().isKinematic = false;
-//			leftController.GetComponent<ControllerRetract> ().retractobj.GetComponent<Rigidbody> ().useGravity = true;
-//			leftController.GetComponent<ControllerRetract> ().retractobj = null;
-//		}
-//		if (leftController.GetComponent<ControllerRetract> ().retractobj) {
-//			leftController.GetComponent<ControllerRetract> ().retractobj.GetComponent<Rigidbody> ().isKinematic = false;
-//			leftController.GetComponent<ControllerRetract> ().retractobj.GetComponent<Rigidbody> ().useGravity = true;
-//			leftController.GetComponent<ControllerRetract> ().retractobj = null;
-//		}
-//	}
+
 
 	public void HideMenu(GameObject sendingController)
 	{
@@ -114,19 +84,6 @@ public class PauseMenuWorld : MonoBehaviour {
 			StartCoroutine (DestroyMenu(sendingController));
 	
 		}
-
-
-//		if (!pmenuInst) {
-//			return;
-//		}
-//		pmenuInst.GetComponent<AudioSource> ().clip = closeNoise;
-//		pmenuInst.GetComponent<AudioSource> ().Play ();
-//		pmenuInst.GetComponent<MeshRenderer> ().enabled = false;
-//		foreach (Transform child in pmenuInst.transform) {
-//			child.GetComponent<MeshRenderer> ().enabled = false;
-//		}
-//		StartCoroutine (Destroy());
-
 
 	}
 
@@ -185,9 +142,6 @@ public class PauseMenuWorld : MonoBehaviour {
 		sendCont.GetComponent<PauseMenu> ().laser.SetActive (false);
 		Destroy (pMenuInst);
 		hideLock = false;
-
-		Debug.Log ("MENU DESTROYED");
-
 		//pmenuInst = null;
 	}
 

@@ -21,8 +21,8 @@ public class WorldRopeNodeTracker : MonoBehaviour {
 	private Material valid;
 	private Material invalid;
 	private EventUtil util;
-	public GameObject previewRopeObj;
-
+	public GameObject previewRopeObjL;
+	public GameObject previewRopeObjR;
 	public Vector3 lookerOffset;
 	public Vector3 lookerDest;
 	public Vector3 destiOffset;
@@ -32,17 +32,21 @@ public class WorldRopeNodeTracker : MonoBehaviour {
 		speakerObj = GetComponentInChildren<AudioSource> ().gameObject;
 		speaker = GetComponentInChildren<AudioSource> ();
 		ropeKeeper = new List<GameObject>();
-//		layerMaskInt = ~layerMask.value;
 		valid = (Material)Resources.Load ("Materials/General/ropePreviewValid");
 		invalid = (Material)Resources.Load ("Materials/General/ropePreviewInvalid");
 		util = transform.Find("Events").gameObject.GetComponent<EventUtil>();
 	}
 	// Use this for initialization
 	void Start () {
-		previewRopeObj = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-		previewRopeObj.name = "Preview Rope";
-		Destroy (previewRopeObj.GetComponent<CapsuleCollider>());
-		previewRopeObj.SetActive (false);
+		previewRopeObjL = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+		previewRopeObjL.name = "Preview Rope";
+		Destroy (previewRopeObjL.GetComponent<CapsuleCollider>());
+		previewRopeObjL.SetActive (false);
+
+		previewRopeObjR = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+		previewRopeObjR.name = "Preview Rope";
+		Destroy (previewRopeObjR.GetComponent<CapsuleCollider>());
+		previewRopeObjR.SetActive (false);
 	}
 
 	public void spawnNode (Vector3 spawnPoint , GameObject callingController) {
@@ -115,26 +119,44 @@ public class WorldRopeNodeTracker : MonoBehaviour {
 			Destroy(node1);
 //			Destroy(node2);
 			nodeKeeper.Clear();
-			destroyPreviewRope ();
+			destroyBothPreviewRope ();
 		}
 	}
 
-	public void ropePreview(Vector3 secPoint) {
+	public void ropePreview(GameObject sendingCont , Vector3 secPoint) {
 		if (nodeKeeper.Count == 1) {
-			if (!previewRopeObj.activeSelf) {
-				previewRopeObj.SetActive (true);
-			}
-			Vector3 sumPoints = new Vector3(0,0,0);
-			sumPoints = nodeKeeper[0] + secPoint;
-			Vector3 offset = secPoint - nodeKeeper [0];
-			Vector3 modScale = new Vector3(0.05f, offset.magnitude / 2.0f , 0.05f);
-			previewRopeObj.transform.up = offset;
-			previewRopeObj.transform.localScale = modScale;
-			previewRopeObj.transform.position = Vector3.Scale (sumPoints , new Vector3(0.5f,0.5f,0.5f));
-			if (nodeLooker(nodeKeeper[0] , secPoint)) {
-				previewRopeObj.GetComponent<Renderer> ().material = valid;
+			if (sendingCont.name.Equals ("Controller (left)")) {
+				if (!previewRopeObjL.activeSelf) {
+					previewRopeObjL.SetActive (true);
+				}
+				Vector3 sumPoints = new Vector3(0,0,0);
+				sumPoints = nodeKeeper[0] + secPoint;
+				Vector3 offset = secPoint - nodeKeeper [0];
+				Vector3 modScale = new Vector3(0.05f, offset.magnitude / 2.0f , 0.05f);
+				previewRopeObjL.transform.up = offset;
+				previewRopeObjL.transform.localScale = modScale;
+				previewRopeObjL.transform.position = Vector3.Scale (sumPoints , new Vector3(0.5f,0.5f,0.5f));
+				if (nodeLooker(nodeKeeper[0] , secPoint)) {
+					previewRopeObjL.GetComponent<Renderer> ().material = valid;
+				} else {
+					previewRopeObjL.GetComponent<Renderer> ().material = invalid;
+				}
 			} else {
-				previewRopeObj.GetComponent<Renderer> ().material = invalid;
+				if (!previewRopeObjR.activeSelf) {
+					previewRopeObjR.SetActive (true);
+				}
+				Vector3 sumPoints = new Vector3(0,0,0);
+				sumPoints = nodeKeeper[0] + secPoint;
+				Vector3 offset = secPoint - nodeKeeper [0];
+				Vector3 modScale = new Vector3(0.05f, offset.magnitude / 2.0f , 0.05f);
+				previewRopeObjR.transform.up = offset;
+				previewRopeObjR.transform.localScale = modScale;
+				previewRopeObjR.transform.position = Vector3.Scale (sumPoints , new Vector3(0.5f,0.5f,0.5f));
+				if (nodeLooker(nodeKeeper[0] , secPoint)) {
+					previewRopeObjR.GetComponent<Renderer> ().material = valid;
+				} else {
+					previewRopeObjR.GetComponent<Renderer> ().material = invalid;
+				}
 			}
 
 		} 
@@ -158,11 +180,27 @@ public class WorldRopeNodeTracker : MonoBehaviour {
 		else return true;
 	}
 
-	public void destroyPreviewRope() {
-		if (previewRopeObj.activeSelf) {
-			previewRopeObj.SetActive (false);
+	public void destroyPreviewRope(GameObject sendingCont) {
+		if (sendingCont.name.Equals ("Controller (left)")) {
+			if (previewRopeObjL.activeSelf) {
+				previewRopeObjL.SetActive (false);
+			}
+		} else {
+			if (previewRopeObjR.activeSelf) {
+				previewRopeObjR.SetActive (false);
+			}
 		}
 
+
+	}
+
+	public void destroyBothPreviewRope () {
+		if (previewRopeObjL.activeSelf) {
+			previewRopeObjL.SetActive (false);
+		}
+		if (previewRopeObjR.activeSelf) {
+			previewRopeObjR.SetActive (false);
+		}
 	}
 
 	private IEnumerator RopeExpire(GameObject ropeTarg) {
