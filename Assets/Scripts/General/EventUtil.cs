@@ -14,12 +14,18 @@ public class EventUtil : MonoBehaviour {
 	private AudioClip sound;
 	private AudioClip speechSound;
 	private LayerMask layerMask;
+	private HeadColliderHandler headColliderHandler;
+
+	public static EventUtil FindMe() {
+		return  GameObject.FindObjectOfType<EventUtil>();
+	}
 
 	void Awake() {
 		headset = GameObject.Find ("Camera (eye)");
 		layerMask = ~LayerMask.GetMask ("RopeIgnore" , "CameraZoneCollisions");
 		leftController = GameObject.Find ("[CameraRig]").transform.Find("Controller (left)").gameObject;
 		rightController = GameObject.Find ("[CameraRig]").transform.Find("Controller (right)").gameObject;
+		headColliderHandler = HeadColliderHandler.FindMe ();
 	}
 
 
@@ -108,6 +114,24 @@ public class EventUtil : MonoBehaviour {
 			leftController.GetComponent<ControllerRetract> ().retractobj.GetComponent<Rigidbody> ().useGravity = true;
 			leftController.GetComponent<ControllerRetract> ().retractobj = null;
 		}
+	}
+
+	public bool FieldOfVision(GameObject lookingActor , float angle = 0.5f) {
+		RaycastHit hit;
+		Vector3 correctedPosition = lookingActor.transform.position + new Vector3 (0 , lookingActor.GetComponent<BoxCollider> ().bounds.size.y - 0.1f , 0);
+		Vector3 diffVec = headset.transform.position - correctedPosition;
+//		GameObject point = GameObject.CreatePrimitive (PrimitiveType.Sphere);
+//		point.transform.position = correctedPosition;
+//		point.transform.localScale = new Vector3(0.1f,0.1f,0.1f);
+//		Destroy (point.GetComponent<SphereCollider>());
+		if (Physics.Raycast (correctedPosition, diffVec.normalized, out hit, diffVec.magnitude, layerMask)) {
+			if (hit.collider.gameObject.GetInstanceID () == headColliderHandler.gameObject.GetInstanceID ()) {
+				if (Vector3.Dot (lookingActor.transform.right.normalized, diffVec.normalized) >= angle) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 

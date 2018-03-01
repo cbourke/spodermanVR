@@ -12,6 +12,10 @@ public class HeadColliderHandler : MonoBehaviour {
 	public GameObject collObj;
 	private GameObject world;
 	private Color startingBlurCol;
+
+	public static HeadColliderHandler FindMe() {
+		return GameObject.FindObjectOfType<HeadColliderHandler>();
+	}
 	// Use this for initialization
 	void Awake() {
 		headLayer = LayerMask.NameToLayer ("Default");
