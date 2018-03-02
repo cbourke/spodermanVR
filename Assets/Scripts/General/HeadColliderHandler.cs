@@ -31,7 +31,8 @@ public class HeadColliderHandler : MonoBehaviour {
 	}
 
 	public void OnTriggerEnter (Collider coll) {
-		if (!coll.attachedRigidbody) {
+		Debug.Log (coll.gameObject);
+		if (!coll.attachedRigidbody || coll.gameObject.CompareTag("Projectile")) {
 			return;
 		}
 		SetCollidingObject (coll.attachedRigidbody.gameObject);

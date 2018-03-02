@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Puncher : BaseEnemy {
 
-	public override void Attack() {
+	public override void Attack(GameObject target) {
 
 	}
 }

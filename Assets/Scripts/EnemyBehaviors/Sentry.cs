@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Sentry : BaseEnemy {
 
-	public override void Walk() {
+	public override void Walk(GameObject target) {
 
 	}
 
