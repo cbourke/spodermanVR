@@ -25,7 +25,8 @@ public class WindowTextController : MonoBehaviour {
 	}
 
 	void Awake () {
-		util = GameObject.Find ("WorldNodeTracker").transform.Find("Events").GetComponent<EventUtil>();
+//		util = GameObject.Find ("WorldNodeTracker").transform.Find("Events").GetComponent<EventUtil>();
+		util = EventUtil.FindMe();
 		outline = transform.parent.transform.parent.transform.Find("Outline").gameObject;
 		leftCont = GameObject.Find ("[CameraRig]").transform.Find ("Controller (left)").gameObject;
 		rightCont = GameObject.Find ("[CameraRig]").transform.Find ("Controller (right)").gameObject;
