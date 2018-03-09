@@ -8,6 +8,7 @@ TagManager:
   - Retractable
   - Rope
   - Projectile
+  - Badguy
   layers:
   - Default
   - TransparentFX

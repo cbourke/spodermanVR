@@ -17,7 +17,7 @@ public class Hitman : BaseEnemy {
 	}
 
 	public override void Attack (GameObject target) {
-		attTimer -= Time.deltaTime;
+		attTimer -= speed * Time.deltaTime;
 		if (attTimer <= 0) {
 			attTimer = 3f;
 			base.animationLock = true ;
@@ -34,7 +34,7 @@ public class Hitman : BaseEnemy {
 	}
 
 	private IEnumerator shoot(GameObject target) {
-		float timeTillShoot = 0.75f;
+		float timeTillShoot = 0.75f / base.speed;
 		yield return new WaitForSeconds (timeTillShoot);
 		GameObject bull = Instantiate ((GameObject)Resources.Load("Prefabs/Bullet"));
 		bull.transform.position = transform.position + new Vector3 (-0.5f , gameObject.GetComponent<BoxCollider> ().bounds.size.y * 0.75f , gameObject.GetComponent<BoxCollider> ().bounds.size.z / 2);

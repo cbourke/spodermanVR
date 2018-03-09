@@ -11,6 +11,7 @@ public class EventUtil : MonoBehaviour {
 	public bool talking;
 	public GameObject leftController;
 	public GameObject rightController;
+	public static readonly Random RAND = new Random();
 	private AudioClip sound;
 	private AudioClip speechSound;
 	private LayerMask layerMask;
@@ -133,6 +134,6 @@ public class EventUtil : MonoBehaviour {
 		}
 		return false;
 	}
-
+		
 
 }

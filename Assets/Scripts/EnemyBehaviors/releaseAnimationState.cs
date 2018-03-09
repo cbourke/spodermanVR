@@ -18,7 +18,6 @@ public class releaseAnimationState : StateMachineBehaviour {
 	override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 		BaseEnemy baseEnm = animator.gameObject.GetComponent<BaseEnemy> ();
 		baseEnm.animationLock = false;
-		Debug.Log ("RELEASED");
 	}
 
 	// OnStateMove is called right after Animator.OnAnimatorMove(). Code that processes and affects root motion should be implemented here

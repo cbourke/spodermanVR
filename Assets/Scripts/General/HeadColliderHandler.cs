@@ -12,6 +12,8 @@ public class HeadColliderHandler : MonoBehaviour {
 	public GameObject collObj;
 	private GameObject world;
 	private Color startingBlurCol;
+	public float hp = 100f;
+	public float lastDamTime;
 
 	public static HeadColliderHandler FindMe() {
 		return GameObject.FindObjectOfType<HeadColliderHandler>();
@@ -60,29 +62,32 @@ public class HeadColliderHandler : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (collObj != null) {
-			blur.SetActive (true);
-			Color tempCol = blur.GetComponent<Renderer> ().material.color;
-			tempCol.a += blurSpeed * Time.deltaTime;
-			blur.GetComponent<Renderer> ().material.color = tempCol;
-			if (blur.GetComponent<Renderer> ().material.color.a >= 1) {
-				Scene loadedLevel = SceneManager.GetActiveScene ();
-				SceneManager.LoadScene (loadedLevel.buildIndex);
-			}
+		if (hp < 100 && Time.fixedTime - lastDamTime >= 3f) {
+			hp += 10f * Time.deltaTime;
+			Mathf.Clamp (hp , 0 , 100);
 		}
-		else  {
-			//incomplete
-			blur.GetComponent<Renderer> ().material.color = startingBlurCol;
-			blur.SetActive (false);
-//			if (blur.activeSelf) {
-//				Color tempCol = blur.GetComponent<Renderer> ().material.color;
-//				tempCol.a -= blurSpeed * Time.deltaTime;
-//				blur.GetComponent<Renderer> ().material.color = tempCol;
-//				if (tempCol.a <= 1) {
-//					blur.SetActive (false);
-//				}
-//			}
+		blur.SetActive (hp < 100);
 
+		if (collObj != null) {
+			Damage(50f * Time.deltaTime);
 		}
+			
+		Color tempCol = blur.GetComponent<Renderer> ().material.color;
+		tempCol.a = Mathf.Abs(hp - 100f) / 100;
+		blur.GetComponent<Renderer> ().material.color = tempCol; 
+
+		if (hp <= 0) {
+			Scene loadedLevel = SceneManager.GetActiveScene ();
+			SceneManager.LoadScene (loadedLevel.buildIndex);
+		}
+			
 	}
+
+	public void Damage(float dam) {
+		lastDamTime = Time.fixedTime;
+		hp -= dam;
+
+
+	}
+		
 }

@@ -18,27 +18,27 @@ public class IgnoreFistCollisions : MonoBehaviour {
 			direction = direction * 2000;
 			other.rigidbody.AddForceAtPosition (direction , other.contacts[0].point);
 		}
-		if (other.gameObject.tag == "BadGuy") {
-			StartCoroutine (Blink(other.gameObject));
-		}
+//		if (other.gameObject.tag == "BadGuy") {
+//			StartCoroutine (Blink(other.gameObject));
+//		}
 //		if (world.GetComponent<ControllerCommWorld>().checkRetractingObj(this,)) {
 //
 //		} TODO: figure out a way to get the controller this collider is attached to.
 	
 	}
 
-	private IEnumerator Blink(GameObject obj) {
-		int intervalCount = 10;
-		float blinkInterval = 0.05f;
-		while (intervalCount >= 0) {
-			obj.GetComponent<Renderer> ().enabled = false;
-			intervalCount--;
-			yield return new WaitForSeconds (blinkInterval);
-			obj.GetComponent<Renderer> ().enabled = true;
-			yield return new WaitForSeconds (blinkInterval);
-		}
-		obj.SetActive (false);
-
-	}
+//	private IEnumerator Blink(GameObject obj) {
+//		int intervalCount = 10;
+//		float blinkInterval = 0.05f;
+//		while (intervalCount >= 0) {
+//			obj.GetComponent<Renderer> ().enabled = false;
+//			intervalCount--;
+//			yield return new WaitForSeconds (blinkInterval);
+//			obj.GetComponent<Renderer> ().enabled = true;
+//			yield return new WaitForSeconds (blinkInterval);
+//		}
+//		obj.SetActive (false);
+//
+//	}
 
 }

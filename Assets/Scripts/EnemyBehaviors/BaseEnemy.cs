@@ -8,7 +8,8 @@ public class BaseEnemy : MonoBehaviour {
 	protected EventUtil util;
 	protected Animator badAnim;
 	protected bool canSeePlayer;
-
+	public float speed = 1;
+	private GameObject halo;
 	public bool animationLock = false;
 
 //	protected bool getAnimationLock(){
@@ -26,6 +27,7 @@ public class BaseEnemy : MonoBehaviour {
 		util = EventUtil.FindMe ();
 		badAnim = this.GetComponent<Animator> ();
 		head = HeadColliderHandler.FindMe ();
+		halo = transform.Find ("Halo").gameObject;
 	}
 
 	// Use this for initialization
@@ -35,6 +37,8 @@ public class BaseEnemy : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		badAnim.speed = speed;
+		halo.SetActive (speed != 1);
 		canSeePlayer = util.FieldOfVision (this.gameObject);
 		if (canSeePlayer) {
 			this.LookAt (head.gameObject);
@@ -52,7 +56,7 @@ public class BaseEnemy : MonoBehaviour {
 
 		}
 		if (!animationLock) {
-			gameObject.transform.position = Vector3.MoveTowards (gameObject.transform.position , target.transform.position , Time.deltaTime);
+			gameObject.transform.position = Vector3.MoveTowards (gameObject.transform.position , target.transform.position , speed * Time.deltaTime);
 		}
 	}
 
