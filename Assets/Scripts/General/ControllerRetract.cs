@@ -7,7 +7,6 @@ public class ControllerRetract : MonoBehaviour {
 	public GameObject laserPrefab;
 	public Transform laserTransform;
 	public GameObject retractobj;	
-	public GameObject objectInHand;
 	public float retractSpeed;
 	public bool retracting;
 	public float shotDistance;
@@ -93,6 +92,13 @@ public class ControllerRetract : MonoBehaviour {
 	
 
 	public void Update() {
+
+		if (retractobj != null) {
+			IPersistObject o = retractobj.GetComponent<IPersistObject> ();
+			if (o != null) {
+				o.Persist ();
+			}
+		}
 
 		if (this.GetComponent<FunctionController> ().currentMode.ToString () == "RetractShot" && !retracting && !worldTracker.GetComponent<PauseMenuWorld>().paused) {
 

@@ -24,7 +24,7 @@ public class Hitman : BaseEnemy {
 			StartCoroutine (shoot(target));
 			base.badAnim.SetTrigger ("IdleToShoot");
 			base.badAnim.SetBool ("Walk" , false);
-			Debug.Log ("I was supposed to stop here");
+//			Debug.Log ("I was supposed to stop here");
 //			base.badAnim.SetBool ("Walk" , true);
 		}
 	}

@@ -2,15 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseEnemy : MonoBehaviour {
+public class BaseEnemy : MonoBehaviour, IPersistObject {
 
 	public HeadColliderHandler head;
 	protected EventUtil util;
 	protected Animator badAnim;
 	protected bool canSeePlayer;
 	public float speed = 1;
-	private GameObject halo;
 	public bool animationLock = false;
+	private float lastWebShotTime;
+	private float deadAt;
+	public  Material enemyDefaultSkin;
+	public  Material enemySlowSkin;
+	private Renderer limbRend;
+	private Renderer bodyRend;
+	private Renderer eyeRend;
 
 //	protected bool getAnimationLock(){
 //		if (!_animationLock) {
@@ -23,11 +29,20 @@ public class BaseEnemy : MonoBehaviour {
 //		_animationLock = false;
 //	}
 
+	public virtual void Persist(){
+		if (this.deadAt > 0)
+			this.deadAt = Time.fixedTime;
+	}
+
 	void Awake() {
 		util = EventUtil.FindMe ();
 		badAnim = this.GetComponent<Animator> ();
 		head = HeadColliderHandler.FindMe ();
-		halo = transform.Find ("Halo").gameObject;
+		limbRend = transform.Find ("Body").gameObject.GetComponent<Renderer>();
+		bodyRend = transform.Find ("Chest").gameObject.GetComponent<Renderer>();
+		eyeRend = transform.Find ("Eye").gameObject.GetComponent<Renderer>();
+		enemyDefaultSkin = (Material)Resources.Load("Materials/General/Enemy");
+		enemySlowSkin = (Material)Resources.Load("Materials/General/EnemySlow");
 	}
 
 	// Use this for initialization
@@ -37,16 +52,27 @@ public class BaseEnemy : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		badAnim.speed = speed;
-		halo.SetActive (speed != 1);
-		canSeePlayer = util.FieldOfVision (this.gameObject);
-		if (canSeePlayer) {
-			this.LookAt (head.gameObject);
-			this.Walk (head.gameObject);
-			this.Attack (head.gameObject);
+		if (!IsDead ()) {
+			if (Time.fixedTime - lastWebShotTime >= 5f) {
+				speed = 1;
+				ChangeEnemySkin (enemyDefaultSkin);
+			}
+			badAnim.speed = speed;
+			canSeePlayer = util.FieldOfVision (this.gameObject);
+			if (canSeePlayer) {
+				this.LookAt (head.gameObject);
+				this.Walk (head.gameObject);
+				this.Attack (head.gameObject);
+			} else {
+				this.StopWalk ();
+				this.StopAttack ();
+			}
 		} else {
-			this.StopWalk ();
-			this.StopAttack ();
+			StopWalk ();
+			StopAttack ();
+			if (Time.fixedTime - deadAt >= 3.0f) {
+				Destroy (this.gameObject);
+			}
 		}
 	}
 
@@ -61,7 +87,7 @@ public class BaseEnemy : MonoBehaviour {
 	}
 
 	public virtual void Attack(GameObject target){
-		Debug.Log ("BASE.ATTACK!!!!!");
+//		Debug.Log ("BASE.ATTACK!!!!!");
 	}
 
 	public virtual void LookAt(GameObject target) {
@@ -78,5 +104,34 @@ public class BaseEnemy : MonoBehaviour {
 
 	public virtual void StopAttack() {
 
+	}
+
+	public virtual void SlowSpeed(float newSpd) {
+		speed = newSpd;
+		lastWebShotTime = Time.fixedTime;
+		util.playClip (this.gameObject , (AudioClip)Resources.Load("Audio/Speech/slowEnemy"));
+		ChangeEnemySkin (enemySlowSkin);
+	}
+
+	public virtual void ChangeEnemySkin(Material mat) {
+		bodyRend.material = mat;
+		limbRend.material = mat;
+	}
+
+	public virtual void Damage() {
+		util.playClip (this.gameObject , (AudioClip)Resources.Load("Audio/Speech/ouch"));
+	}
+
+	public virtual bool IsDead() {
+		if (deadAt > 0)
+			return true; 
+		
+		float sideAngleDiff = Mathf.Abs(Vector3.Dot (Vector3.up , transform.forward.normalized));
+		float frontAngleDiff = Mathf.Abs(Vector3.Dot (Vector3.up , transform.right.normalized));
+		if (sideAngleDiff > 0.8f || frontAngleDiff > 0.8f) {
+			deadAt = Time.fixedTime;
+			util.playClip (this.gameObject , (AudioClip)Resources.Load("Audio/Speech/death"));
+		}
+		return deadAt > 0;
 	}
 }

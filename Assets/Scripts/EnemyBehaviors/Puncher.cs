@@ -9,9 +9,8 @@ public class Puncher : BaseEnemy {
 			base.StopWalk ();
 			if (!base.animationLock) {
 				int randAtt = Random.Range (1,4);
-				Debug.Log (randAtt);
 				base.badAnim.SetTrigger ("Attack" + randAtt);
-				StartCoroutine (Damage());
+				StartCoroutine (Damage(target));
 			}
 			base.animationLock = true ;
 
@@ -19,8 +18,9 @@ public class Puncher : BaseEnemy {
 		}
 	}
 
-	private IEnumerator Damage() {
+	private IEnumerator Damage(GameObject targ) {
 		yield return new WaitForSeconds (0.5f / base.speed);
-		base.head.Damage (25f);
+		if (Vector3.Distance (targ.transform.position, transform.position) <= 1.5f) 
+			base.head.Damage (25f);
 	}
 }

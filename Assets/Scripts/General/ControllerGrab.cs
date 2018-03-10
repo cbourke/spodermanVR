@@ -33,7 +33,15 @@ public class ControllerGrab : MonoBehaviour {
 		else 
 			otherController = GameObject.Find ("[CameraRig]").transform.Find ("Controller (left)").gameObject;
 	}
+	void Update(){
+		if (objectInHand != null) {
+			IPersistObject o = objectInHand.GetComponent<IPersistObject> ();
+			if (o != null) {
+				o.Persist ();
+			}
+		}
 
+	}
 	private void SetCollidingObject(Collider col)
 	{
 		if (collidingObject || !col.GetComponent<Rigidbody>())

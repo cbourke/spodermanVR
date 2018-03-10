@@ -15,7 +15,7 @@ public class WebShotCollider : MonoBehaviour {
 	public void OnTriggerEnter(Collider other) {
 		//add sticky element here. Implement as needed
 		if (other.gameObject.CompareTag("Badguy")) {
-			other.GetComponent<BaseEnemy> ().speed = 0.1f;
+			other.gameObject.GetComponent<BaseEnemy> ().SlowSpeed(0.5f);
 		}
 		Destroy (this.gameObject);
 	}
