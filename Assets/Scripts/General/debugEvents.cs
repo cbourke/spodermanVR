@@ -11,6 +11,7 @@ public class debugEvents : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
 		windowText = GameObject.Find ("Window").transform.Find ("WindowAnim").transform.Find ("windowText").gameObject;
+
 //		windowText2 = GameObject.Find ("Window (1)").transform.Find ("WindowAnim").transform.Find ("windowText").gameObject;
 	}
 	void Start () {

@@ -6,7 +6,8 @@ public class Level3Events : MonoBehaviour {
 
 	public bool keyObtained;
 	public GameObject window1;
-	public GameObject window1text;
+	public GameObject window2;
+	public GameObject window3;
 	public bool truckMovingL;
 	public bool truckMovingR;
 	public GameObject truck;
@@ -18,14 +19,21 @@ public class Level3Events : MonoBehaviour {
 	private bool leverActivated;
 	private float gateMoveDist = -1f;
 	private bool stopGate;
+	public Texture[] window1Feed;
+	public Texture[] window2Feed;
+	public Texture[] window3Feed;
+
 
 
 	void Awake() {
 		cameraRig = GameObject.Find ("[CameraRig]");
 		leverActivated = false;
 		stopGate = false;
-		util = this.GetComponent<EventUtil> ();
-
+		util = EventUtil.FindMe ();
+		util.GetWindowControllerFromWindow(window1).updateArray (window1Feed);
+		util.GetWindowControllerFromWindow(window2).updateArray (window2Feed);
+		util.GetWindowControllerFromWindow(window3).updateArray (window3Feed);
+		util.GetWindowControllerFromWindow (window3).ChangeLock (2);
 	}
 	// Use this for initialization
 	void Start () {
@@ -51,10 +59,13 @@ public class Level3Events : MonoBehaviour {
 				moveDist = 48;
 			}
 		}
+		if (leverActivated)
+			util.GetWindowControllerFromWindow (window3).ChangeLock (10);
 	}
 
 	void LateUpdate () {
 		if (truckMovingL || truckMovingR) {
+
 			if (keyObtained && truckMovingL && truck.transform.position.x <= moveDist) {
 				truck.transform.Translate (truck.transform.right * Time.deltaTime);
 				util.leftController.GetComponent<ControllerGrab> ().startingControllerPosition += truck.transform.right * Time.deltaTime;
@@ -65,6 +76,8 @@ public class Level3Events : MonoBehaviour {
 				}
 			}
 		}
+		if (!window3.activeSelf && truck.transform.position.x >= moveDist)
+			window3.SetActive (true);
 
 	}
 

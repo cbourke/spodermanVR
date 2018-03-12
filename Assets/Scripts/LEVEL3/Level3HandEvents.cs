@@ -22,6 +22,10 @@ public class Level3HandEvents : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+		if (!world.keyObtained && !world.window2.activeSelf && (util.ObjectInHandCheckLeft().GetInstanceID() == carButton.GetInstanceID() || util.ObjectInHandCheckRight().GetInstanceID() == carButton.GetInstanceID() )) {
+			world.window2.SetActive (true);
+		}
+
 		if (world.keyObtained && this.GetComponent<ControllerGrab> ().objectInHand != null && this.GetComponent<ControllerGrab> ().objectInHand.GetInstanceID () == carButton.GetInstanceID ()) {
 			if (this.gameObject.name.Equals ("Controller (left)")) {
 				world.truckMovingL = true;
@@ -44,6 +48,7 @@ public class Level3HandEvents : MonoBehaviour {
 			world.GetComponent<Level3Events> ().keyObtained = true;
 			Destroy (key);
 			util.playClip (this.gameObject , (AudioClip)Resources.Load("Audio/General/softCorrectSound"));
+			util.GetAnimFromWindow (world.window2).SetTrigger ("TurnOff");
 		}
 
 //		if (coll.gameObject.GetInstanceID() == carButton.GetInstanceID() && world.keyObtained) {

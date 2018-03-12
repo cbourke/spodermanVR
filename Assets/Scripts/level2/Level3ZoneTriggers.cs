@@ -5,7 +5,7 @@ using UnityEngine;
 public class Level3ZoneTriggers : MonoBehaviour {
 
 	public GameObject colliding;
-	private GameObject playerHead;
+	public GameObject playerHead;
 	private GameObject events;
 	private bool triggered1;
 	private bool triggered2;

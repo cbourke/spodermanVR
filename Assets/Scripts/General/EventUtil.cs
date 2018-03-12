@@ -134,6 +134,28 @@ public class EventUtil : MonoBehaviour {
 		}
 		return false;
 	}
+
+	public WindowTextController GetWindowControllerFromWindow(GameObject windowP) {
+		return windowP.transform.Find ("WindowAnim").transform.Find ("windowText").gameObject.GetComponent<WindowTextController> ();
+	}
+
+	public Animator GetAnimFromWindow(GameObject windowP) {
+		return windowP.transform.Find ("WindowAnim").gameObject.GetComponent<Animator> ();
+	}
+
+	public GameObject ObjectInHandCheckLeft() {
+		if (leftController.GetComponent<ControllerGrab> ().objectInHand != null)
+			return leftController.GetComponent<ControllerGrab> ().objectInHand;
+		else
+			return null;
+	}
+
+	public GameObject ObjectInHandCheckRight() {
+		if (rightController.GetComponent<ControllerGrab> ().objectInHand != null)
+			return rightController.GetComponent<ControllerGrab> ().objectInHand;
+		else
+			return null;
+	}
 		
 
 }

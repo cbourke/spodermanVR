@@ -11,10 +11,13 @@ public class WindowTextController : MonoBehaviour {
 	public GameObject rightCont;
 	public int msgLock;
 	public int currIndex;
+	public float lastTexChange = 0;
 
 	public EventUtil util;
 	public GameObject outline;
 	private AudioClip wrong;
+	public GameObject leftPrevArr;
+	public GameObject rightPrevArr;
 
 	private SteamVR_Controller.Device LeftController {
 		get { return SteamVR_Controller.Input ((int)leftControllerSteam.index); }
@@ -23,17 +26,18 @@ public class WindowTextController : MonoBehaviour {
 	private SteamVR_Controller.Device RightController {
 		get { return SteamVR_Controller.Input ((int)rightControllerSteam.index); }
 	}
+		
 
 	void Awake () {
-//		util = GameObject.Find ("WorldNodeTracker").transform.Find("Events").GetComponent<EventUtil>();
 		util = EventUtil.FindMe();
-		outline = transform.parent.transform.parent.transform.Find("Outline").gameObject;
+//		outline = transform.parent.transform.parent.transform.Find("Outline").gameObject;
 		leftCont = GameObject.Find ("[CameraRig]").transform.Find ("Controller (left)").gameObject;
 		rightCont = GameObject.Find ("[CameraRig]").transform.Find ("Controller (right)").gameObject;
 		leftControllerSteam = leftCont.GetComponent<SteamVR_TrackedObject>();
 		rightControllerSteam = rightCont.GetComponent<SteamVR_TrackedObject>();
 		msgLock = int.MaxValue;
 		wrong = (AudioClip)Resources.Load ("Audio/windowAudio/error");
+	
 	}
 	// Use this for initialization
 	void Start () {
@@ -53,6 +57,7 @@ public class WindowTextController : MonoBehaviour {
 					util.playClip (this.gameObject.transform.parent.gameObject , wrong);
 				} else {
 					util.changeTex (this.transform.parent.gameObject , this.gameObject , textures[--currIndex]);
+					lastTexChange = Time.fixedTime;
 				}
 			}
 			else if (RightController.GetPressDown(SteamVR_Controller.ButtonMask.Grip)) {
@@ -60,11 +65,16 @@ public class WindowTextController : MonoBehaviour {
 					util.playClip (this.gameObject.transform.parent.gameObject , wrong);
 				} else {
 					util.changeTex (this.transform.parent.gameObject , this.gameObject , textures[++currIndex]);
+					lastTexChange = Time.fixedTime;
 				}
 			}
 		} else {
 			outline.SetActive (false);
 		}
+//		leftPrevArr.GetComponent<SpriteRenderer>().SetActive (Time.fixedTime - lastTexChange >= 3.0f && currIndex != 0);
+		leftPrevArr.GetComponent<SpriteRenderer>().enabled = Time.fixedTime - lastTexChange >= 3.0f && currIndex != 0;
+//		rightPrevArr.SetActive (Time.fixedTime - lastTexChange >= 3.0f && currIndex < msgLock && currIndex < textures.GetLength(0));
+		rightPrevArr.GetComponent<SpriteRenderer>().enabled = Time.fixedTime - lastTexChange >= 3.0f && currIndex < msgLock && currIndex < textures.GetLength(0);
 	}
 
 	public void updateArray (Texture[] tex) {
@@ -74,8 +84,9 @@ public class WindowTextController : MonoBehaviour {
 		this.textures = tempTex.ToArray ();
 	}
 
-	public IEnumerator continuePrompt () {
-		yield return new WaitForSeconds (2.0f);
-
+	public void ChangeLock (int msgInd) {
+		if (msgInd > textures.GetLength(0) - 1) return;
+		msgLock = msgInd;
 	}
+		
 }
