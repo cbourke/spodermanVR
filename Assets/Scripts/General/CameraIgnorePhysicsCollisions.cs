@@ -8,4 +8,8 @@ public class CameraIgnorePhysicsCollisions : MonoBehaviour {
 	void Awake() {
 		Physics.IgnoreLayerCollision (LayerMask.NameToLayer("CameraZoneCollisions") , 0 , true);
 	}
+
+	public static CameraIgnorePhysicsCollisions FindMe() {
+		return  GameObject.FindObjectOfType<CameraIgnorePhysicsCollisions>();
+	}
 }

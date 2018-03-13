@@ -10,7 +10,7 @@ public class LevelBridge : MonoBehaviour {
 	public Material doorOpen;
 
 	void Awake() {
-		open = true;
+		open = false;
 	}
 
 	void Start() {
@@ -19,14 +19,23 @@ public class LevelBridge : MonoBehaviour {
 	}
 
 	void Update() {
-		if (GetComponent<ButtonHighlighter> ()) {
+//		if (GetComponent<ButtonHighlighter> ()) {
+//
+//		} else {
+//			if (open) {
+//				GetComponent<Renderer> ().material = doorOpen;
+//			} else {
+//				GetComponent<Renderer> ().material = doorClosed;
+//			}
+//		}
+		ChangeStatus();
+	}
 
+	public virtual void ChangeStatus() {
+		if (open) {
+			GetComponent<Renderer> ().material = doorOpen;
 		} else {
-			if (open) {
-				GetComponent<Renderer> ().material = doorOpen;
-			} else {
-				GetComponent<Renderer> ().material = doorClosed;
-			}
+			GetComponent<Renderer> ().material = doorClosed;
 		}
 	}
 

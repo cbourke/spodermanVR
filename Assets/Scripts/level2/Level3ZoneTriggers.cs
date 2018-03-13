@@ -36,4 +36,11 @@ public class Level3ZoneTriggers : MonoBehaviour {
 			events.GetComponent<LevelEvents3> ().triggerZone3 ();
 		}
 	}
+
+	public void OnTriggerExit(Collider other) {
+		if (!colliding) {
+			return;
+		}
+		colliding = null;
+	}
 }

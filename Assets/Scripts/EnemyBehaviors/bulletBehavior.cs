@@ -8,6 +8,9 @@ public class bulletBehavior : MonoBehaviour {
 	private float speed = 10f;
 	Vector3 targetLoc;
 	// Use this for initialization
+	void Awake() {
+		GetComponent<Rigidbody> ().freezeRotation = true;
+	}
 	void Start () {
 		playerHead = HeadColliderHandler.FindMe ().gameObject;
 		targetLoc = playerHead.transform.position;

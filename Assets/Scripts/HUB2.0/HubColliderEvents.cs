@@ -5,10 +5,13 @@ using UnityEngine;
 public class HubColliderEvents : MonoBehaviour {
 
 	private HubEvents hub;
-
+	public GameObject playerHead;
+	public GameObject collObj;
+	public bool started;
 	// Use this for initialization
 	void Awake () {
 		hub = HubEvents.FindMe ();
+		playerHead = CameraIgnorePhysicsCollisions.FindMe ().gameObject;
 	}
 	void Start () {
 		
@@ -20,9 +23,17 @@ public class HubColliderEvents : MonoBehaviour {
 	}
 
 	public void OnTriggerEnter(Collider coll) {
-		GameObject collObj = coll.gameObject;
-		if (collObj.name == "StartZone") {
+		collObj = coll.gameObject;
+		if (!started && collObj.gameObject.GetInstanceID() == playerHead.GetInstanceID()) {
+			started = true;
 			hub.StartHub ();
 		}
+	}
+
+	public void OnTriggerExit(Collider other) {
+		if (!collObj) {
+			return;
+		}
+		collObj = null;
 	}
 }
