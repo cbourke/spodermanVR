@@ -22,11 +22,11 @@ public class Level3HandEvents : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if (!world.keyObtained && !world.window2.activeSelf && (util.ObjectInHandCheckLeft().GetInstanceID() == carButton.GetInstanceID() || util.ObjectInHandCheckRight().GetInstanceID() == carButton.GetInstanceID() )) {
+		if (!world.keyObtained && !world.window2.activeSelf && (util.CheckInstanceID(util.ObjectInHandCheckLeft()) == carButton.GetInstanceID() || util.CheckInstanceID(util.ObjectInHandCheckRight()) == carButton.GetInstanceID() )) {
 			world.window2.SetActive (true);
 		}
 
-		if (world.keyObtained && this.GetComponent<ControllerGrab> ().objectInHand != null && this.GetComponent<ControllerGrab> ().objectInHand.GetInstanceID () == carButton.GetInstanceID ()) {
+		if (world.keyObtained && util.CheckInstanceID(this.GetComponent<ControllerGrab> ().objectInHand)  == carButton.GetInstanceID ()) {
 			if (this.gameObject.name.Equals ("Controller (left)")) {
 				world.truckMovingL = true;
 			} else {

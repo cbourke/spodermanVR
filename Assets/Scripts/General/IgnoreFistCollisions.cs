@@ -14,9 +14,13 @@ public class IgnoreFistCollisions : MonoBehaviour {
 
 	public void OnCollisionEnter(Collision other) {
 		if (other.gameObject.CompareTag("Projectile")) {
-			Vector3 currVelocity = other.collider.attachedRigidbody.velocity;
-			other.collider.attachedRigidbody.velocity = Vector3.zero;
-			other.collider.attachedRigidbody.velocity = -currVelocity;
+			other.gameObject.GetComponent<bulletBehavior> ().update = () => {
+				
+				other.gameObject.transform.position -= other.transform.forward * 10.0f * Time.deltaTime;
+			};
+			//Vector3 currVelocity = other.collider.attachedRigidbody.velocity;
+			//other.collider.attachedRigidbody.velocity = Vector3.zero;
+			//other.collider.attachedRigidbody.velocity = -currVelocity;
 		}
 		else if (other.gameObject.GetComponent<Rigidbody>() && !other.gameObject.GetComponent<Rigidbody>().isKinematic) {
 //			Vector3 direction = other.transform.position - this.transform.position;

@@ -144,17 +144,17 @@ public class EventUtil : MonoBehaviour {
 	}
 
 	public GameObject ObjectInHandCheckLeft() {
-		if (leftController.GetComponent<ControllerGrab> ().objectInHand != null)
-			return leftController.GetComponent<ControllerGrab> ().objectInHand;
-		else
-			return null;
+		return leftController.GetComponent<ControllerGrab> ().objectInHand;
 	}
 
 	public GameObject ObjectInHandCheckRight() {
-		if (rightController.GetComponent<ControllerGrab> ().objectInHand != null)
-			return rightController.GetComponent<ControllerGrab> ().objectInHand;
-		else
-			return null;
+		return rightController.GetComponent<ControllerGrab> ().objectInHand;
+	}
+
+	public int CheckInstanceID(GameObject obj) {
+		return obj == null
+			? -1
+			: obj.GetInstanceID ();
 	}
 		
 

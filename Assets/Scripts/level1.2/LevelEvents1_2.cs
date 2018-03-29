@@ -186,11 +186,15 @@ public class LevelEvents1_2 : MonoBehaviour {
 		startLight.GetComponent<AudioSource> ().Play ();
 		yield return new WaitForSeconds (feedDelay);
 		feedA.SetActive (true);
-		StartCoroutine(gameObject.GetComponent<EventUtil> ().lookingAtCounter(feedAText));
-		yield return new WaitUntil(() => GetComponent<EventUtil>().lookingBool == true);
-		yield return new WaitForSeconds (feedDelay);
-		util.changeTex (feedA , feedAText , feedAtext2);
-		yield return new WaitForSeconds (feedDelay);
+		WindowTextController windowController = util.GetWindowControllerFromWindow (feedA);
+
+		yield return new WaitUntil (() => windowController.currIndex == windowController.msgLock);
+
+		//StartCoroutine(gameObject.GetComponent<EventUtil> ().lookingAtCounter(feedAText));
+//		yield return new WaitUntil(() => GetComponent<EventUtil>().lookingBool == true);
+//		yield return new WaitForSeconds (feedDelay);
+//		util.changeTex (feedA , feedAText , feedAtext2);
+//		yield return new WaitForSeconds (feedDelay);
 		feedA.GetComponent<Animator> ().SetTrigger ("FloatLeft");
 		feedB.SetActive (true);
 		speaker.SetActive (true);
@@ -391,7 +395,7 @@ public class LevelEvents1_2 : MonoBehaviour {
 		yield return new WaitForSeconds (feedDelay);
 		exitDoor.SetActive (true);
 		Vector3 doorPos = new Vector3 (util.headset.transform.forward.x , util.headset.transform.position.y ,  util.headset.transform.forward.z);
-		exitDoor.transform.position = util.headset.transform.position - doorPos*1f;
+		exitDoor.transform.position = util.headset.transform.position - doorPos * 1f;
 		exitDoor.transform.position = exitDoor.transform.position + new Vector3 (0f,0.75f,0f);
 		exitDoor.transform.LookAt (new Vector3(util.headset.transform.position.x , 0.75f , util.headset.transform.position.z));
 		currStage = 11;

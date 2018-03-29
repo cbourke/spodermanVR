@@ -74,7 +74,7 @@ public class WindowTextController : MonoBehaviour {
 //		leftPrevArr.GetComponent<SpriteRenderer>().SetActive (Time.fixedTime - lastTexChange >= 3.0f && currIndex != 0);
 		leftPrevArr.GetComponent<SpriteRenderer>().enabled = Time.fixedTime - lastTexChange >= 3.0f && currIndex != 0;
 //		rightPrevArr.SetActive (Time.fixedTime - lastTexChange >= 3.0f && currIndex < msgLock && currIndex < textures.GetLength(0));
-		rightPrevArr.GetComponent<SpriteRenderer>().enabled = Time.fixedTime - lastTexChange >= 3.0f && currIndex < msgLock && currIndex < textures.GetLength(0);
+		rightPrevArr.GetComponent<SpriteRenderer>().enabled = Time.fixedTime - lastTexChange >= 3.0f && currIndex < msgLock && currIndex < textures.GetLength(0) - 1;
 	}
 
 	public void updateArray (Texture[] tex) {

@@ -22,7 +22,7 @@ public class Level3Events : MonoBehaviour {
 	public Texture[] window1Feed;
 	public Texture[] window2Feed;
 	public Texture[] window3Feed;
-
+	public int nextLevel;
 
 
 	void Awake() {
@@ -50,10 +50,10 @@ public class Level3Events : MonoBehaviour {
 		}
 		if (truck.transform.position.x >= 47f) {
 //			int nextScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene ().buildIndex + 1;
-			UnityEngine.SceneManagement.SceneManager.LoadScene (0);
+			UnityEngine.SceneManagement.SceneManager.LoadScene (nextLevel);
 		}
 		if (!stopGate && leverActivated) {
-			gate.transform.Translate (gate.transform.forward * Time.deltaTime);
+			gate.transform.Translate (gate.transform.forward * Time.deltaTime * 2f);
 			if (gate.transform.position.z >= gateMoveDist) {
 				stopGate = true;
 				moveDist = 48;
@@ -67,12 +67,12 @@ public class Level3Events : MonoBehaviour {
 		if (truckMovingL || truckMovingR) {
 
 			if (keyObtained && truckMovingL && truck.transform.position.x <= moveDist) {
-				truck.transform.Translate (truck.transform.right * Time.deltaTime);
-				util.leftController.GetComponent<ControllerGrab> ().startingControllerPosition += truck.transform.right * Time.deltaTime;
+				truck.transform.Translate (truck.transform.right * Time.deltaTime * 2f);
+				util.leftController.GetComponent<ControllerGrab> ().startingControllerPosition += truck.transform.right * Time.deltaTime * 2f;
 			} else {
 				if (keyObtained && truckMovingR && truck.transform.position.x <= moveDist) {
-					truck.transform.Translate (truck.transform.right * Time.deltaTime);
-					util.rightController.GetComponent<ControllerGrab> ().startingControllerPosition += truck.transform.right * Time.deltaTime;
+					truck.transform.Translate (truck.transform.right * Time.deltaTime * 2f);
+					util.rightController.GetComponent<ControllerGrab> ().startingControllerPosition += truck.transform.right * Time.deltaTime * 2f;
 				}
 			}
 		}

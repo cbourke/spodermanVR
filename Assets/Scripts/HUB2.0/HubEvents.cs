@@ -23,8 +23,8 @@ public class HubEvents : MonoBehaviour {
 		util.GetWindowControllerFromWindow(window1).updateArray(window1Feed);
 	}
 	void Start () {
-		skybox = RenderSettings.skybox;
-		RenderSettings.skybox = null;
+//		skybox = RenderSettings.skybox;
+//		RenderSettings.skybox = null;
 		everything.SetActive (false);
 	}
 	
@@ -36,7 +36,7 @@ public class HubEvents : MonoBehaviour {
 	}
 
 	public void StartHub() {
-		RenderSettings.skybox = skybox;
+//		RenderSettings.skybox = skybox;
 		everything.SetActive (true);
 		startZone.SetActive (false);
 	}
