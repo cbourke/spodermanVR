@@ -16,6 +16,8 @@ public class EventUtil : MonoBehaviour {
 	private AudioClip speechSound;
 	private LayerMask layerMask;
 	private HeadColliderHandler headColliderHandler;
+	private Light[] lightsInScene;
+	public LayerMask lightMask;
 
 	public static EventUtil FindMe() {
 		return  GameObject.FindObjectOfType<EventUtil>();
@@ -27,6 +29,14 @@ public class EventUtil : MonoBehaviour {
 		leftController = GameObject.Find ("[CameraRig]").transform.Find("Controller (left)").gameObject;
 		rightController = GameObject.Find ("[CameraRig]").transform.Find("Controller (right)").gameObject;
 		headColliderHandler = HeadColliderHandler.FindMe ();
+		lightMask = ~LayerMask.GetMask ("Unlit");
+	}
+
+	void Start() {
+		lightsInScene = FindObjectsOfType<Light> ();
+		foreach (Light l in lightsInScene) {
+			l.cullingMask = lightMask;
+		}
 	}
 
 

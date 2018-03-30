@@ -18,6 +18,7 @@ public class WindowTextController : MonoBehaviour {
 	private AudioClip wrong;
 	public GameObject leftPrevArr;
 	public GameObject rightPrevArr;
+	private Texture originalTex;
 
 	private SteamVR_Controller.Device LeftController {
 		get { return SteamVR_Controller.Input ((int)leftControllerSteam.index); }
@@ -37,7 +38,7 @@ public class WindowTextController : MonoBehaviour {
 		rightControllerSteam = rightCont.GetComponent<SteamVR_TrackedObject>();
 		msgLock = int.MaxValue;
 		wrong = (AudioClip)Resources.Load ("Audio/windowAudio/error");
-	
+		originalTex = GetComponent<Renderer> ().material.mainTexture;
 	}
 	// Use this for initialization
 	void Start () {
@@ -77,11 +78,16 @@ public class WindowTextController : MonoBehaviour {
 		rightPrevArr.GetComponent<SpriteRenderer>().enabled = Time.fixedTime - lastTexChange >= 3.0f && currIndex < msgLock && currIndex < textures.GetLength(0) - 1;
 	}
 
-	public void updateArray (Texture[] tex) {
-		Texture firstTex = GetComponent<Renderer> ().material.mainTexture;
+	public void updateArray (Texture[] tex, bool includeFirstTexture = true) {
 		List<Texture> tempTex = new List<Texture> (tex);
-		tempTex.Insert (0, firstTex);
+		if (includeFirstTexture)
+			tempTex.Insert (0, originalTex);
+		else {
+			GetComponent<Renderer>().material.mainTexture = tempTex[0];
+		}
 		this.textures = tempTex.ToArray ();
+		currIndex = 0;
+		msgLock = int.MaxValue;
 	}
 
 	public void ChangeLock (int msgInd) {

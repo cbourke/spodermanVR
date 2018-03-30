@@ -169,7 +169,6 @@ public class FunctionController : MonoBehaviour {
 			if (Controller.GetPressDown (SteamVR_Controller.ButtonMask.Touchpad)) {
 
 				Vector2 touchPadAxis = Controller.GetAxis (Valve.VR.EVRButtonId.k_EButton_Axis0);
-
 				if (touchPadAxis.y > touchPadAxis.x) {	//up or left
 
 					if (touchPadAxis.y > -touchPadAxis.x && ropeEnabled) {		//Handles TouchpadDown input Up: Rope Spawning

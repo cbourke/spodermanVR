@@ -61,6 +61,7 @@ public class ControllerGrab : MonoBehaviour {
 			other.attachedRigidbody.isKinematic = false;
 			other.attachedRigidbody.useGravity = true;
 		}
+		Controller.TriggerHapticPulse (4000);
 	}
 
 	public void OnTriggerStay(Collider other) {

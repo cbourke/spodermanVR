@@ -552,7 +552,7 @@ GameObject:
   - component: {fileID: 4598246369183920}
   - component: {fileID: 33136238578058538}
   - component: {fileID: 23604161976284720}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Blur
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -658,7 +658,7 @@ Transform:
   m_GameObject: {fileID: 1439806302378866}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0.1}
-  m_LocalScale: {x: 0.05, y: 1, z: 0.05}
+  m_LocalScale: {x: 0.042846434, y: 0.85692877, z: 0.042846438}
   m_Children: []
   m_Father: {fileID: 413432}
   m_RootOrder: 2
@@ -760,11 +760,11 @@ MeshRenderer:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1439806302378866}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_Materials:
   - {fileID: 2100000, guid: c151a56e35262b34a85fa3349587ebb1, type: 2}
   m_StaticBatchInfo:
