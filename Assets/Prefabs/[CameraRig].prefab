@@ -1194,6 +1194,8 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 18fc0922fcc8dc74ab0df58fa1691fa8, type: 3}
   - {fileID: 2800000, guid: 61f13598ecfd68a4e8811e521872ae5f, type: 3}
   - {fileID: 2800000, guid: c014f15b6c033ec4e9bfc1cb0832f865, type: 3}
+  - {fileID: 2800000, guid: e4553ca948fd96144a1f2f43eb600c41, type: 3}
+  - {fileID: 2800000, guid: a4ee56e8870bd2040b6a64eea5756b4e, type: 3}
   otherController: {fileID: 0}
   laser: {fileID: 0}
   laserPrefab: {fileID: 0}
@@ -1222,6 +1224,8 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 18fc0922fcc8dc74ab0df58fa1691fa8, type: 3}
   - {fileID: 2800000, guid: 61f13598ecfd68a4e8811e521872ae5f, type: 3}
   - {fileID: 2800000, guid: c014f15b6c033ec4e9bfc1cb0832f865, type: 3}
+  - {fileID: 2800000, guid: e4553ca948fd96144a1f2f43eb600c41, type: 3}
+  - {fileID: 2800000, guid: a4ee56e8870bd2040b6a64eea5756b4e, type: 3}
   otherController: {fileID: 0}
   laser: {fileID: 0}
   laserPrefab: {fileID: 0}

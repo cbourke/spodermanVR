@@ -20,12 +20,13 @@ public class HubEvents : MonoBehaviour {
 	// Use this for initialization
 	void Awake() {
 		util = EventUtil.FindMe ();
-		util.GetWindowControllerFromWindow(window1).updateArray(window1Feed);
+
 	}
 	void Start () {
 //		skybox = RenderSettings.skybox;
 //		RenderSettings.skybox = null;
 		everything.SetActive (false);
+		util.GetWindowControllerFromWindow(window1).updateArray(window1Feed);
 	}
 	
 	// Update is called once per frame

@@ -96,7 +96,7 @@ public class PauseMenu : MonoBehaviour
 				laser.SetActive (false);
 			}
 
-			if (hit.collider && (hitCheck("Restart",hit) || hitCheck("Quit",hit) || hitCheck("Continue",hit))) {
+			if (hit.collider && (hitCheck("Restart",hit) || hitCheck("Quit",hit) || hitCheck("Continue",hit ) || hitCheck("MainMenu" , hit))) {
 				if (hitCheck("Continue",hit)) {
 					if (hit.collider.gameObject.GetComponent<Renderer> ().material.mainTexture != texture[1])
 						hit.collider.gameObject.GetComponent<Renderer> ().material.mainTexture = texture[1];
@@ -113,6 +113,8 @@ public class PauseMenu : MonoBehaviour
 					if (Controller.GetHairTriggerDown ()) {
 						worldTracker.GetComponent<PauseMenuWorld> ().HideMenu (this.gameObject);
 						Scene loadedLevel = SceneManager.GetActiveScene ();
+						Time.timeScale = 1F;
+						Time.fixedDeltaTime = 1f;
 						SceneManager.LoadScene (loadedLevel.buildIndex);
 					}
 				} else if (hitCheck("Quit",hit)) {
@@ -123,6 +125,18 @@ public class PauseMenu : MonoBehaviour
 						Time.timeScale = 1F;
 						Time.fixedDeltaTime = 1f;
 						Application.Quit ();
+					}
+				}	else if (hitCheck("MainMenu",hit)) {
+					if (hit.collider.gameObject.GetComponent<Renderer> ().material.mainTexture != texture[7]) {
+						hit.collider.gameObject.GetComponent<Renderer> ().material.mainTexture = texture[7];
+					}
+
+					if (Controller.GetHairTriggerDown ()) {
+						worldTracker.GetComponent<PauseMenuWorld> ().HideMenu (this.gameObject);
+//						Scene loadedLevel = SceneManager.GetSceneAt(0);
+						Time.timeScale = 1F;
+						Time.fixedDeltaTime = 1f;
+						SceneManager.LoadScene ("HUB2.0");
 					}
 				}
 			}

@@ -60,10 +60,12 @@ public class PauseMenuWorld : MonoBehaviour {
 			foreach (Transform child in pMenuInst.transform) {
 				if (child.name.Equals("Continue"))  
 					child.GetComponent<Renderer> ().material.mainTexture = textures [0];
-				if (child.name.Equals("Restart")) 
+				else if (child.name.Equals("Restart")) 
 					child.GetComponent<Renderer> ().material.mainTexture = textures [2];
-				if (child.name.Equals("Quit"))
+				else if (child.name.Equals("Quit"))
 					child.GetComponent<Renderer> ().material.mainTexture = textures [4];
+				else if (child.name.Equals("MainMenu"))
+					child.GetComponent<Renderer> ().material.mainTexture = textures [6];
 			}
 		}
 	}

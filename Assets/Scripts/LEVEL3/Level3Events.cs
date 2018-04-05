@@ -30,13 +30,14 @@ public class Level3Events : MonoBehaviour {
 		leverActivated = false;
 		stopGate = false;
 		util = EventUtil.FindMe ();
-		util.GetWindowControllerFromWindow(window1).updateArray (window1Feed);
-		util.GetWindowControllerFromWindow(window2).updateArray (window2Feed);
-		util.GetWindowControllerFromWindow(window3).updateArray (window3Feed);
+
 		util.GetWindowControllerFromWindow (window3).ChangeLock (2);
 	}
 	// Use this for initialization
 	void Start () {
+		util.GetWindowControllerFromWindow(window1).updateArray (window1Feed);
+		util.GetWindowControllerFromWindow(window2).updateArray (window2Feed);
+		util.GetWindowControllerFromWindow(window3).updateArray (window3Feed);
 	}
 	
 	// Update is called once per frame

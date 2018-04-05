@@ -83,11 +83,13 @@ public class WindowTextController : MonoBehaviour {
 		if (includeFirstTexture)
 			tempTex.Insert (0, originalTex);
 		else {
-			GetComponent<Renderer>().material.mainTexture = tempTex[0];
+//			GetComponent<Renderer>().material.mainTexture = tempTex[0];
+
 		}
 		this.textures = tempTex.ToArray ();
 		currIndex = 0;
 		msgLock = int.MaxValue;
+		GetComponent<Renderer>().material.mainTexture = tempTex[0];
 	}
 
 	public void ChangeLock (int msgInd) {

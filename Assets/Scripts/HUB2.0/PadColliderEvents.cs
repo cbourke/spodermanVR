@@ -88,6 +88,9 @@ public class PadColliderEvents : MonoBehaviour {
 		collidingCubes.Add (coll.gameObject.name, new KeyValuePair<float, GameObject>(ticks, coll.gameObject));
 		// texure code
 		mainWindowCont.updateArray(data.Value, false);
+		bridgeStatus.newLevel = data.Key;
+//		if (collidingCubes.Count > 0)
+//			bridgeStatus.open = true;
 	}
 
 	public void OnTriggerExit(Collider other) {
@@ -99,12 +102,13 @@ public class PadColliderEvents : MonoBehaviour {
 			return;
 		
 		IEnumerable<KeyValuePair<string, KeyValuePair<float, GameObject>>> order = collidingCubes
-			.OrderBy (x => x.Value.Key);
+			.OrderByDescending (x => x.Value.Key);
 
 		if (!order.Any()) {
 			// nothing on the pad
 			Debug.Log("No Cubes On Pad");
-			mainWindowCont.updateArray(hub.window1Feed, false);
+			mainWindowCont.updateArray(hub.window1Feed);
+			bridgeStatus.newLevel = -1;
 		} else if (order.First().Value.Key > activeCube.Key) {
 			Debug.Log ("Current Item is Newer than one Removed.");
 			// current item displayed
@@ -118,6 +122,7 @@ public class PadColliderEvents : MonoBehaviour {
 			activeCube = order.First().Value;
 			//Debug.Log (activeCube.Value.name);
 			mainWindowCont.updateArray (LevelBridge.LEVELS[activeCube.Value.name].Value , false);
+			bridgeStatus.newLevel = LevelBridge.LEVELS [activeCube.Value.name].Key;
 		}
 	
 	}

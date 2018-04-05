@@ -19,11 +19,13 @@ public class Level4Events : MonoBehaviour {
 	// Use this for initialization
 	void Awake() {
 		util = EventUtil.FindMe ();
+
+	}
+	void Start () {
 		util.GetWindowControllerFromWindow (window1).updateArray (window1Feed);
 		util.GetWindowControllerFromWindow (window2).updateArray (window2Feed);
 //		util.GetWindowControllerFromWindow (window3).updateArray (window3Feed);
-	}
-	void Start () {
+		window1.SetActive (true);
 		window2.SetActive (false);
 	}
 	

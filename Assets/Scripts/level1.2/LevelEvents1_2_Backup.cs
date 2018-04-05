@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelEvents1_2 : MonoBehaviour {
+public class LevelEvents1_2_Backup : MonoBehaviour {
 
 	public GameObject leftController;
 	public GameObject rightController;
@@ -187,12 +187,12 @@ public class LevelEvents1_2 : MonoBehaviour {
 		yield return new WaitForSeconds (feedDelay);
 		feedA.SetActive (true);
 		WindowTextController windowController = util.GetWindowControllerFromWindow (feedA);
-		//set message lock
+
 		yield return new WaitUntil (() => windowController.currIndex == windowController.msgLock);
 
 		//StartCoroutine(gameObject.GetComponent<EventUtil> ().lookingAtCounter(feedAText));
 //		yield return new WaitUntil(() => GetComponent<EventUtil>().lookingBool == true);
-		yield return new WaitForSeconds (feedDelay);
+//		yield return new WaitForSeconds (feedDelay);
 //		util.changeTex (feedA , feedAText , feedAtext2);
 //		yield return new WaitForSeconds (feedDelay);
 		feedA.GetComponent<Animator> ().SetTrigger ("FloatLeft");

@@ -11,7 +11,7 @@ public class LevelEvents3 : MonoBehaviour {
 	public GameObject window2;
 	public GameObject window2text;
 	public float feedDelay;
-
+	public LevelBridge levelBridge;
 	private GameObject playerHead;
 	private EventUtil util;
 	private float lightIntensity;
@@ -26,7 +26,8 @@ public class LevelEvents3 : MonoBehaviour {
 	}
 
 	void Start () {
-		
+		levelBridge = LevelBridge.FindMe ();
+		levelBridge.open = true;
 		StartCoroutine (sceneStart());
 	}
 	

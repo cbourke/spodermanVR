@@ -10,10 +10,18 @@ public class LevelBridge : MonoBehaviour {
 	public Material doorClosed;
 	public Material doorOpen;
 
+	public static LevelBridge FindMe() {
+		return  GameObject.FindObjectOfType<LevelBridge>();
+	}
+
 	public static Dictionary<string, KeyValuePair<int, Texture[]>> LEVELS;
 
+	public bool isOpen() {
+		return newLevel > -1;
+	}
+
 	void Awake() {
-		open = false;
+		newLevel = -1;
 		LEVELS = new Dictionary<string, KeyValuePair<int, Texture[]>>(){
 			{
 				"LVL3",
@@ -35,6 +43,36 @@ public class LevelBridge : MonoBehaviour {
 						Resources.Load<Texture>("Textures/HUB2.0/lvl4Screen")
 					}
 				)
+			},
+			{
+				"LVL0",
+				new KeyValuePair<int, Texture[]>(
+					1,
+					new Texture[] {
+						// load texures
+						Resources.Load<Texture>("Textures/HUB2.0/lvl0Screen")
+					}
+				)
+			},
+			{
+				"LVL2",
+				new KeyValuePair<int, Texture[]>(
+					3,
+					new Texture[] {
+						// load texures
+						Resources.Load<Texture>("Textures/HUB2.0/lvl2Screen")
+					}
+				)
+			},
+			{
+				"LVL1",
+				new KeyValuePair<int, Texture[]>(
+					2,
+					new Texture[] {
+						// load texures
+						Resources.Load<Texture>("Textures/HUB2.0/lvl1Screen")
+					}
+				)
 			}
 		};
 	}
@@ -54,11 +92,14 @@ public class LevelBridge : MonoBehaviour {
 //				GetComponent<Renderer> ().material = doorClosed;
 //			}
 //		}
+		//open = newLevel
 		ChangeStatus();
+
 	}
 
 	public virtual void ChangeStatus() {
-		if (open) {
+		
+		if (newLevel > -1) {
 			GetComponent<Renderer> ().material = doorOpen;
 		} else {
 			GetComponent<Renderer> ().material = doorClosed;
