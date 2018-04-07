@@ -87,7 +87,6 @@ public class HeadColliderHandler : MonoBehaviour {
 		lastDamTime = Time.fixedTime;
 		hp -= dam;
 
-
 	}
 		
 }

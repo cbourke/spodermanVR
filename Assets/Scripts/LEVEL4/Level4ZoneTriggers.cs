@@ -34,12 +34,12 @@ public class Level4ZoneTriggers : MonoBehaviour {
 		}
 
 		if (!triggered2 && coll.gameObject.GetInstanceID() == headEventCollider.GetInstanceID()  && this.name.Equals("Zone2")) {
-
+			
 		}
 
 		if (!triggered3 && coll.gameObject.GetInstanceID() == headEventCollider.GetInstanceID()  && this.name.Equals("Zone3")) {
-//			triggered3 = true;
-//			events.GetComponent<LevelEvents3> ().triggerZone3 ();
+			triggered3 = true;
+			level4Events.TriggerZone3 ();
 		}
 	}
 

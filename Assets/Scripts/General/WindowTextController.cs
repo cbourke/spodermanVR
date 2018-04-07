@@ -78,6 +78,12 @@ public class WindowTextController : MonoBehaviour {
 		rightPrevArr.GetComponent<SpriteRenderer>().enabled = Time.fixedTime - lastTexChange >= 3.0f && currIndex < msgLock && currIndex < textures.GetLength(0) - 1;
 	}
 
+	public void ChangeMsg(int msgInd) {
+		currIndex = msgInd;
+		util.changeTex (this.transform.parent.gameObject , this.gameObject , textures[msgInd]);
+		lastTexChange = Time.fixedTime;
+	}
+
 	public void updateArray (Texture[] tex, bool includeFirstTexture = true) {
 		List<Texture> tempTex = new List<Texture> (tex);
 		if (includeFirstTexture)
@@ -89,7 +95,7 @@ public class WindowTextController : MonoBehaviour {
 		this.textures = tempTex.ToArray ();
 		currIndex = 0;
 		msgLock = int.MaxValue;
-		GetComponent<Renderer>().material.mainTexture = tempTex[0];
+		//GetComponent<Renderer>().material.mainTexture = tempTex[0];
 	}
 
 	public void ChangeLock (int msgInd) {

@@ -7,6 +7,7 @@ public class WebShot : MonoBehaviour {
 //	public SteamVR_TrackedObject trackedObj;
 	public float shotForce;
 	private GameObject shot;
+	public Material webM;
 
 
 //	private SteamVR_Controller.Device Controller {
@@ -16,6 +17,7 @@ public class WebShot : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 //		shotForce = 2000.0f;
+		webM = (Material)Resources.Load("Materials/General/Web");
 
 	}
 
@@ -34,6 +36,7 @@ public class WebShot : MonoBehaviour {
 		shot.transform.position = forOffset;
 		shot.AddComponent<Rigidbody> ();
 		shot.transform.localScale = new Vector3 (0.07f,0.07f,0.07f);
+		shot.GetComponent<Renderer> ().material = webM;
 		shot.AddComponent<WebShotCollider> ();
 		shot.GetComponent<Rigidbody> ().AddForce (this.transform.forward * shotForce);
 	}

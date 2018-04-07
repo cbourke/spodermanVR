@@ -36,6 +36,7 @@ public class Hitman : BaseEnemy {
 	private IEnumerator shoot(GameObject target) {
 		float timeTillShoot = 0.75f / base.speed;
 		yield return new WaitForSeconds (timeTillShoot);
+		util.playClip (this.gameObject , enemShot);
 		GameObject bull = Instantiate ((GameObject)Resources.Load("Prefabs/Bullet"));
 		bull.transform.position = transform.position + new Vector3 (-0.5f , gameObject.GetComponent<BoxCollider> ().bounds.size.y * 0.75f , gameObject.GetComponent<BoxCollider> ().bounds.size.z / 2);
 	}

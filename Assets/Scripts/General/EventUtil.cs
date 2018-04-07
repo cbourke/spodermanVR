@@ -127,9 +127,17 @@ public class EventUtil : MonoBehaviour {
 		}
 	}
 
-	public bool FieldOfVision(GameObject lookingActor , float angle = 0.5f) {
+	public bool FieldOfVision(GameObject lookingActor , float angle = 0.5f , bool isBadguy = true) {
 		RaycastHit hit;
-		Vector3 correctedPosition = lookingActor.transform.position + new Vector3 (0 , lookingActor.GetComponent<BoxCollider> ().bounds.size.y - 0.1f , 0);
+		Vector3 correctedPosition;
+		Vector3 lookingActorForwardDir;
+		if (isBadguy) {
+			correctedPosition = lookingActor.transform.position + new Vector3 (0, lookingActor.GetComponent<BoxCollider> ().bounds.size.y - 0.1f, 0);
+			lookingActorForwardDir = lookingActor.transform.right;
+		} else {
+			correctedPosition = lookingActor.transform.position;
+			lookingActorForwardDir = lookingActor.transform.forward;
+		}
 		Vector3 diffVec = headset.transform.position - correctedPosition;
 //		GameObject point = GameObject.CreatePrimitive (PrimitiveType.Sphere);
 //		point.transform.position = correctedPosition;
@@ -137,7 +145,7 @@ public class EventUtil : MonoBehaviour {
 //		Destroy (point.GetComponent<SphereCollider>());
 		if (Physics.Raycast (correctedPosition, diffVec.normalized, out hit, diffVec.magnitude, layerMask)) {
 			if (hit.collider.gameObject.GetInstanceID () == headColliderHandler.gameObject.GetInstanceID ()) {
-				if (Vector3.Dot (lookingActor.transform.right.normalized, diffVec.normalized) >= angle) {
+				if (Vector3.Dot (lookingActorForwardDir.normalized, diffVec.normalized) >= angle) {
 					return true;
 				}
 			}
@@ -166,6 +174,5 @@ public class EventUtil : MonoBehaviour {
 			? -1
 			: obj.GetInstanceID ();
 	}
-		
 
 }

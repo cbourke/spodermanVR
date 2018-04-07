@@ -9,6 +9,7 @@ TagManager:
   - Rope
   - Projectile
   - Badguy
+  - Boss
   layers:
   - Default
   - TransparentFX

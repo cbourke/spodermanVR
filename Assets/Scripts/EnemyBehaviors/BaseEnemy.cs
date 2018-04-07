@@ -10,13 +10,18 @@ public class BaseEnemy : MonoBehaviour, IPersistObject {
 	protected bool canSeePlayer;
 	public float speed = 1;
 	public bool animationLock = false;
-	private float lastWebShotTime;
-	private float deadAt;
+	protected float lastWebShotTime;
+	protected float deadAt;
+	protected AudioClip enemPunch;
+	protected AudioClip enemShot;
 	public  Material enemyDefaultSkin;
 	public  Material enemySlowSkin;
 	private Renderer limbRend;
 	private Renderer bodyRend;
 	private Renderer eyeRend;
+	protected bool heyB;
+	public AudioClip hey;
+
 
 //	protected bool getAnimationLock(){
 //		if (!_animationLock) {
@@ -43,6 +48,9 @@ public class BaseEnemy : MonoBehaviour, IPersistObject {
 		eyeRend = transform.Find ("Eye").gameObject.GetComponent<Renderer>();
 		enemyDefaultSkin = (Material)Resources.Load("Materials/General/Enemy");
 		enemySlowSkin = (Material)Resources.Load("Materials/General/EnemySlow");
+		enemPunch = (AudioClip)Resources.Load ("Audio/General/enemPunch");
+		enemShot = (AudioClip)Resources.Load ("Audio/General/shot");
+		hey = (AudioClip)Resources.Load ("Audio/Speech/hey");
 	}
 
 	// Use this for initialization
@@ -51,7 +59,7 @@ public class BaseEnemy : MonoBehaviour, IPersistObject {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	public virtual void Update () {
 		if (!IsDead ()) {
 			if (Time.fixedTime - lastWebShotTime >= 5f) {
 				speed = 1;
@@ -60,6 +68,10 @@ public class BaseEnemy : MonoBehaviour, IPersistObject {
 			badAnim.speed = speed;
 			canSeePlayer = util.FieldOfVision (this.gameObject);
 			if (canSeePlayer) {
+				if (!heyB) {
+					heyB = true;
+					util.playClip (this.gameObject , hey);
+				}
 				this.LookAt (head.gameObject);
 				this.Walk (head.gameObject);
 				this.Attack (head.gameObject);

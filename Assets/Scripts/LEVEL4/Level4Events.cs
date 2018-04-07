@@ -10,6 +10,9 @@ public class Level4Events : MonoBehaviour {
 	public Texture[] window1Feed;
 	public Texture[] window2Feed;
 //	public Texture[] window3Feed;
+	public GameObject trapdoor;
+	public bool trapdoorBool = false;
+	public Level4Boss boss;
 
 	private EventUtil util;
 
@@ -19,6 +22,7 @@ public class Level4Events : MonoBehaviour {
 	// Use this for initialization
 	void Awake() {
 		util = EventUtil.FindMe ();
+		boss = Level4Boss.FindMe ();
 
 	}
 	void Start () {
@@ -31,11 +35,17 @@ public class Level4Events : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if (trapdoorBool && trapdoor.transform.position.z >= 1f)
+			trapdoor.transform.Translate (-trapdoor.transform.forward * Time.deltaTime);
 	}
 
 	public void TriggerZone1() {
 		window2.SetActive (true);
 		util.GetAnimFromWindow (window1).SetTrigger ("TurnOff");
+	}
+
+	public void TriggerZone3() {
+		trapdoorBool = true;
+		boss.activate = true;
 	}
 }

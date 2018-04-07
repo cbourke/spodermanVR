@@ -20,6 +20,7 @@ public class Puncher : BaseEnemy {
 
 	private IEnumerator Damage(GameObject targ) {
 		yield return new WaitForSeconds (0.5f / base.speed);
+		util.playClip (this.gameObject , enemPunch);
 		if (Vector3.Distance (targ.transform.position, transform.position) <= 1.5f) 
 			base.head.Damage (25f);
 	}

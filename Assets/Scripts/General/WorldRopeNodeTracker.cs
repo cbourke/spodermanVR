@@ -21,6 +21,7 @@ public class WorldRopeNodeTracker : MonoBehaviour {
 	private Material valid;
 	private Material invalid;
 	private EventUtil util;
+	private Material webMat;
 	public GameObject previewRopeObjL;
 	public GameObject previewRopeObjR;
 	public Vector3 lookerOffset;
@@ -47,6 +48,7 @@ public class WorldRopeNodeTracker : MonoBehaviour {
 		previewRopeObjR.name = "Preview Rope";
 		Destroy (previewRopeObjR.GetComponent<CapsuleCollider>());
 		previewRopeObjR.SetActive (false);
+		webMat = (Material)Resources.Load ("Materials/General/Web");
 	}
 
 	public void spawnNode (Vector3 spawnPoint , GameObject callingController) {
@@ -102,6 +104,7 @@ public class WorldRopeNodeTracker : MonoBehaviour {
 			Vector3 modScale = new Vector3(0.05f, offset.magnitude / 2.0f , 0.05f);
 			sumPoints = nodeKeeper[0] + nodeKeeper[1];
 			GameObject rope = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+			rope.GetComponent<Renderer> ().material = webMat;
 			ropeKeeper.Add (rope);
 			rope.transform.position = Vector3.Scale (sumPoints , new Vector3(0.5f,0.5f,0.5f));
 			speakerObj.transform.position = Vector3.Scale (sumPoints , new Vector3(0.5f,0.5f,0.5f));
