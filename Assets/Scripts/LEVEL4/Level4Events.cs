@@ -13,6 +13,7 @@ public class Level4Events : MonoBehaviour {
 	public GameObject trapdoor;
 	public bool trapdoorBool = false;
 	public Level4Boss boss;
+	public int nextLevel;
 
 	private EventUtil util;
 
@@ -47,5 +48,9 @@ public class Level4Events : MonoBehaviour {
 	public void TriggerZone3() {
 		trapdoorBool = true;
 		boss.activate = true;
+	}
+
+	public void EndScene() {
+		UnityEngine.SceneManagement.SceneManager.LoadScene (nextLevel);
 	}
 }

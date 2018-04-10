@@ -19,6 +19,7 @@ public class Level4Boss : MonoBehaviour {
 	public bool defeated = false;
 	private AudioSource audioS;
 	private GameObject badGuy;
+	private Level4Events events;
 	public bool activate = false;
 
 	public static Level4Boss FindMe() {
@@ -29,6 +30,7 @@ public class Level4Boss : MonoBehaviour {
 	void Awake() {
 		util = EventUtil.FindMe ();
 		playerHead = HeadColliderHandler.FindMe ().gameObject;
+		events = Level4Events.FindMe ();
 	}
 
 	void Start () {
@@ -103,7 +105,7 @@ public class Level4Boss : MonoBehaviour {
 
 	private IEnumerator endScene() {
 		yield return new WaitForSeconds (15f);
-		UnityEngine.SceneManagement.SceneManager.LoadScene (0);
+		events.EndScene ();
 	}
 
 	public void Death() {
