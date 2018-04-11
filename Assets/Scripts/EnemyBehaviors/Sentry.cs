@@ -32,7 +32,8 @@ public class Sentry : BaseEnemy {
 		yield return new WaitForSeconds (timeTillShoot);
 		util.playClip (this.gameObject , enemShot);
 		GameObject bull = Instantiate ((GameObject)Resources.Load("Prefabs/Bullet"));
-		bull.transform.position = transform.position + new Vector3 (-0.5f , gameObject.GetComponent<BoxCollider> ().bounds.size.y * 0.75f , gameObject.GetComponent<BoxCollider> ().bounds.size.z / 2);
+//		bull.transform.position = transform.position + new Vector3 (-0.5f , gameObject.GetComponent<BoxCollider> ().bounds.size.y * 0.75f , gameObject.GetComponent<BoxCollider> ().bounds.size.z / 2);
+		bull.transform.position = transform.position + transform.right * 0.5f + new Vector3(0,1f,0) + -transform.forward * 0.3f;
 	}
 
 }

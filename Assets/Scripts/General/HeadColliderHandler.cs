@@ -33,7 +33,6 @@ public class HeadColliderHandler : MonoBehaviour {
 	}
 
 	public void OnTriggerEnter (Collider coll) {
-		Debug.Log (coll.gameObject);
 		if (!coll.attachedRigidbody || coll.gameObject.CompareTag("Projectile")) {
 			return;
 		}

@@ -36,6 +36,8 @@ public class WorldRopeNodeTracker : MonoBehaviour {
 		valid = (Material)Resources.Load ("Materials/General/ropePreviewValid");
 		invalid = (Material)Resources.Load ("Materials/General/ropePreviewInvalid");
 		util = transform.Find("Events").gameObject.GetComponent<EventUtil>();
+		layerMaskInt = LayerMask.NameToLayer ("CameraZoneCollisions");
+
 	}
 	// Use this for initialization
 	void Start () {
@@ -49,6 +51,7 @@ public class WorldRopeNodeTracker : MonoBehaviour {
 		Destroy (previewRopeObjR.GetComponent<CapsuleCollider>());
 		previewRopeObjR.SetActive (false);
 		webMat = (Material)Resources.Load ("Materials/General/Web");
+
 	}
 
 	public void spawnNode (Vector3 spawnPoint , GameObject callingController) {
@@ -173,7 +176,7 @@ public class WorldRopeNodeTracker : MonoBehaviour {
 		float destOffMag = towardsPoint.magnitude - scaledNorm.magnitude;
 		destOffMag -= 0.01f;
 		RaycastHit hit;
-		if (Physics.Raycast (lookOff, towardsPointNorm, out hit , destOffMag)) {
+		if (Physics.Raycast (lookOff, towardsPointNorm, out hit , destOffMag , layerMaskInt)) {
 			//lookerVisibleObj = hit.collider.attachedRigidbody.gameObject;
 			if (hit.collider.gameObject.CompareTag ("Rope")) {
 				return true;

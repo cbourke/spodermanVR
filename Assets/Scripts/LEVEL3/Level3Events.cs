@@ -38,6 +38,8 @@ public class Level3Events : MonoBehaviour {
 		util.GetWindowControllerFromWindow(window1).updateArray (window1Feed);
 		util.GetWindowControllerFromWindow(window2).updateArray (window2Feed);
 		util.GetWindowControllerFromWindow(window3).updateArray (window3Feed);
+		window2.SetActive (false);
+		window3.SetActive (false);
 	}
 	
 	// Update is called once per frame
@@ -61,7 +63,7 @@ public class Level3Events : MonoBehaviour {
 			}
 		}
 		if (leverActivated)
-			util.GetWindowControllerFromWindow (window3).ChangeLock (10);
+			util.GetWindowControllerFromWindow (window3).ChangeLock (10);	//FIXME stuff
 	}
 
 	void LateUpdate () {
@@ -77,8 +79,10 @@ public class Level3Events : MonoBehaviour {
 				}
 			}
 		}
-		if (!window3.activeSelf && truck.transform.position.x >= moveDist)
+		if (!window3.activeSelf && truck.transform.position.x >= moveDist) {
 			window3.SetActive (true);
+			util.GetWindowControllerFromWindow (window3).ChangeLock (1);
+		}
 
 	}
 

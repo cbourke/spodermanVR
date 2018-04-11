@@ -106,17 +106,14 @@ public class PadColliderEvents : MonoBehaviour {
 
 		if (!order.Any()) {
 			// nothing on the pad
-			Debug.Log("No Cubes On Pad");
 			mainWindowCont.updateArray(hub.window1Feed);
 			bridgeStatus.newLevel = -1;
 		} else if (order.First().Value.Key > activeCube.Key) {
-			Debug.Log ("Current Item is Newer than one Removed.");
 			// current item displayed
 			// is more new then the next
 			// item in the cube
 			// do nothing
 		} else {
-			Debug.Log ("Render previous Cube.");
 			// next needs to be rendered
 			// on the window
 			activeCube = order.First().Value;
