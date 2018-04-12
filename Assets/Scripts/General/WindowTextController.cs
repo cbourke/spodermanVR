@@ -84,6 +84,10 @@ public class WindowTextController : MonoBehaviour {
 		lastTexChange = Time.fixedTime;
 	}
 
+	public void updateArray() {
+		updateArray (new Texture[0]);
+	}
+
 	public void updateArray (Texture[] tex, bool includeFirstTexture = true) {
 		List<Texture> tempTex = new List<Texture> (tex);
 		if (includeFirstTexture)

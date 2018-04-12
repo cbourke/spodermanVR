@@ -14,16 +14,12 @@ public class lvl1ZoneHandler : MonoBehaviour {
 		headEventCollider = CameraIgnorePhysicsCollisions.FindMe ().gameObject;
 		events = LevelEvents1_1.FindMe ();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
 	public void OnTriggerEnter (Collider coll) {
 		if (!triggered1 && coll.gameObject.GetInstanceID() == headEventCollider.GetInstanceID() && this.name.Equals("Zone1")) {
 			triggered1 = true;
 			events.showMessage ();
+			this.gameObject.SetActive (false);
 		}
 	}
 }

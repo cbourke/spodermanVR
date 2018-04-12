@@ -23,17 +23,18 @@ public class Lights1_1 : MonoBehaviour {
 		util = EventUtil.FindMe ();
 		startSource = start.GetComponent<AudioSource> ();
 		diagramSource = diagram.GetComponent<AudioSource> ();
+
+
+	}
+	// Use this for initialization
+	void Start () {
+		util.GetWindowControllerFromWindow (startMessage).updateArray (startMessageSigns);
 		start.SetActive (false);
 		main.SetActive (false);
 		diagram.SetActive (false);
 		blocksParent.SetActive (false);
 		climbSign.SetActive (false);
 		startMessage.SetActive (false);
-		util.GetWindowControllerFromWindow (startMessage).updateArray (startMessageSigns);
-	}
-	// Use this for initialization
-	void Start () {
-		
 		StartCoroutine (cueLights());
 
 	}
@@ -65,7 +66,7 @@ public class Lights1_1 : MonoBehaviour {
 		startSource.Play ();
 		yield return new WaitForSeconds (triggerDelay);
 		climbSign.SetActive (true);
-		climbSign.GetComponent<AudioSource> ().Play ();
+//		climbSign.GetComponent<AudioSource> ().Play ();
 		blocksParent.SetActive (true);
 		Animator[] lister = blocksParent.GetComponentsInChildren<Animator> ();
 		foreach(Animator block in lister) {

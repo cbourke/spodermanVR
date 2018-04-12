@@ -368,7 +368,7 @@ public class LevelEvents1_2_Backup : MonoBehaviour {
 		StartCoroutine(gameObject.GetComponent<EventUtil> ().lookingAtCounter(enemy));
 		yield return new WaitUntil(() => GetComponent<EventUtil>().lookingBool == true);
 		yield return new WaitForSeconds (1);
-		StartCoroutine(util.faceTalk (enemyFace , enemySpeechBubble , (Texture)Resources.Load("Textures/level1.2/normalFace_talk") , (Texture)Resources.Load("Textures/level1.2/borisSpeech1") , "Low"));
+//		StartCoroutine(util.faceTalk (enemyFace , enemySpeechBubble , (Texture)Resources.Load("Textures/level1.2/normalFace_talk") , (Texture)Resources.Load("Textures/level1.2/borisSpeech1") , "Low"));
 		//yield return new WaitForSeconds (1);
 		while (Vector3.Distance(util.headset.transform.position , enemySetup.transform.position) >= 1f) {
 			enemySetup.transform.position = Vector3.MoveTowards (enemySetup.transform.position , util.headset.transform.position , 1.1f*Time.deltaTime);

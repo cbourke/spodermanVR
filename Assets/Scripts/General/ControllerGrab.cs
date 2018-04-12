@@ -20,18 +20,29 @@ public class ControllerGrab : MonoBehaviour {
 	public GameObject otherController;
 	public Vector3 startingControllerPosition;
 	public Transform cameraRigTransform;
+	private EventUtil util;
 
 	private SteamVR_Controller.Device Controller {
 		get { return SteamVR_Controller.Input ((int)trackedObj.index); }
 	}
 
 	void Awake() {
+		util = EventUtil.FindMe ();
 		trackedObj = GetComponent<SteamVR_TrackedObject> ();
 		cameraRigTransform = GameObject.Find ("[CameraRig]").transform;
 		if (this.name.Equals("Controller (left)")) 
-			otherController = GameObject.Find ("[CameraRig]").transform.Find ("Controller (right)").gameObject;
+//			otherController = GameObject.Find ("[CameraRig]").transform.Find ("Controller (right)").gameObject;
+			util.setLeftController(this.gameObject);
 		else 
-			otherController = GameObject.Find ("[CameraRig]").transform.Find ("Controller (left)").gameObject;
+//			otherController = GameObject.Find ("[CameraRig]").transform.Find ("Controller (left)").gameObject;
+			util.setRightController(this.gameObject);
+	}
+
+	void Start() {
+		otherController = (this.name.Equals ("Controller (left)"))
+			?	util.getRightController ()
+			:	util.getLeftController ();
+			
 	}
 	void Update(){
 		if (objectInHand != null) {
@@ -129,8 +140,6 @@ public class ControllerGrab : MonoBehaviour {
 
 	public void MoveCameraRig() {
 		Vector3 difference = startingControllerPosition - trackedObj.transform.position;
-
-
 		cameraRigTransform.position += difference;
 	}
 

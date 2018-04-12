@@ -31,13 +31,14 @@ public class Level3Events : MonoBehaviour {
 		stopGate = false;
 		util = EventUtil.FindMe ();
 
-		util.GetWindowControllerFromWindow (window3).ChangeLock (2);
+
 	}
 	// Use this for initialization
 	void Start () {
 		util.GetWindowControllerFromWindow(window1).updateArray (window1Feed);
 		util.GetWindowControllerFromWindow(window2).updateArray (window2Feed);
 		util.GetWindowControllerFromWindow(window3).updateArray (window3Feed);
+		util.GetWindowControllerFromWindow (window3).ChangeLock (2);
 		window2.SetActive (false);
 		window3.SetActive (false);
 	}
@@ -71,11 +72,11 @@ public class Level3Events : MonoBehaviour {
 
 			if (keyObtained && truckMovingL && truck.transform.position.x <= moveDist) {
 				truck.transform.Translate (truck.transform.right * Time.deltaTime * 2f);
-				util.leftController.GetComponent<ControllerGrab> ().startingControllerPosition += truck.transform.right * Time.deltaTime * 2f;
+				util.getLeftController().GetComponent<ControllerGrab> ().startingControllerPosition += truck.transform.right * Time.deltaTime * 2f;
 			} else {
 				if (keyObtained && truckMovingR && truck.transform.position.x <= moveDist) {
 					truck.transform.Translate (truck.transform.right * Time.deltaTime * 2f);
-					util.rightController.GetComponent<ControllerGrab> ().startingControllerPosition += truck.transform.right * Time.deltaTime * 2f;
+					util.getRightController().GetComponent<ControllerGrab> ().startingControllerPosition += truck.transform.right * Time.deltaTime * 2f;
 				}
 			}
 		}

@@ -9,8 +9,8 @@ public class EventUtil : MonoBehaviour {
 	public bool lookingBool;
 	public float lookRecognitionTime;
 	public bool talking;
-	public GameObject leftController;
-	public GameObject rightController;
+	//public GameObject leftController { get { return this.getLeftController (); } }
+	//public GameObject rightController { get { return this.getRightController(); } }
 	public static readonly Random RAND = new Random();
 	private AudioClip sound;
 	private AudioClip speechSound;
@@ -19,6 +19,32 @@ public class EventUtil : MonoBehaviour {
 	private Light[] lightsInScene;
 	public LayerMask lightMask;
 
+	private GameObject _leftController = null;
+	public GameObject getLeftController() {
+		return _leftController == null
+			? GameObject.Find ("[CameraRig]").transform.Find("Controller (left)").gameObject
+			: _leftController;
+	}
+
+	public void setLeftController(GameObject controller){
+		if (controller == null)
+			throw new System.ArgumentNullException ("controller");
+		_leftController = controller;
+	}
+
+	private GameObject _rightController = null;
+	public GameObject getRightController() {
+		return _rightController == null
+			? GameObject.Find ("[CameraRig]").transform.Find("Controller (right)").gameObject
+			: _rightController;
+	}
+
+	public void setRightController(GameObject controller){
+		if (controller == null)
+			throw new System.ArgumentNullException ("controller");
+		_rightController = controller;
+	}
+
 	public static EventUtil FindMe() {
 		return  GameObject.FindObjectOfType<EventUtil>();
 	}
@@ -26,8 +52,8 @@ public class EventUtil : MonoBehaviour {
 	void Awake() {
 		headset = GameObject.Find ("Camera (eye)");
 		layerMask = ~LayerMask.GetMask ("RopeIgnore" , "CameraZoneCollisions");
-		leftController = GameObject.Find ("[CameraRig]").transform.Find("Controller (left)").gameObject;
-		rightController = GameObject.Find ("[CameraRig]").transform.Find("Controller (right)").gameObject;
+//		leftController = GameObject.Find ("[CameraRig]").transform.Find("Controller (left)").gameObject;
+//		rightController = GameObject.Find ("[CameraRig]").transform.Find("Controller (right)").gameObject;
 		headColliderHandler = HeadColliderHandler.FindMe ();
 		lightMask = ~LayerMask.GetMask ("Unlit");
 	}
@@ -43,8 +69,9 @@ public class EventUtil : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		RaycastHit hit;	
-		if (Physics.Raycast (headset.transform.position, headset.transform.forward, out hit, 100, layerMask)) {
+		if (Physics.Raycast (headset.transform.position - new Vector3(0,0.6f,0), headset.transform.forward, out hit, 100, layerMask)) {
 			visibleObj = hit.collider.gameObject;
+
 		} else {
 			visibleObj = null;
 		}
@@ -92,20 +119,20 @@ public class EventUtil : MonoBehaviour {
 		obj.GetComponent<AudioSource> ().Play ();
 	}
 
-	public IEnumerator faceTalk(GameObject face , GameObject speechBubble , Texture faceTex , Texture text , string pitch) {
-		speechBubble.SetActive (true);
-		int clipNum = Random.Range (1,4);
-		string clipSelect = "Audio/Speech/" + clipNum.ToString () + pitch;
-		Texture oldFace = face.GetComponent<Renderer> ().material.mainTexture;
-		face.GetComponent<AudioSource> ().clip = (AudioClip)Resources.Load (clipSelect);
-		face.GetComponent<Renderer> ().material.mainTexture = faceTex;
-		speechBubble.GetComponent<Renderer> ().material.mainTexture = text;
-		face.GetComponent<AudioSource> ().Play ();
-		yield return new WaitForSeconds (1);
-		face.GetComponent<Renderer> ().material.mainTexture = oldFace;
-		yield return new WaitForSeconds (GetComponent<LevelEvents1_2>().feedDelay);
-		speechBubble.SetActive (false);
-	}
+//	public IEnumerator faceTalk(GameObject face , GameObject speechBubble , Texture faceTex , Texture text , string pitch) {
+//		speechBubble.SetActive (true);
+//		int clipNum = Random.Range (1,4);
+//		string clipSelect = "Audio/Speech/" + clipNum.ToString () + pitch;
+//		Texture oldFace = face.GetComponent<Renderer> ().material.mainTexture;
+//		face.GetComponent<AudioSource> ().clip = (AudioClip)Resources.Load (clipSelect);
+//		face.GetComponent<Renderer> ().material.mainTexture = faceTex;
+//		speechBubble.GetComponent<Renderer> ().material.mainTexture = text;
+//		face.GetComponent<AudioSource> ().Play ();
+//		yield return new WaitForSeconds (1);
+//		face.GetComponent<Renderer> ().material.mainTexture = oldFace;
+//		yield return new WaitForSeconds (GetComponent<LevelEvents1_2>().feedDelay);
+//		speechBubble.SetActive (false);
+//	}
 
 	public void playClip(GameObject obj , AudioClip clip) {
 		obj.GetComponent<AudioSource> ().clip = clip;
@@ -113,6 +140,8 @@ public class EventUtil : MonoBehaviour {
 	}
 
 	public void cancelRetract() {
+		GameObject leftController = this.getLeftController ();
+		GameObject rightController = this.getRightController ();
 		leftController.GetComponent<ControllerRetract> ().retracting = false;
 		rightController.GetComponent<ControllerRetract> ().retracting = false;
 		if (leftController.GetComponent<ControllerRetract> ().retractobj) {
@@ -162,11 +191,11 @@ public class EventUtil : MonoBehaviour {
 	}
 
 	public GameObject ObjectInHandCheckLeft() {
-		return leftController.GetComponent<ControllerGrab> ().objectInHand;
+		return this.getLeftController().GetComponent<ControllerGrab> ().objectInHand;
 	}
 
 	public GameObject ObjectInHandCheckRight() {
-		return rightController.GetComponent<ControllerGrab> ().objectInHand;
+		return this.getRightController().GetComponent<ControllerGrab> ().objectInHand;
 	}
 
 	public int CheckInstanceID(GameObject obj) {

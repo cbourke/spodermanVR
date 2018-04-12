@@ -4,8 +4,15 @@ using UnityEngine;
 
 public class DestroyOnShot : MonoBehaviour {
 
+	public bool shot;
+
+	void Update() {
+		if (shot)
+			transform.Rotate (Vector3.up , 40 * Time.deltaTime);
+	}
+
 	public void OnTriggerEnter(Collider other) {
-		StartCoroutine (rotateDie());
+		shot = true;
 		Invoke ("destroyMe",2);
 	}
 
