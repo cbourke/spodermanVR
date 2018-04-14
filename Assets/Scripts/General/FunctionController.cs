@@ -16,23 +16,23 @@ using UnityEngine;
 
 public class FunctionController : MonoBehaviour {
 
-	public enum Mode {
-		Climb,
-		Rope,
-		WebShot,
-		RetractShot,
-		Fist,
-	};
+//	public enum Mode {
+//		Climb,
+//		Rope,
+//		WebShot,
+//		RetractShot,
+//		Fist,
+//	};
 
 
     public SteamVR_TrackedObject trackedObj;
 	public bool isClimbing;
-	public Mode currentMode = Mode.Climb;
-    public bool climbEnabled;
-    public bool ropeEnabled;
-    public bool retractEnabled;
-    public bool fistEnabled;
-    public bool shotEnabled;
+	public ControllerMode.Mode currentMode = ControllerMode.Mode.Climb;
+    protected bool climbEnabled = true;
+    protected bool ropeEnabled = true;
+	protected bool retractEnabled = true;
+	protected bool fistEnabled = true;
+	protected bool shotEnabled = true;
 	private GameObject ind;
     private Vector2 touchPadAxis;
 	private AudioSource controllerSpeaker;
@@ -46,11 +46,11 @@ public class FunctionController : MonoBehaviour {
 	}
 
 	void Awake() {
-        climbEnabled = true;
-        ropeEnabled = true;
-        retractEnabled = true;
-        fistEnabled = true;
-        shotEnabled = true;
+//        climbEnabled = true;
+//        ropeEnabled = true;
+//        retractEnabled = true;
+//        fistEnabled = true;
+//        shotEnabled = true;
 		trackedObj = GetComponent<SteamVR_TrackedObject> ();
 		controllerSpeaker = GetComponent<AudioSource> ();
 		modeChangePing = (AudioClip)Resources.Load ("Audio/General/changeHandMode");
@@ -66,15 +66,61 @@ public class FunctionController : MonoBehaviour {
 		changeIndicator (currentMode);
     }
 
+	public void ChangeFunctionStatus (ControllerMode.Mode reqMode , bool newStatus) {
+		switch (reqMode) {
+		case ControllerMode.Mode.Climb:
+			climbEnabled = newStatus;
+			break;
+		case ControllerMode.Mode.Fist:
+			fistEnabled = newStatus;
+			break;
+		case ControllerMode.Mode.RetractShot:
+			retractEnabled = newStatus;
+			break;
+		case ControllerMode.Mode.Rope:
+			ropeEnabled = newStatus;
+			break;
+		case ControllerMode.Mode.WebShot:
+			shotEnabled = newStatus;
+			break;
+		default:
+			break;
+		}
+	}
+
+	public bool GetFunctionStatus(ControllerMode.Mode reqMode) {
+		switch (reqMode) {
+		case ControllerMode.Mode.Climb:
+			return climbEnabled;
+			break;
+		case ControllerMode.Mode.Fist:
+			return fistEnabled;
+			break;
+		case ControllerMode.Mode.RetractShot:
+			return retractEnabled;
+			break;
+		case ControllerMode.Mode.Rope:
+			return ropeEnabled;
+			break;
+		case ControllerMode.Mode.WebShot:
+			return shotEnabled;
+			break;
+		default:
+			return false;
+			break;
+		}
+	}
+
 	/*
 	 * Indicator should only be visibly changed when switching to an input for the first time, not on subsequent switches!
 	 * This method may become obsolete after application of hand models down the road. This is good for early releases however. 
 	*/
-	private void changeIndicator (Mode currMode) { 
+	private void changeIndicator (ControllerMode.Mode currMode) { 
 		if (ind) {
 			Destroy (ind);
 		}
 		ind = GameObject.CreatePrimitive (PrimitiveType.Plane);
+		Destroy (ind.GetComponent<MeshCollider>());
 		Texture tex;
 		Vector3 indScale;
 		ind.GetComponent<Renderer> ().material = (Material)Resources.Load ("Materials/General/indMaterial");
@@ -91,19 +137,19 @@ public class FunctionController : MonoBehaviour {
 		ind.layer = LayerMask.NameToLayer("RopeIgnore");
 
 		switch (currMode) {
-		case Mode.WebShot:
+		case ControllerMode.Mode.WebShot:
 			tex = (Texture)Resources.Load ("Textures/General/newShot");
 			indScale = new Vector3 (0.02f,1.0f,0.02f);
 			break;
-		case Mode.RetractShot:
+		case ControllerMode.Mode.RetractShot:
 			tex = (Texture)Resources.Load ("Textures/General/newRetract");
 			indScale = new Vector3 (0.02f,1.0f,0.02f);
 			break;
-		case Mode.Rope:
+		case ControllerMode.Mode.Rope:
 			tex = (Texture)Resources.Load ("Textures/General/newRope");
 			indScale = new Vector3 (0.02f,1.0f,0.02f);
 			break;
-		case Mode.Fist:
+		case ControllerMode.Mode.Fist:
 			tex = (Texture)Resources.Load ("Textures/General/newFist");
 			indScale = new Vector3 (0.02f,1.0f,0.02f);
 			break;
@@ -137,8 +183,8 @@ public class FunctionController : MonoBehaviour {
 
 		//This block controls Trigger Down input: Grabbing an object.
 		if (Controller.GetHairTriggerDown () && climbEnabled) {
-			if (currentMode != Mode.Climb) {
-				currentMode = Mode.Climb;
+			if (currentMode != ControllerMode.Mode.Climb) {
+				currentMode = ControllerMode.Mode.Climb;
 				changeIndicator (currentMode);
 				isClimbing = this.GetComponent<ControllerGrab> ().Grab ();
 			} else {
@@ -173,18 +219,18 @@ public class FunctionController : MonoBehaviour {
 
 					if (touchPadAxis.y > -touchPadAxis.x && ropeEnabled) {		//Handles TouchpadDown input Up: Rope Spawning
 						
-						if (currentMode != Mode.Rope) {
-							currentMode = Mode.Rope;
+						if (currentMode != ControllerMode.Mode.Rope) {
+							currentMode = ControllerMode.Mode.Rope;
 							changeIndicator (currentMode);
 						} else
-							currentMode = Mode.Rope;
+							currentMode = ControllerMode.Mode.Rope;
 						//This block doesn't have any relevant calls because Rope only needs the currentMode to be Rope in order to function in 
 						//preview mode. Preview mode operates in the update method of the Rope script, so as long as it is in Rope mode, it is 
 						//running. 
 					} else {	//Handles Touchpad input Left: Fist
                         if (fistEnabled) {
-                            if (currentMode != Mode.Fist) {
-                                currentMode = Mode.Fist;
+							if (currentMode != ControllerMode.Mode.Fist) {
+								currentMode = ControllerMode.Mode.Fist;
                                 changeIndicator(currentMode);
                                 //handle first input while controller is in different mode
                             } else {
@@ -196,8 +242,8 @@ public class FunctionController : MonoBehaviour {
 				} else {	//down or right
 
 					if (touchPadAxis.y > -touchPadAxis.x && retractEnabled) {		//Handles TouchpadUp input Right: Retract
-						if (currentMode != Mode.RetractShot) {
-							currentMode = Mode.RetractShot;
+						if (currentMode != ControllerMode.Mode.RetractShot) {
+							currentMode = ControllerMode.Mode.RetractShot;
 							changeIndicator (currentMode);
 							//handle first input while controller is in different mode
 						} else {
@@ -206,8 +252,8 @@ public class FunctionController : MonoBehaviour {
 
 					} else {	//Handles Touchpad input Down: WebShot
                         if (shotEnabled) {
-                            if (currentMode != Mode.WebShot) {
-                                currentMode = Mode.WebShot;
+							if (currentMode != ControllerMode.Mode.WebShot) {
+								currentMode = ControllerMode.Mode.WebShot;
                                 changeIndicator(currentMode);
                                 this.GetComponent<WebShot>().Shoot();
 								controllerSpeaker.clip = webShot;
@@ -237,18 +283,18 @@ public class FunctionController : MonoBehaviour {
 				if (touchPadAxis.y > touchPadAxis.x) {	//left or up
 
 					if (touchPadAxis.y > -touchPadAxis.x && ropeEnabled) {		//Handles TouchpadUp input Up: Rope Spawning
-						if (currentMode == Mode.Rope) {
+						if (currentMode == ControllerMode.Mode.Rope) {
 							if (this.GetComponent<Rope> ().isValidNode ()) {
 								Vector3 validSpot = this.GetComponent<Rope> ().getValidNodePosition ();
 								this.GetComponent<Rope> ().spawnNodeBridge (validSpot , this.gameObject); //this method call makes it so we don't have to reference WorldNodeTracker in this script
 							}
 						} else {
-							currentMode = Mode.Climb;
+							currentMode = ControllerMode.Mode.Climb;
 						}
 					} else {	//Handles TouchpadUp input Left: Fist
                         if (fistEnabled) {
-                            if (currentMode != Mode.Fist) {
-                                currentMode = Mode.Climb;
+							if (currentMode != ControllerMode.Mode.Fist) {
+								currentMode = ControllerMode.Mode.Climb;
                                 //handle first Up input while controller is in different mode
                             } else {
                                 //handle any subsequent getpressup inputs beyond first input
@@ -258,10 +304,10 @@ public class FunctionController : MonoBehaviour {
 				} else {	//down or right
 
 					if (touchPadAxis.y > -touchPadAxis.x && retractEnabled) {	//Handles TouchpadUp input Right: Retract
-						if (currentMode != Mode.RetractShot) {
-							currentMode = Mode.Climb;
+						if (currentMode != ControllerMode.Mode.RetractShot) {
+							currentMode = ControllerMode.Mode.Climb;
 							//handle first Up input while controller is in different mode
-						} else if (currentMode == Mode.RetractShot) {
+						} else if (currentMode == ControllerMode.Mode.RetractShot) {
 							//handle any subsequent inputs beyond first input
 							if (!this.GetComponent<ControllerGrab> ().objectInHand) {
                                 //this.GetComponent<ControllerGrab> ().GrabPhysicsObjectWithParam (this.GetComponent<ControllerRetract> ().retract ());
@@ -273,9 +319,9 @@ public class FunctionController : MonoBehaviour {
 					} else {	//Handles TouchpadUp input Down: WebShot
                         if (shotEnabled)
                         {
-                            if (currentMode != Mode.WebShot)
+							if (currentMode != ControllerMode.Mode.WebShot)
                             {
-                                currentMode = Mode.Climb;
+								currentMode = ControllerMode.Mode.Climb;
                                 //handle first Up input while controller is in different mode
                             }
                             else

@@ -18,19 +18,24 @@ public class PauseMenuWorld : MonoBehaviour {
 	private bool hideLock;
 	private bool[] rightStatus = new bool[5];		//[climbEnabled , ropeEnabled , retractEnabled , fistEnabled , shotEnabled]
 	private bool[] leftStatus = new bool[5];
+	private EventUtil util;
 
 	void Awake() {
+		util = EventUtil.FindMe ();
 		PMenu = (GameObject)Resources.Load ("Prefabs/PauseMenu");
 		openNoise = (AudioClip)Resources.Load ("Audio/General/pauseMenuOpen");
 		closeNoise = (AudioClip)Resources.Load ("Audio/General/pauseMenuClose");
 	}
 
 	void Start() {
-		head = GameObject.Find ("Camera (eye)");
+//		head = GameObject.Find ("Camera (eye)");
+		head = HeadColliderHandler.FindMe ().transform.parent.gameObject;
 		paused = false;
 		hideLock = false;
-		leftController = GameObject.Find ("[CameraRig]").transform.Find("Controller (left)").gameObject;
-		rightController = GameObject.Find ("[CameraRig]").transform.Find("Controller (right)").gameObject;
+//		leftController = GameObject.Find ("[CameraRig]").transform.Find("Controller (left)").gameObject;
+//		rightController = GameObject.Find ("[CameraRig]").transform.Find("Controller (right)").gameObject;
+		leftController = util.getLeftController();
+		rightController = util.getRightController ();
 	}
 
 	public void ShowMenu(GameObject sendingController)
@@ -90,46 +95,46 @@ public class PauseMenuWorld : MonoBehaviour {
 	}
 
 	public void DisableFunctions() {
-		leftController.GetComponent<FunctionController>().climbEnabled = false;
-		leftController.GetComponent<FunctionController>().ropeEnabled = false;
-		leftController.GetComponent<FunctionController>().retractEnabled = false;
-		leftController.GetComponent<FunctionController>().fistEnabled = false;
-		leftController.GetComponent<FunctionController>().shotEnabled = false;
+		leftController.GetComponent<FunctionController> ().ChangeFunctionStatus (ControllerMode.Mode.Climb , false);
+		leftController.GetComponent<FunctionController>().ChangeFunctionStatus (ControllerMode.Mode.Rope , false);
+		leftController.GetComponent<FunctionController>().ChangeFunctionStatus (ControllerMode.Mode.RetractShot , false);
+		leftController.GetComponent<FunctionController>().ChangeFunctionStatus (ControllerMode.Mode.Fist , false);
+		leftController.GetComponent<FunctionController>().ChangeFunctionStatus (ControllerMode.Mode.WebShot , false);
 
-		rightController.GetComponent<FunctionController>().climbEnabled = false;
-		rightController.GetComponent<FunctionController>().ropeEnabled = false;
-		rightController.GetComponent<FunctionController>().retractEnabled = false;
-		rightController.GetComponent<FunctionController>().fistEnabled = false;
-		rightController.GetComponent<FunctionController>().shotEnabled = false;
+		rightController.GetComponent<FunctionController> ().ChangeFunctionStatus (ControllerMode.Mode.Climb , false);
+		rightController.GetComponent<FunctionController>().ChangeFunctionStatus (ControllerMode.Mode.Rope , false);
+		rightController.GetComponent<FunctionController>().ChangeFunctionStatus (ControllerMode.Mode.RetractShot , false);
+		rightController.GetComponent<FunctionController>().ChangeFunctionStatus (ControllerMode.Mode.Fist , false);
+		rightController.GetComponent<FunctionController>().ChangeFunctionStatus (ControllerMode.Mode.WebShot , false);
 	}
 
 	public void StoreFunctions() {
-		leftStatus[0] = leftController.GetComponent<FunctionController>().climbEnabled;
-		leftStatus[1] = leftController.GetComponent<FunctionController>().ropeEnabled;
-		leftStatus[2] = leftController.GetComponent<FunctionController>().retractEnabled;
-		leftStatus[3] = leftController.GetComponent<FunctionController>().fistEnabled;
-		leftStatus[4] = leftController.GetComponent<FunctionController>().shotEnabled;
+		leftStatus[0] = leftController.GetComponent<FunctionController>().GetFunctionStatus(ControllerMode.Mode.Climb);
+		leftStatus[1] = leftController.GetComponent<FunctionController>().GetFunctionStatus(ControllerMode.Mode.Rope);
+		leftStatus[2] = leftController.GetComponent<FunctionController>().GetFunctionStatus(ControllerMode.Mode.RetractShot);
+		leftStatus[3] = leftController.GetComponent<FunctionController>().GetFunctionStatus(ControllerMode.Mode.Fist);
+		leftStatus[4] = leftController.GetComponent<FunctionController>().GetFunctionStatus(ControllerMode.Mode.WebShot);
 
-		rightStatus[0] = rightController.GetComponent<FunctionController>().climbEnabled;
-		rightStatus[1] = rightController.GetComponent<FunctionController>().ropeEnabled;
-		rightStatus[2] = rightController.GetComponent<FunctionController>().retractEnabled;
-		rightStatus[3] = rightController.GetComponent<FunctionController>().fistEnabled;
-		rightStatus[4] = rightController.GetComponent<FunctionController>().shotEnabled;
+		rightStatus[0] = rightController.GetComponent<FunctionController>().GetFunctionStatus(ControllerMode.Mode.Climb);
+		rightStatus[1] = rightController.GetComponent<FunctionController>().GetFunctionStatus(ControllerMode.Mode.Rope);
+		rightStatus[2] = rightController.GetComponent<FunctionController>().GetFunctionStatus(ControllerMode.Mode.RetractShot);
+		rightStatus[3] = rightController.GetComponent<FunctionController>().GetFunctionStatus(ControllerMode.Mode.Fist);
+		rightStatus[4] = rightController.GetComponent<FunctionController>().GetFunctionStatus(ControllerMode.Mode.WebShot);
 
 	}
 
 	public void RestoreFunctions() {
-		leftController.GetComponent<FunctionController>().climbEnabled = leftStatus[0];
-		leftController.GetComponent<FunctionController>().ropeEnabled = leftStatus[1];
-		leftController.GetComponent<FunctionController>().retractEnabled = leftStatus[2];
-		leftController.GetComponent<FunctionController>().fistEnabled = leftStatus[3];
-		leftController.GetComponent<FunctionController>().shotEnabled = leftStatus[4];
+		leftController.GetComponent<FunctionController> ().ChangeFunctionStatus (ControllerMode.Mode.Climb, leftStatus [0]);
+		leftController.GetComponent<FunctionController>().ChangeFunctionStatus(ControllerMode.Mode.Rope , leftStatus[1]);
+		leftController.GetComponent<FunctionController>().ChangeFunctionStatus(ControllerMode.Mode.RetractShot , leftStatus[2]);
+		leftController.GetComponent<FunctionController>().ChangeFunctionStatus(ControllerMode.Mode.Fist , leftStatus[3]);
+		leftController.GetComponent<FunctionController>().ChangeFunctionStatus(ControllerMode.Mode.WebShot , leftStatus[4]);
 
-		rightController.GetComponent<FunctionController>().climbEnabled = rightStatus[0];
-		rightController.GetComponent<FunctionController>().ropeEnabled = rightStatus[1];
-		rightController.GetComponent<FunctionController>().retractEnabled = rightStatus[2];
-		rightController.GetComponent<FunctionController>().fistEnabled = rightStatus[3];
-		rightController.GetComponent<FunctionController>().shotEnabled = rightStatus[4];
+		rightController.GetComponent<FunctionController> ().ChangeFunctionStatus (ControllerMode.Mode.Climb, rightStatus [0]);
+		rightController.GetComponent<FunctionController>().ChangeFunctionStatus(ControllerMode.Mode.Rope , rightStatus[1]);
+		rightController.GetComponent<FunctionController>().ChangeFunctionStatus(ControllerMode.Mode.RetractShot , rightStatus[2]);
+		rightController.GetComponent<FunctionController>().ChangeFunctionStatus(ControllerMode.Mode.Fist , rightStatus[3]);
+		rightController.GetComponent<FunctionController>().ChangeFunctionStatus(ControllerMode.Mode.WebShot , rightStatus[4]);
 	}
 
 

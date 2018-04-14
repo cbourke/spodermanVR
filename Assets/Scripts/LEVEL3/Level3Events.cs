@@ -23,6 +23,7 @@ public class Level3Events : MonoBehaviour {
 	public Texture[] window2Feed;
 	public Texture[] window3Feed;
 	public int nextLevel;
+	public GameObject retractgif;
 
 
 	void Awake() {
@@ -45,12 +46,15 @@ public class Level3Events : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+		retractgif.SetActive (window2.activeSelf && util.GetWindowControllerFromWindow(window2).currIndex == 2);
 		
 		if (!leverActivated && lever.transform.rotation.eulerAngles.x >= 315f && lever.transform.rotation.eulerAngles.x <= 320f) {
 //			moveDist = 48f;
 			leverActivated = true;
 			util.cancelRetract ();
-
+			util.GetWindowControllerFromWindow (window3).ChangeMsg (2);
+			util.GetWindowControllerFromWindow (window3).ChangeLock (2);
 		}
 		if (truck.transform.position.x >= 47f) {
 //			int nextScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene ().buildIndex + 1;

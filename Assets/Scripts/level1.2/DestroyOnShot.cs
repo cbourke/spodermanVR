@@ -5,22 +5,19 @@ using UnityEngine;
 public class DestroyOnShot : MonoBehaviour {
 
 	public bool shot;
+	public float rotateSpeed;
 
 	void Update() {
-		if (shot)
-			transform.Rotate (Vector3.up , 40 * Time.deltaTime);
+		if (shot) {
+			transform.Rotate (Vector3.forward, rotateSpeed * Time.deltaTime);
+		}
 	}
 
 	public void OnTriggerEnter(Collider other) {
+		this.GetComponent<AudioSource> ().Play ();
+		rotateSpeed += 180f;
 		shot = true;
 		Invoke ("destroyMe",2);
-	}
-
-	private IEnumerator rotateDie() {
-		while (true) {
-			this.transform.Rotate (0f,10f,0f);
-			yield return new WaitForSeconds(0.01f);
-		}
 	}
 
 	private void destroyMe() {

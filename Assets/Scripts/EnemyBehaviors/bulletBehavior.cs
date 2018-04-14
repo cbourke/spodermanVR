@@ -29,7 +29,6 @@ public class bulletBehavior : MonoBehaviour {
 	}
 
 	public void OnTriggerEnter (Collider coll) {
-		Debug.Log (coll.gameObject.name);
 		if (coll.gameObject.GetInstanceID() == playerHead.GetInstanceID()) {
 			HeadColliderHandler.FindMe ().Damage (10f);
 		}

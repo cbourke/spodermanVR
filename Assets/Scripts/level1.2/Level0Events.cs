@@ -32,20 +32,20 @@ public class Level0Events : MonoBehaviour {
 	public GameObject target;
 	public GameObject retractSetup;
 	public GameObject retractCube;
-	public GameObject enemySetup;
 	public GameObject enemy;
-	public GameObject enemyFace;
-	public GameObject enemySpeechBubble;
+//	public GameObject enemyFace;
+//	public GameObject enemySpeechBubble;
 	public GameObject exitDoor;
 	public bool debugBool;
 	public Texture[] feedATex;
 	public Texture[] feedBTex;
+	public GameObject exitHandle;
 
-	private FunctionController leftFunc;
-	private FunctionController rightFunc;
+	public FunctionController leftFunc;
+	public FunctionController rightFunc;
 	private int currStage;
 	public bool actionReady;
-	private AudioClip textChange; 
+//	private AudioClip textChange; 
 	private AudioClip correct;
 	private GameObject nodeKeeper;
 	private EventUtil util;
@@ -54,11 +54,12 @@ public class Level0Events : MonoBehaviour {
 
 
 	void Awake() {
-		textChange = (AudioClip)Resources.Load ("Audio/windowAudio/textChange");
+//		textChange = (AudioClip)Resources.Load ("Audio/windowAudio/textChange");
 		correct = (AudioClip)Resources.Load ("Audio/General/correct!");
 		nodeKeeper = transform.parent.gameObject;
 		util = this.GetComponent<EventUtil> ();
-
+		leftFunc = util.getLeftController().GetComponent<FunctionController> ();
+		rightFunc = util.getRightController().GetComponent<FunctionController> ();
 	}
 
 	void Start() {
@@ -78,19 +79,29 @@ public class Level0Events : MonoBehaviour {
 		speaker.SetActive (false);
 
 		targetSetup.SetActive (false);
-		leftFunc = util.getLeftController().GetComponent<FunctionController> ();
-		rightFunc = util.getRightController().GetComponent<FunctionController> ();
-		leftFunc.fistEnabled = false;
-		leftFunc.shotEnabled = false;
-		leftFunc.retractEnabled = false;
-		leftFunc.ropeEnabled = false;
-		rightFunc.fistEnabled = false;
-		rightFunc.shotEnabled = false;
-		rightFunc.retractEnabled = false;
-		rightFunc.ropeEnabled = false;
+
+//		leftFunc.fistEnabled = false;
+//		leftFunc.shotEnabled = false;
+//		leftFunc.retractEnabled = false;
+//		leftFunc.ropeEnabled = false;
+//
+//		rightFunc.fistEnabled = false;
+//		rightFunc.shotEnabled = false;
+//		rightFunc.retractEnabled = false;
+//		rightFunc.ropeEnabled = false;
+		leftFunc.ChangeFunctionStatus(ControllerMode.Mode.Fist , false);
+		leftFunc.ChangeFunctionStatus(ControllerMode.Mode.WebShot , false);
+		leftFunc.ChangeFunctionStatus(ControllerMode.Mode.RetractShot , false);
+		leftFunc.ChangeFunctionStatus(ControllerMode.Mode.Rope , false);
+
+		rightFunc.ChangeFunctionStatus(ControllerMode.Mode.Fist , false);
+		rightFunc.ChangeFunctionStatus(ControllerMode.Mode.WebShot , false);
+		rightFunc.ChangeFunctionStatus(ControllerMode.Mode.RetractShot , false);
+		rightFunc.ChangeFunctionStatus(ControllerMode.Mode.Rope , false);
+
 		currStage = 1;
 		retractSetup.SetActive (false);
-		enemySetup.SetActive (false);
+		enemy.SetActive (false);
 		exitDoor.SetActive (false);
 		StartCoroutine (cueScene());
 
@@ -157,7 +168,7 @@ public class Level0Events : MonoBehaviour {
 //				if (leftFunc.GetComponent<ControllerGrab> ().objectInHand != null || rightFunc.GetComponent<ControllerGrab> ().objectInHand != null) {
 //					if (leftFunc.GetComponent<ControllerGrab> ().objectInHand.GetInstanceID () == retractCube.GetInstanceID ()
 //						|| leftFunc.GetComponent<ControllerGrab> ().objectInHand.GetInstanceID () == retractCube.GetInstanceID ()) {
-				if (!(Vector3.Distance(util.headset.transform.position , retractCube.transform.position) >= 1.5f)) {
+				if (Vector3.Distance(util.headset.transform.position , retractCube.transform.position) <= 1.5f) {
 						actionReady = false;
 						StartCoroutine (cueSeventh());
 
@@ -169,7 +180,7 @@ public class Level0Events : MonoBehaviour {
 				break;
 
 			case 8:
-				if (Vector3.Distance(retractCube.transform.position , leftFunc.gameObject.transform.position) >= 4.0f) {
+				if (Vector3.Distance(retractCube.transform.position , util.headset.transform.position) >= 3f) {
 					actionReady = false;
 					StartCoroutine (cueEighth ());
 				}
@@ -186,7 +197,7 @@ public class Level0Events : MonoBehaviour {
 			case 10:
 				//if (Vector3.Distance(GetComponent<EventUtil>().headset.transform.position , enemy.transform.position) >= 3.0f) {
 				//if (debugBool) {
-				if (enemy.GetComponent<BorisHit>().punched) {
+				if (enemy.GetComponent<BorisBehavior>().punched) {
 					actionReady = false;
 					StartCoroutine (cueTenth ());
 				}
@@ -227,8 +238,8 @@ public class Level0Events : MonoBehaviour {
 		feedAanimAnim.SetTrigger ("FloatRightHalf");
 		feedBanimAnim.SetTrigger ("FloatRightHalf");
 //		yield return new WaitForSeconds (feedDelay);
-		leftFunc.ropeEnabled = true;
-		rightFunc.ropeEnabled = true;
+		leftFunc.ChangeFunctionStatus(ControllerMode.Mode.Rope , true);
+		rightFunc.ChangeFunctionStatus(ControllerMode.Mode.Rope , true);
 		currStage = 2;
 		actionReady = true;
 		//enemySetup.SetActive (false);
@@ -255,6 +266,7 @@ public class Level0Events : MonoBehaviour {
 //		currStage = 3;
 //		actionReady = true;
 		StartCoroutine(blinkCheckMark());
+		util.playClip (feedBanim , correct);
 		yield return new WaitForSeconds (feedDelay);
 		util.GetWindowControllerFromWindow (feedA).ChangeMsg (2);
 		util.GetWindowControllerFromWindow (feedA).ChangeLock (3);
@@ -288,7 +300,20 @@ public class Level0Events : MonoBehaviour {
 //		rightFunc.shotEnabled = true;
 //		currStage = 4;
 //		actionReady = true;
-		yield return null;
+
+		StartCoroutine(blinkCheckMark());
+		util.playClip (feedBanim , correct);
+		yield return new WaitForSeconds (feedDelay);
+		util.GetWindowControllerFromWindow (feedA).ChangeMsg (4);
+		util.GetWindowControllerFromWindow (feedA).ChangeLock (5);
+		yield return new WaitUntil (() => util.GetWindowControllerFromWindow (feedA).currIndex == util.GetWindowControllerFromWindow (feedA).msgLock);
+		yield return new WaitForSeconds (feedDelay);
+		util.GetWindowControllerFromWindow (feedB).ChangeMsg (1);
+		util.GetWindowControllerFromWindow (feedB).ChangeLock (1);
+		leftFunc.ChangeFunctionStatus (ControllerMode.Mode.WebShot , true);
+		rightFunc.ChangeFunctionStatus (ControllerMode.Mode.WebShot , true);
+		currStage = 4;
+		actionReady = true;
 	}
 
 	private IEnumerator cueFourth() {	//player enters shotMode , looks for target shot
@@ -309,7 +334,18 @@ public class Level0Events : MonoBehaviour {
 //		//yield return new WaitForSeconds (feedDelay);
 //		currStage = 5;
 //		actionReady = true;
-		yield return null;
+		StartCoroutine(blinkCheckMark());
+		util.playClip (feedBanim , correct);
+		yield return new WaitForSeconds (feedDelay);
+		util.GetWindowControllerFromWindow (feedA).ChangeMsg (6);
+		util.GetWindowControllerFromWindow (feedA).ChangeLock (7);
+		yield return new WaitUntil (() => util.GetWindowControllerFromWindow (feedA).currIndex == util.GetWindowControllerFromWindow (feedA).msgLock);
+		ropeShotBlocks.SetActive (false);
+		nodeKeeper.GetComponent<WorldRopeNodeTracker> ().deleteRopes ();
+		yield return new WaitForSeconds (feedDelay);
+		targetSetup.SetActive (true);
+		currStage = 5;
+		actionReady = true;
 	}
 
 	private IEnumerator cueFifth() {	//player shoots target , looks for retractModed
@@ -335,7 +371,20 @@ public class Level0Events : MonoBehaviour {
 //		//yield return new WaitForSeconds (feedDelay);
 //		currStage = 6;
 //		actionReady = true;
-		yield return null;
+		StartCoroutine(blinkCheckMark());
+		util.playClip (feedBanim , correct);
+		targetSetup.SetActive (false);
+		yield return new WaitForSeconds (feedDelay);
+		util.GetWindowControllerFromWindow (feedA).ChangeMsg (8);
+		util.GetWindowControllerFromWindow (feedA).ChangeLock (9);
+		yield return new WaitUntil (() => util.GetWindowControllerFromWindow (feedA).currIndex == util.GetWindowControllerFromWindow (feedA).msgLock);
+		yield return new WaitForSeconds (feedDelay);
+		util.GetWindowControllerFromWindow (feedB).ChangeMsg (2);
+		util.GetWindowControllerFromWindow (feedB).ChangeLock (2);
+		leftFunc.ChangeFunctionStatus (ControllerMode.Mode.RetractShot , true);
+		rightFunc.ChangeFunctionStatus (ControllerMode.Mode.RetractShot , true);
+		currStage = 6;
+		actionReady = true;
 	}
 
 	private IEnumerator cueSixth() {	//player enters retractShot , looks for retract the cube
@@ -359,7 +408,16 @@ public class Level0Events : MonoBehaviour {
 //		//yield return new WaitForSeconds (feedDelay);
 //		currStage = 7;
 //		actionReady = true;
-		yield return null;
+		StartCoroutine(blinkCheckMark());
+		util.playClip (feedBanim , correct);
+		yield return new WaitForSeconds (feedDelay);
+		util.GetWindowControllerFromWindow (feedA).ChangeMsg (10);
+		util.GetWindowControllerFromWindow (feedA).ChangeLock (10);
+//		yield return new WaitUntil (() => util.GetWindowControllerFromWindow (feedA).currIndex == util.GetWindowControllerFromWindow (feedA).msgLock);
+		yield return new WaitForSeconds (feedDelay);
+		retractSetup.SetActive (true);
+		currStage = 7;
+		actionReady = true;
 	}
 
 	private IEnumerator cueSeventh() {	//player retracts the cube , looks for cube to be away from area
@@ -371,7 +429,13 @@ public class Level0Events : MonoBehaviour {
 //		//yield return new WaitForSeconds (feedDelay);
 //		currStage = 8;
 //		actionReady = true;
-		yield return null;
+		StartCoroutine(blinkCheckMark());
+		util.playClip (feedBanim , correct);
+		yield return new WaitForSeconds (feedDelay);
+		util.GetWindowControllerFromWindow (feedA).ChangeMsg (11);
+		util.GetWindowControllerFromWindow (feedA).ChangeLock (12);
+		currStage = 8;
+		actionReady = true;
 	}
 
 	private IEnumerator cueEighth() {	//player throws cube , looks for fistMode
@@ -389,7 +453,17 @@ public class Level0Events : MonoBehaviour {
 //		rightFunc.fistEnabled = true;
 //		currStage = 9;
 //		actionReady = true;
-		yield return null;
+		StartCoroutine(blinkCheckMark());
+		util.playClip (feedBanim , correct);
+		yield return new WaitForSeconds (feedDelay);
+		util.GetWindowControllerFromWindow (feedA).ChangeMsg (13);
+		util.GetWindowControllerFromWindow (feedA).ChangeLock (13);
+		util.GetWindowControllerFromWindow (feedB).ChangeMsg (3);
+		util.GetWindowControllerFromWindow (feedB).ChangeLock (3);
+		leftFunc.ChangeFunctionStatus (ControllerMode.Mode.Fist , true);
+		rightFunc.ChangeFunctionStatus (ControllerMode.Mode.Fist , true);
+		currStage = 9;
+		actionReady = true;
 	}
 
 	private IEnumerator cueNinth() {	//player in fistMode , looks for person punch
@@ -421,7 +495,17 @@ public class Level0Events : MonoBehaviour {
 //		yield return new WaitForSeconds (feedDelay);
 //		currStage = 10;
 //		actionReady = true;
-		yield return null;
+		StartCoroutine(blinkCheckMark());
+		util.playClip (feedBanim , correct);
+		yield return new WaitForSeconds (feedDelay);
+		util.GetWindowControllerFromWindow (feedA).ChangeMsg (14);
+		util.GetWindowControllerFromWindow (feedA).ChangeLock (15);
+		yield return new WaitUntil (() => util.GetWindowControllerFromWindow (feedA).currIndex == util.GetWindowControllerFromWindow (feedA).msgLock);
+		yield return new WaitForSeconds (feedDelay);
+		retractSetup.SetActive (false);
+		enemy.SetActive (true);
+		currStage = 10;
+		actionReady = true;
 	}
 
 	private IEnumerator cueTenth() {	//player has punched Boris , player ends tutorial
@@ -441,7 +525,21 @@ public class Level0Events : MonoBehaviour {
 //		exitDoor.transform.position = exitDoor.transform.position + new Vector3 (0f,0.75f,0f);
 //		exitDoor.transform.LookAt (new Vector3(util.headset.transform.position.x , 0.75f , util.headset.transform.position.z));
 //		currStage = 11;
-		yield return null;
+		StartCoroutine(blinkCheckMark());
+		util.playClip (feedBanim , correct);
+		yield return new WaitForSeconds (feedDelay);
+		util.GetWindowControllerFromWindow (feedA).ChangeMsg (16);
+		util.GetWindowControllerFromWindow (feedA).ChangeLock (19);
+		yield return new WaitUntil (() => util.GetWindowControllerFromWindow (feedA).currIndex == util.GetWindowControllerFromWindow (feedA).msgLock);
+		yield return new WaitForSeconds (feedDelay);
+		exitDoor.SetActive (true);
+		Vector3 doorPos = new Vector3 (util.headset.transform.forward.x , util.headset.transform.position.y ,  util.headset.transform.forward.z);
+		exitDoor.transform.position = util.headset.transform.position - doorPos * 1f;
+		exitDoor.transform.position += new Vector3 (0f,1f,0f);
+		exitDoor.transform.LookAt (new Vector3(util.headset.transform.position.x , 1f , util.headset.transform.position.z));
+		exitHandle.GetComponent<LevelBridge> ().newLevel = 3;
+		currStage = 20;
+
 	}
 		
 }

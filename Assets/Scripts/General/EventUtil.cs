@@ -69,7 +69,8 @@ public class EventUtil : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		RaycastHit hit;	
-		if (Physics.Raycast (headset.transform.position - new Vector3(0,0.6f,0), headset.transform.forward, out hit, 100, layerMask)) {
+//		if (Physics.Raycast (headset.transform.position - new Vector3(0,0.6f,0), headset.transform.forward, out hit, 100, layerMask)) {
+		if (Physics.SphereCast (headset.transform.position, 0.5f , headset.transform.forward, out hit, 100, layerMask)) {
 			visibleObj = hit.collider.gameObject;
 
 		} else {
@@ -119,20 +120,7 @@ public class EventUtil : MonoBehaviour {
 		obj.GetComponent<AudioSource> ().Play ();
 	}
 
-//	public IEnumerator faceTalk(GameObject face , GameObject speechBubble , Texture faceTex , Texture text , string pitch) {
-//		speechBubble.SetActive (true);
-//		int clipNum = Random.Range (1,4);
-//		string clipSelect = "Audio/Speech/" + clipNum.ToString () + pitch;
-//		Texture oldFace = face.GetComponent<Renderer> ().material.mainTexture;
-//		face.GetComponent<AudioSource> ().clip = (AudioClip)Resources.Load (clipSelect);
-//		face.GetComponent<Renderer> ().material.mainTexture = faceTex;
-//		speechBubble.GetComponent<Renderer> ().material.mainTexture = text;
-//		face.GetComponent<AudioSource> ().Play ();
-//		yield return new WaitForSeconds (1);
-//		face.GetComponent<Renderer> ().material.mainTexture = oldFace;
-//		yield return new WaitForSeconds (GetComponent<LevelEvents1_2>().feedDelay);
-//		speechBubble.SetActive (false);
-//	}
+
 
 	public void playClip(GameObject obj , AudioClip clip) {
 		obj.GetComponent<AudioSource> ().clip = clip;

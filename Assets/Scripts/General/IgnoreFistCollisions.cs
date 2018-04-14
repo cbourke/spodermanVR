@@ -35,8 +35,8 @@ public class IgnoreFistCollisions : MonoBehaviour {
 			//			Vector3 direction = other.transform.position - this.transform.position;
 			Vector3 direction = -other.contacts [0].normal;
 			direction = direction * 2000;
-			if (other.gameObject.CompareTag ("Badguy"))
-				other.gameObject.GetComponent<BaseEnemy> ().Damage ();
+//			if (other.gameObject.CompareTag ("Badguy"))
+//				other.gameObject.GetComponent<BaseEnemy> ().Damage ();
 			other.rigidbody.AddForceAtPosition (direction , other.contacts[0].point);
 		}
 

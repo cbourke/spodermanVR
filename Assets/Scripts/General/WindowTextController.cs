@@ -32,16 +32,18 @@ public class WindowTextController : MonoBehaviour {
 	void Awake () {
 		util = EventUtil.FindMe();
 //		outline = transform.parent.transform.parent.transform.Find("Outline").gameObject;
-		leftCont = GameObject.Find ("[CameraRig]").transform.Find ("Controller (left)").gameObject;
-		rightCont = GameObject.Find ("[CameraRig]").transform.Find ("Controller (right)").gameObject;
-		leftControllerSteam = leftCont.GetComponent<SteamVR_TrackedObject>();
-		rightControllerSteam = rightCont.GetComponent<SteamVR_TrackedObject>();
+//		leftCont = GameObject.Find ("[CameraRig]").transform.Find ("Controller (left)").gameObject;
+//		rightCont = GameObject.Find ("[CameraRig]").transform.Find ("Controller (right)").gameObject;
 		msgLock = int.MaxValue;
 		wrong = (AudioClip)Resources.Load ("Audio/windowAudio/error");
 		originalTex = GetComponent<Renderer> ().material.mainTexture;
 	}
 	// Use this for initialization
 	void Start () {
+		leftCont = util.getLeftController();
+		rightCont = util.getRightController ();
+		leftControllerSteam = leftCont.GetComponent<SteamVR_TrackedObject>();
+		rightControllerSteam = rightCont.GetComponent<SteamVR_TrackedObject>();
 		outline.SetActive (false);
 
 	}
