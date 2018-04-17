@@ -31,10 +31,8 @@ public class ControllerGrab : MonoBehaviour {
 		trackedObj = GetComponent<SteamVR_TrackedObject> ();
 		cameraRigTransform = GameObject.Find ("[CameraRig]").transform;
 		if (this.name.Equals("Controller (left)")) 
-//			otherController = GameObject.Find ("[CameraRig]").transform.Find ("Controller (right)").gameObject;
 			util.setLeftController(this.gameObject);
 		else 
-//			otherController = GameObject.Find ("[CameraRig]").transform.Find ("Controller (left)").gameObject;
 			util.setRightController(this.gameObject);
 	}
 
@@ -64,7 +62,7 @@ public class ControllerGrab : MonoBehaviour {
 
 	}
 
-	public void OnTriggerEnter(Collider other) {	//prone to errors
+	public void OnTriggerEnter(Collider other) {
 		SetCollidingObject (other);
 		if (this.GetComponent<ControllerRetract>().retracting && this.GetComponent<ControllerRetract>().retractobj && this.GetComponent<ControllerRetract>().retractobj.GetInstanceID() == other.attachedRigidbody.gameObject.GetInstanceID()) {//gameobject.GetInstanceID()) {
 			this.GetComponent<ControllerRetract> ().retracting = false;
@@ -191,10 +189,11 @@ public class ControllerGrab : MonoBehaviour {
 	}
 
 	public void RopeSlide () {
-		if (objectInHand == null || collidingObject == null) {
+		if (objectInHand == null /*|| collidingObject == null*/) {
 			return;
 		}
-		if (objectInHand.CompareTag("Rope") && collidingObject.GetInstanceID() == objectInHand.GetInstanceID()) {
+//		if (objectInHand.CompareTag("Rope") && collidingObject.GetInstanceID() == objectInHand.GetInstanceID()) {
+		if (objectInHand.CompareTag("Rope") && (Vector3.Distance(this.transform.position , objectInHand.transform.position) <= objectInHand.transform.localScale.y)) {
 			Vector3 ropeUp = objectInHand.transform.up;
 			Vector3 controllerUp = trackedObj.gameObject.transform.forward;
 			if (Vector3.Dot(ropeUp , controllerUp) >= 0) {

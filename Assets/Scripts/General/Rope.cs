@@ -39,8 +39,6 @@ public class Rope : MonoBehaviour {
 		worldNodeTracker = GameObject.Find("WorldNodeTracker");
 		layerMask = LayerMask.GetMask ("RopeIgnore" , "CameraZoneCollisions");
 		laser = Instantiate ((GameObject)Resources.Load("Prefabs/TrailingLaser"));
-//		layerMask = 1 << 8;
-//		layerMask = ~layerMask;
 	}
 
 	// Use this for initialization
@@ -56,8 +54,6 @@ public class Rope : MonoBehaviour {
 		previewNode.transform.localScale = new Vector3 (0.1f,0.1f,0.1f);
 		previewNode.GetComponent<Renderer> ().material = notValid;
 		Destroy (previewNode.GetComponent<SphereCollider>());
-//		previewNode.layer = 8;
-//		previewNode.AddComponent<IgnoreCollisions> ();
 	}
 
 	public Vector3 getValidNodePosition () {
@@ -134,9 +130,6 @@ public class Rope : MonoBehaviour {
 	private void ShowLaser(RaycastHit hit)
 	{
 		laser.SetActive(true);
-		//		laserTransform.position = Vector3.Lerp(trackedObj.transform.position, hitPoint, .5f);
-		//		laserTransform.LookAt(hitPoint); 
-		//		laserTransform.localScale = new Vector3(laserTransform.localScale.x, laserTransform.localScale.y, hit.distance);
 		laser.transform.position = trackedObj.transform.position;
 		laser.GetComponent<LineRenderer> ().SetPosition (0 , trackedObj.transform.position);
 		laser.GetComponent<LineRenderer> ().SetPosition (1 , hit.point);

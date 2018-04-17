@@ -12,14 +12,8 @@ public class DottedLineRenderer : MonoBehaviour {
 
 	private Texture validTex;
 	private Texture invalidTex;
-//	private AutoTextureTiling auto;
-	// Use this for initialization
+
 	void Start () {
-//		setVec = new Vector2 (0, 0);
-//		this.gameObject.AddComponent<AutoTextureTiling> ();
-//		this.GetComponent<AutoTextureTiling> ().useUnifiedOffset = true;
-//		this.GetComponent<AutoTextureTiling> ().useUnifiedScaling = true;
-//		this.GetComponent<AutoTextureTiling> ().topScale = new Vector2(0.2f,0.2f);
 		texHeight = GetComponent<Renderer>().material.mainTexture.width;
 		texHeight /= 500;
 		validTex = (Texture)Resources.Load ("Textures/General/previewTex");
@@ -33,7 +27,6 @@ public class DottedLineRenderer : MonoBehaviour {
 		Vector3 secondPoint = GetComponent<LineRenderer>().GetPosition(1);
 		Vector3 diff = secondPoint - firstPoint;
 		float scale = diff.magnitude / texHeight;
-//		Debug.Log (scale);
 		GetComponent<Renderer> ().material.SetTextureScale ("_MainTex" , new Vector2( scale , 1));
 		if (outward) 
 			setVec -= new Vector2(Time.deltaTime * 1 , 0);

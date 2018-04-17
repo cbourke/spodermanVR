@@ -15,7 +15,6 @@ public class WorldRopeNodeTracker : MonoBehaviour {
 	public LayerMask layerMask;
 	public int layerMaskInt;
 	private GameObject node1;
-//	private GameObject node2;
 	private AudioSource speaker;
 	private GameObject speakerObj;
 	private Material valid;
@@ -74,10 +73,6 @@ public class WorldRopeNodeTracker : MonoBehaviour {
 			} else {
 				util.playClip (callingController , (AudioClip)Resources.Load("Audio/windowAudio/error"));
 			}
-
-//			node2 = GameObject.CreatePrimitive (PrimitiveType.Sphere);
-//			node2.transform.position = spawnPoint;
-//			node2.transform.localScale = new Vector3 (0.1f,0.1f,0.1f);
 
 		}
 
@@ -177,7 +172,6 @@ public class WorldRopeNodeTracker : MonoBehaviour {
 		destOffMag -= 0.01f;
 		RaycastHit hit;
 		if (Physics.Raycast (lookOff, towardsPointNorm, out hit , destOffMag , layerMaskInt)) {
-			//lookerVisibleObj = hit.collider.attachedRigidbody.gameObject;
 			if (hit.collider.gameObject.CompareTag ("Rope")) {
 				return true;
 			} else

@@ -65,7 +65,6 @@ public class Level4Boss : MonoBehaviour {
 	void Update () {
 		Quaternion q = Quaternion.LookRotation (playerHead.transform.position - transform.position);
 		transform.rotation = Quaternion.RotateTowards (transform.rotation , q , 100 * Time.deltaTime);
-//		if (util.FieldOfVision(this.gameObject , 0.2f , false)) {
 		if (activate) {
 			if (!seen) {
 				seen = true;

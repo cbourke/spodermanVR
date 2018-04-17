@@ -9,8 +9,6 @@ public class EventUtil : MonoBehaviour {
 	public bool lookingBool;
 	public float lookRecognitionTime;
 	public bool talking;
-	//public GameObject leftController { get { return this.getLeftController (); } }
-	//public GameObject rightController { get { return this.getRightController(); } }
 	public static readonly Random RAND = new Random();
 	private AudioClip sound;
 	private AudioClip speechSound;
@@ -52,8 +50,6 @@ public class EventUtil : MonoBehaviour {
 	void Awake() {
 		headset = GameObject.Find ("Camera (eye)");
 		layerMask = ~LayerMask.GetMask ("RopeIgnore" , "CameraZoneCollisions");
-//		leftController = GameObject.Find ("[CameraRig]").transform.Find("Controller (left)").gameObject;
-//		rightController = GameObject.Find ("[CameraRig]").transform.Find("Controller (right)").gameObject;
 		headColliderHandler = HeadColliderHandler.FindMe ();
 		lightMask = ~LayerMask.GetMask ("Unlit");
 	}
@@ -69,7 +65,6 @@ public class EventUtil : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		RaycastHit hit;	
-//		if (Physics.Raycast (headset.transform.position - new Vector3(0,0.6f,0), headset.transform.forward, out hit, 100, layerMask)) {
 		if (Physics.SphereCast (headset.transform.position, 0.5f , headset.transform.forward, out hit, 100, layerMask)) {
 			visibleObj = hit.collider.gameObject;
 
@@ -89,28 +84,30 @@ public class EventUtil : MonoBehaviour {
 			return false;
 	}
 
-	public IEnumerator lookingAtCounter(GameObject obj) {
-		float timer = 0f;
-		while (timer <= lookRecognitionTime /*&& !this.GetComponent<EventUtil>().lookingAtObj (feedAText)*/) {
-			if (lookingAtObj (obj)) {
-				timer += 0.25f;
-				yield return new WaitForSeconds(0.25f);
-				if (timer >= lookRecognitionTime) {
-					lookingBool = true;
-					yield return new WaitForSeconds(0.25f);
-					lookingBool = false;
-					yield break;
-				}
-				yield return null;
-			}
-			else {
-				timer = 0f;
-				yield return null;
-			}
-		}
-		yield return null;
-
-	}
+	//Method for allowing timed response to looking at a window, but deprecated in favor of controller input for
+	//	window interaction.
+//	public IEnumerator lookingAtCounter(GameObject obj) {
+//		float timer = 0f;
+//		while (timer <= lookRecognitionTime) {
+//			if (lookingAtObj (obj)) {
+//				timer += 0.25f;
+//				yield return new WaitForSeconds(0.25f);
+//				if (timer >= lookRecognitionTime) {
+//					lookingBool = true;
+//					yield return new WaitForSeconds(0.25f);
+//					lookingBool = false;
+//					yield break;
+//				}
+//				yield return null;
+//			}
+//			else {
+//				timer = 0f;
+//				yield return null;
+//			}
+//		}
+//		yield return null;
+//
+//	}
 
 
 	public void changeTex(GameObject obj , GameObject textObj , Texture tex) {
@@ -156,10 +153,6 @@ public class EventUtil : MonoBehaviour {
 			lookingActorForwardDir = lookingActor.transform.forward;
 		}
 		Vector3 diffVec = headset.transform.position - correctedPosition;
-//		GameObject point = GameObject.CreatePrimitive (PrimitiveType.Sphere);
-//		point.transform.position = correctedPosition;
-//		point.transform.localScale = new Vector3(0.1f,0.1f,0.1f);
-//		Destroy (point.GetComponent<SphereCollider>());
 		if (Physics.Raycast (correctedPosition, diffVec.normalized, out hit, diffVec.magnitude, layerMask)) {
 			if (hit.collider.gameObject.GetInstanceID () == headColliderHandler.gameObject.GetInstanceID ()) {
 				if (Vector3.Dot (lookingActorForwardDir.normalized, diffVec.normalized) >= angle) {

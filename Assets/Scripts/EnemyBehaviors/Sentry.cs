@@ -17,9 +17,6 @@ public class Sentry : BaseEnemy {
 			base.animationLock = true ;
 			StartCoroutine (shoot(target));
 			base.badAnim.SetTrigger ("IdleToShoot");
-//			base.badAnim.SetBool ("Walk" , false);
-//			Debug.Log ("I was supposed to stop here");
-			//			base.badAnim.SetBool ("Walk" , true);
 		}
 	}
 

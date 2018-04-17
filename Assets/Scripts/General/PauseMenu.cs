@@ -32,8 +32,6 @@ public class PauseMenu : MonoBehaviour
 	void Awake()
 	{
 		trackedObj = GetComponent<SteamVR_TrackedObject> ();
-//		PMenu = GameObject.Find ("PauseMenu");
-//		laser = GameObject.Find ("Laser");
 		laserPrefab = (GameObject)Resources.Load("Prefabs/pauseLaser");
 		head = GameObject.Find ("Camera (eye)");
 		worldTracker = GameObject.Find ("WorldNodeTracker");

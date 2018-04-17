@@ -12,7 +12,7 @@ public class Level4ZoneTriggers : MonoBehaviour {
 	private bool triggered2;
 	private bool triggered3;
 
-	// Use this for initialization
+
 	void Awake() {
 		level4Events = Level4Events.FindMe ();
 		headEventCollider = CameraIgnorePhysicsCollisions.FindMe ().gameObject;
@@ -21,7 +21,7 @@ public class Level4ZoneTriggers : MonoBehaviour {
 		
 	}
 	
-	// Update is called once per frame
+
 	void Update () {
 		
 	}

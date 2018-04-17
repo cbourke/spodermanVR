@@ -34,17 +34,12 @@ public class ControllerRetract : MonoBehaviour {
 		laserTransform = laser.transform;
 		laser.GetComponent<DottedLineRenderer> ().outward = false;
 		layerMask = LayerMask.GetMask ("RopeIgnore" , "CameraZoneCollisions");
-//		layerMask = 1 << 8;
-//		layerMask = ~layerMask;
 
 	}
 	
 	private void ShowLaser(RaycastHit hit)
 	{
 		laser.SetActive(true);
-//		laserTransform.position = Vector3.Lerp(trackedObj.transform.position, hitPoint, .5f);
-//		laserTransform.LookAt(hitPoint); 
-//		laserTransform.localScale = new Vector3(laserTransform.localScale.x, laserTransform.localScale.y, hit.distance);
 		laserTransform.position = trackedObj.transform.position;
 		laser.GetComponent<LineRenderer> ().SetPosition (0 , trackedObj.transform.position);
 		laser.GetComponent<LineRenderer> ().SetPosition (1 , hit.point);
@@ -62,8 +57,6 @@ public class ControllerRetract : MonoBehaviour {
 			if (Physics.Raycast (trackedObj.transform.position, transform.forward, out hit, shotDistance, ~layerMask)) {
 				if (hit.collider.gameObject.GetComponent<Rigidbody>() 
 					&& ((!hit.collider.gameObject.GetComponent<Rigidbody> ().isKinematic && hit.collider.gameObject.GetComponent<Rigidbody> ().useGravity) || hit.collider.gameObject.CompareTag("Retractable"))) {
-                    //hit.collider.gameObject.transform.position = trackedObj.transform.position;
-                    //return hit.collider.gameObject;
                     StartCoroutine(pull(hit.collider.gameObject));
 				}
 			}
@@ -75,15 +68,9 @@ public class ControllerRetract : MonoBehaviour {
 		pullObj.GetComponent<Rigidbody>().useGravity = false;
 		pullObj.GetComponent<Rigidbody> ().angularVelocity = Vector3.zero;
 		retracting = true;
-//		if (pullObj.CompareTag("Retractable")) 
-//			pullObj.GetComponent<Rigidbody>().isKinematic = false;
-//		else 
-//			pullObj.GetComponent<Rigidbody>().isKinematic = true;
-//
 		pullObj.GetComponent<Rigidbody> ().isKinematic = !pullObj.CompareTag ("Retractable");
 
 		retractobj = pullObj;
-		//float step = retractSpeed * Time.deltaTime;
 		while (retracting) {
 			pullObj.transform.position = Vector3.MoveTowards (pullObj.transform.position , this.transform.position , retractSpeed * Time.deltaTime);
 			yield return null;
@@ -125,11 +112,6 @@ public class ControllerRetract : MonoBehaviour {
 			if (this.GetComponent<ControllerGrab>().objectInHand && !(this.GetComponent<FunctionController>().currentMode.ToString() == "Climb")) {
 				this.GetComponent<ControllerGrab> ().UnGrab ();
 			}
-//			if (ropePreview) {
-//
-//			} else {
-//
-//			}
 		}
 
 	}

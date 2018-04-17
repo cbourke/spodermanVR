@@ -24,9 +24,6 @@ public class ControllerFist : MonoBehaviour
 		Fist.transform.localPosition = new Vector3 (0.0f,0.0f,0.05f);
 		Fist.AddComponent <IgnoreFistCollisions>();
 		Fist.GetComponent<Renderer> ().material = fistMat;
-		//Fist.AddComponent (typeof(SphereCollider));
-		//Fist.GetComponent<SphereCollider> ().radius = 2;
-		//Fist.tag = "Fistable"; 	//If we want something to be able to be punched in later release. "Fistable" or "Punchable"?
 	}
 
 	// Update is called once per frame

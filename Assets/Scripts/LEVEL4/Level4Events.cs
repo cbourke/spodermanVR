@@ -21,7 +21,7 @@ public class Level4Events : MonoBehaviour {
 	public static Level4Events FindMe() {
 		return  GameObject.FindObjectOfType<Level4Events>();
 	}
-	// Use this for initialization
+
 	void Awake() {
 		util = EventUtil.FindMe ();
 		boss = Level4Boss.FindMe ();
@@ -34,8 +34,7 @@ public class Level4Events : MonoBehaviour {
 		window1.SetActive (true);
 		window2.SetActive (false);
 	}
-	
-	// Update is called once per frame
+
 	void Update () {
 		if (trapdoorBool && trapdoor.transform.position.z >= 1f)
 			trapdoor.transform.Translate (-trapdoor.transform.forward * Time.deltaTime);

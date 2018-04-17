@@ -20,7 +20,7 @@ public class WebShotCollider : MonoBehaviour {
 		Destroy (this.gameObject);
 	}
 
-	//UNUSED since switch to trigger collider, rather than physics based collision
+	//DEPRECATED since switch to trigger collider, rather than physics based collision
 //	public void OnCollisionEnter(Collision other) {
 ////		if (other.gameObject.GetComponent<Rigidbody>() && !other.gameObject.GetComponent<Rigidbody>().isKinematic) {
 ////			//this block of code is redundant, collisions between two rigidbodies already apply a physics force.
@@ -29,15 +29,7 @@ public class WebShotCollider : MonoBehaviour {
 //////			other.rigidbody.AddForceAtPosition ( direction , other.contacts[0].point);
 ////
 ////		}
-//
-//		//TODO: Decal system?
-////		RaycastHit hit;
-////		if (Physics.Raycast(this.transform.position,this.GetComponent<Rigidbody>().velocity,out hit)) {
-////			var hitRotation = Quaternion.FromToRotation (Vector3.up, hit.normal);
-////
-////		}
-//		Destroy (this.gameObject);
-//	}
+
 		
 	private IEnumerator DestroyShot() {
 		yield return new WaitForSeconds(5.0f);

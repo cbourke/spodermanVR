@@ -31,57 +31,13 @@ public class PadColliderEvents : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-//		if (collObj) {
-//			if (string.Compare (lastBoxIn, collObj.name, true) != 0) {
-//				lastBoxIn = collObj.name;
-//				KeyValuePair<int, Texture[]> data;
-//				if (LevelBridge.LEVELS.TryGetValue (collObj.name, out data)) {
-//					bridgeStatus.open = true;
-//					bridgeStatus.newLevel = data.Key;
-//					// load textures in window
-//					// with data.Value
-//				} else {
-//					bridgeStatus.open = false;
-//					bridgeStatus.newLevel = 0;
-//				}
-//			}
-//		} else {
-//			bridgeStatus.open = false;
-//			bridgeStatus.newLevel = 0;
-//			lastBoxIn = string.Empty;
-//			// update to textures 
-//			// on the hub object
-//		}
-//		if (collObj) {
-//			switch (collObj.name) {
-//			case "LVL1":
-//				bridgeStatus.open = true;
-//				bridgeStatus.newLevel = 1;
-//				break;
-//			case "LVL3":
-//				bridgeStatus.open = true;
-//				bridgeStatus.newLevel = 4;
-//				break;
-//			case "LVL4":
-//				bridgeStatus.open = true;
-//				bridgeStatus.newLevel = 5;
-//				break;
-//			default:
-//				bridgeStatus.open = false;
-//				break;
-//			}
-//		} else {
-//			bridgeStatus.open = false;
-//			bridgeStatus.newLevel = 0;
-//		}
 	}
 
 	public void OnTriggerEnter(Collider coll) {
 		KeyValuePair<int, Texture[]> data;
 		if (!LevelBridge.LEVELS.TryGetValue (coll.gameObject.name, out data))
 			return;
-		
-		//collObj = coll.gameObject;
+		this.transform.parent.gameObject.GetComponent<AudioSource> ().Play ();
 		float ticks = Time.fixedTime;
 		
 		activeCube = new KeyValuePair<float, GameObject> (ticks, coll.gameObject);
@@ -89,8 +45,6 @@ public class PadColliderEvents : MonoBehaviour {
 		// texure code
 		mainWindowCont.updateArray(data.Value, false);
 		bridgeStatus.newLevel = data.Key;
-//		if (collidingCubes.Count > 0)
-//			bridgeStatus.open = true;
 	}
 
 	public void OnTriggerExit(Collider other) {

@@ -46,11 +46,6 @@ public class FunctionController : MonoBehaviour {
 	}
 
 	void Awake() {
-//        climbEnabled = true;
-//        ropeEnabled = true;
-//        retractEnabled = true;
-//        fistEnabled = true;
-//        shotEnabled = true;
 		trackedObj = GetComponent<SteamVR_TrackedObject> ();
 		controllerSpeaker = GetComponent<AudioSource> ();
 		modeChangePing = (AudioClip)Resources.Load ("Audio/General/changeHandMode");
@@ -92,22 +87,22 @@ public class FunctionController : MonoBehaviour {
 		switch (reqMode) {
 		case ControllerMode.Mode.Climb:
 			return climbEnabled;
-			break;
+
 		case ControllerMode.Mode.Fist:
 			return fistEnabled;
-			break;
+
 		case ControllerMode.Mode.RetractShot:
 			return retractEnabled;
-			break;
+
 		case ControllerMode.Mode.Rope:
 			return ropeEnabled;
-			break;
+
 		case ControllerMode.Mode.WebShot:
 			return shotEnabled;
-			break;
+
 		default:
 			return false;
-			break;
+
 		}
 	}
 
@@ -126,14 +121,11 @@ public class FunctionController : MonoBehaviour {
 		ind.GetComponent<Renderer> ().material = (Material)Resources.Load ("Materials/General/indMaterial");
 		ind.GetComponent<Renderer> ().material.shader = Shader.Find ("Unlit/Transparent Cutout");
 		ind.transform.parent = trackedObj.transform;
-		//TODO: adjust rotation, position, and scale for suitable controller view
 		ind.transform.localPosition = new Vector3 (0f,0.1f,0.1f);
 		ind.transform.forward = -trackedObj.transform.forward;
-		//ind.transform.localRotation = Quaternion.identity;
-		ind.transform.Rotate (90f,0f,0f);
-		//ind.transform.Rotate (90f,trackedObj.transform.rotation.eulerAngles.y - 180f,0f);
-		//ind.transform.localRotation = Quaternion.EulerAngles(new Vector3(90f,0,0));
-		//ind.transform.localEulerAngles = new Vector3(90f,0f,0f);
+		ind.transform.rotation = trackedObj.transform.rotation;
+		ind.transform.RotateAround (ind.transform.position , ind.transform.up , 180);
+		ind.transform.RotateAround (ind.transform.position , ind.transform.right , 90);
 		ind.layer = LayerMask.NameToLayer("RopeIgnore");
 
 		switch (currMode) {
@@ -200,9 +192,7 @@ public class FunctionController : MonoBehaviour {
 
 		//This block moves the CameraRig, solely based on the isClimbing value. Executes every frame regardless of mode.
 		if (isClimbing) {
-			//Debug.Log ("I'm holding...");
 			if (Controller.GetPress(SteamVR_Controller.ButtonMask.Grip)) {
-				//Debug.Log ("I'm sliding!");
 				this.GetComponent<ControllerGrab> ().RopeSlide ();
 				this.GetComponent<ControllerGrab> ().MoveCameraRig ();
 			}
@@ -310,7 +300,6 @@ public class FunctionController : MonoBehaviour {
 						} else if (currentMode == ControllerMode.Mode.RetractShot) {
 							//handle any subsequent inputs beyond first input
 							if (!this.GetComponent<ControllerGrab> ().objectInHand) {
-                                //this.GetComponent<ControllerGrab> ().GrabPhysicsObjectWithParam (this.GetComponent<ControllerRetract> ().retract ());
                                 this.GetComponent<ControllerRetract>().retractNew();
 
                             }

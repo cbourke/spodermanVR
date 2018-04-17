@@ -31,14 +31,11 @@ public class WindowTextController : MonoBehaviour {
 
 	void Awake () {
 		util = EventUtil.FindMe();
-//		outline = transform.parent.transform.parent.transform.Find("Outline").gameObject;
-//		leftCont = GameObject.Find ("[CameraRig]").transform.Find ("Controller (left)").gameObject;
-//		rightCont = GameObject.Find ("[CameraRig]").transform.Find ("Controller (right)").gameObject;
 		msgLock = int.MaxValue;
 		wrong = (AudioClip)Resources.Load ("Audio/windowAudio/error");
 		originalTex = GetComponent<Renderer> ().material.mainTexture;
 	}
-	// Use this for initialization
+
 	void Start () {
 		leftCont = util.getLeftController();
 		rightCont = util.getRightController ();
@@ -48,7 +45,7 @@ public class WindowTextController : MonoBehaviour {
 
 	}
 	
-	// Update is called once per frame
+
 	void Update () {
 		if (textures.GetLength(0) <= 0) {
 			return;
@@ -74,9 +71,8 @@ public class WindowTextController : MonoBehaviour {
 		} else {
 			outline.SetActive (false);
 		}
-//		leftPrevArr.GetComponent<SpriteRenderer>().SetActive (Time.fixedTime - lastTexChange >= 3.0f && currIndex != 0);
+
 		leftPrevArr.GetComponent<SpriteRenderer>().enabled = Time.fixedTime - lastTexChange >= 3.0f && currIndex != 0;
-//		rightPrevArr.SetActive (Time.fixedTime - lastTexChange >= 3.0f && currIndex < msgLock && currIndex < textures.GetLength(0));
 		rightPrevArr.GetComponent<SpriteRenderer>().enabled = Time.fixedTime - lastTexChange >= 3.0f && currIndex < msgLock && currIndex < textures.GetLength(0) - 1;
 	}
 
@@ -95,13 +91,13 @@ public class WindowTextController : MonoBehaviour {
 		if (includeFirstTexture)
 			tempTex.Insert (0, originalTex);
 		else {
-			GetComponent<Renderer>().material.mainTexture = tempTex[0];     //////bad??
+			GetComponent<Renderer>().material.mainTexture = tempTex[0];     
 
 		}
 		this.textures = tempTex.ToArray ();
 		currIndex = 0;
 		msgLock = int.MaxValue;
-		GetComponent<Renderer>().material.mainTexture = tempTex[0];			////bad2??
+		GetComponent<Renderer>().material.mainTexture = tempTex[0];			
 	}
 
 	public void ChangeLock (int msgInd) {

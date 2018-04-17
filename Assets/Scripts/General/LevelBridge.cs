@@ -83,16 +83,6 @@ public class LevelBridge : MonoBehaviour {
 	}
 
 	void Update() {
-//		if (GetComponent<ButtonHighlighter> ()) {
-//
-//		} else {
-//			if (open) {
-//				GetComponent<Renderer> ().material = doorOpen;
-//			} else {
-//				GetComponent<Renderer> ().material = doorClosed;
-//			}
-//		}
-		//open = newLevel
 		ChangeStatus();
 
 	}

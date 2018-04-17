@@ -28,12 +28,9 @@ public class PauseMenuWorld : MonoBehaviour {
 	}
 
 	void Start() {
-//		head = GameObject.Find ("Camera (eye)");
 		head = HeadColliderHandler.FindMe ().transform.parent.gameObject;
 		paused = false;
 		hideLock = false;
-//		leftController = GameObject.Find ("[CameraRig]").transform.Find("Controller (left)").gameObject;
-//		rightController = GameObject.Find ("[CameraRig]").transform.Find("Controller (right)").gameObject;
 		leftController = util.getLeftController();
 		rightController = util.getRightController ();
 	}
@@ -149,7 +146,6 @@ public class PauseMenuWorld : MonoBehaviour {
 		sendCont.GetComponent<PauseMenu> ().laser.SetActive (false);
 		Destroy (pMenuInst);
 		hideLock = false;
-		//pmenuInst = null;
 	}
 
 }

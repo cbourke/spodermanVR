@@ -22,18 +22,6 @@ public class BaseEnemy : MonoBehaviour, IPersistObject {
 	protected bool heyB;
 	public AudioClip hey;
 
-
-//	protected bool getAnimationLock(){
-//		if (!_animationLock) {
-//			_animationLock = true;
-//		}
-//		return _animationLock;
-//	}
-//
-//	public void releaseAnimationLock() {
-//		_animationLock = false;
-//	}
-
 	public virtual void Persist(){
 		if (this.deadAt > 0)
 			this.deadAt = Time.fixedTime;
@@ -99,15 +87,12 @@ public class BaseEnemy : MonoBehaviour, IPersistObject {
 	}
 
 	public virtual void Attack(GameObject target){
-//		Debug.Log ("BASE.ATTACK!!!!!");
 	}
 
 	public virtual void LookAt(GameObject target) {
 		Vector3 headUpVec = target.transform.position + new Vector3 (0,3f,0);
 		Vector3 normalOfTri = Vector3.Cross (target.transform.position - transform.position , headUpVec - transform.position); 
 		transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.LookRotation(normalOfTri) , 2f * Time.deltaTime);
-//		Debug.DrawRay (transform.position , transform.forward , Color.red);
-//		Debug.DrawRay (transform.position , target.transform.position - transform.position , Color.blue);
 	}
 
 	public virtual void StopWalk() {

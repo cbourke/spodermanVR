@@ -1,4 +1,10 @@
-﻿using System.Collections;
+﻿/*
+ * This whole script was just a small experiment. Unused in final project.
+ * 
+ * 
+ * 
+ * */
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
